@@ -14925,10 +14925,7 @@ local _ok_Settings, _err_Settings = pcall(function()
                     kbContainer.Position = UDim2.new(0, 0, 0, 26)
                     kbContainer.BackgroundTransparency = 1
                     kbContainer.BorderSizePixel = 0
-                    local keybindEntries = {
-                        { "Toggle SmartBar", Enum.KeyCode.K, function()
-                            if isOpen then closeBar() else openBar() end
-                        end },
+                    local keybindEntries = {        { "Toggle SmartBar", _tlMenuToggleKey or Enum.KeyCode.K, function() end },
                         { "Toggle Fly", Enum.KeyCode.F, function()
                             local newState = not flyActive
                             if _flyPanelSetFn then
@@ -23526,11 +23523,10 @@ local function parseFieldMessage(fullText, prefixLen)
                                 twP(tb.pill, 0.12, { BackgroundColor3 = MG_B() })
                             end
                         end)
-                    end
-                    _tlTrackConn(UserInputService.InputBegan:Connect(function(input, gpe)
+                    end                    _tlTrackConn(UserInputService.InputBegan:Connect(function(input, gpe)
                         if gpe then return end
-                    if input.KeyCode == _tlMenuToggleKey then
-                        if isOpen then closeBar() else openBar() end
+                        if input.KeyCode == _tlMenuToggleKey then
+                            if isOpen then closeBar() else openBar() end
                         end
                     end))
                     

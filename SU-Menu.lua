@@ -3967,7 +3967,7 @@ keybinds, keybindMainConn = {}, nil
             _tryParentGui(flyScreenGui)
 
             
-            local _invisMod = _TL_loadModule("TL-Invisible")
+            local _invisMod = _TL_loadModule("SU-Invisible")
             if _invisMod then
                 if type(_invisMod.start) == "function" then
                     setInvis = function(on)
@@ -3988,7 +3988,7 @@ keybinds, keybindMainConn = {}, nil
             end
 
             
-            local _flyMod = _TL_loadModule("TL-Fly")
+            local _flyMod = _TL_loadModule("SU-Fly")
             if _flyMod then
                 if type(_flyMod.start) == "function" then
                     setFly = function(on)
@@ -4065,7 +4065,7 @@ keybinds, keybindMainConn = {}, nil
             
             
             noclipActive = false
-            local espMod = _TL_loadModule("TL-ESP")
+            local espMod = _TL_loadModule("SU-ESP")
             espEnabled = false
             espHighlights = {}
             espBillboards = {}
@@ -4250,7 +4250,7 @@ sendNotif = function(title, text, dur, accentOverride)
                 }
                 task.spawn(function()
                     local ok, src = pcall(function()
-                        return (game :: any):HttpGet("https://raw.githubusercontent.com/SUMenu/SUMenuParts/refs/heads/main/TL-ROLE-DETECTOR.lua")
+                        return (game :: any):HttpGet("https://raw.githubusercontent.com/SUMenu/SUMenuParts/refs/heads/main/SU-ROLE-DETECTOR.lua")
                     end)
                     if ok and src and #src > 50 then
                         src = src:gsub('ROBLOX_STAFF%s*=%s*true', 'ROBLOX_STAFF = false')
@@ -4299,12 +4299,12 @@ end
                         local fn, err = loadstring(src)
                         if fn then
                             local execOk, execErr = pcall(fn)
-                            if not execOk then warn("[SU] TL-ROLE-DETECTOR exec error: " .. tostring(execErr)) end
+                            if not execOk then warn("[SU] SU-ROLE-DETECTOR exec error: " .. tostring(execErr)) end
                         else
-                            warn("[SU] TL-ROLE-DETECTOR compile error: " .. tostring(err))
+                            warn("[SU] SU-ROLE-DETECTOR compile error: " .. tostring(err))
                         end
                     else
-                        warn("[SU] TL-ROLE-DETECTOR load failed: " .. tostring(src))
+                        warn("[SU] SU-ROLE-DETECTOR load failed: " .. tostring(src))
                     end
                 end)
             end
@@ -6147,7 +6147,7 @@ local function RunCustomAnimation(Char)
                 
                 
                 do
-                    local _vcModule = _TL_loadModule("TL-ANTIVCBAN")
+                    local _vcModule = _TL_loadModule("SU-ANTIVCBAN")
                     sectionLbl(CY, "VOICE CHAT"); CY = CY + 18
                     local _vcSetToggle = nil
                     if _vcModule then
@@ -7454,7 +7454,7 @@ local function RunCustomAnimation(Char)
                 sSubArea.BorderSizePixel        = 0
                 sSubArea.ClipsDescendants       = false
                 local _TL_WIDGET_CLOSE_ICON     = "rbxassetid://111119570195816"
-                local _scriptWidgetMod = _TL_loadModule("SCRIPTS-TAB/TL-ScriptWidget")
+                local _scriptWidgetMod = _TL_loadModule("SCRIPTS-TAB/SU-ScriptWidget")
                 if _scriptWidgetMod then
                     _scriptWidgetMod.init({
                         ScreenGui = ScreenGui,
@@ -7733,7 +7733,7 @@ local function RunCustomAnimation(Char)
                         end
                         
                     end
-                    local flingMod = _TL_loadModule("TL-BALL-FLING")
+                    local flingMod = _TL_loadModule("SU-BALL-FLING")
                     local flingSelectedPlayer = nil
 
                     local FLING_SUB_H = 12
@@ -7977,7 +7977,7 @@ local function RunCustomAnimation(Char)
                     
                     
                     do
-                        local _opMod = _TL_loadModule("AVATAR-STEAL-PANEL")
+                        local _opMod = _TL_loadModule("SU-OutfitPanel")
                         if _opMod then
                             _opMod.init({ _tsProxy = _tsProxy, _genv = _genv or GLOBAL_ENV })
                             _G._TLInitAvatarOutfit = function()
@@ -8035,23 +8035,23 @@ local function RunCustomAnimation(Char)
                     
                     
                     do
-                        local _oeUrl = _TL_MODULES_BASE .. "TL-OUTFIT-EXPAND.lua"
+                        local _oeUrl = _TL_MODULES_BASE .. "SU-OUTFIT-EXPAND.lua"
                         outfitExpandBtn.MouseButton1Click:Connect(function()
                             local ok, source = pcall(function() return (game :: any):HttpGet(_oeUrl) end)
                             if not ok or not source or #source < 50 then
-                                warn("[SU] Module load failed: TL-OUTFIT-EXPAND — " .. tostring(source))
+                                warn("[SU] Module load failed: SU-OUTFIT-EXPAND — " .. tostring(source))
                                 sendNotif("Outfit Expand", "Module offline ❌", 2)
                                 return
                             end
                             local fn, loadErr = loadstring(source)
                             if not fn then
-                                warn("[SU] Module compile error: TL-OUTFIT-EXPAND — " .. tostring(loadErr))
+                                warn("[SU] Module compile error: SU-OUTFIT-EXPAND — " .. tostring(loadErr))
                                 sendNotif("Outfit Expand", "Module offline ❌", 2)
                                 return
                             end
                             local execOk, execErr = pcall(fn)
                             if not execOk then
-                                warn("[SU] Module exec error: TL-OUTFIT-EXPAND — " .. tostring(execErr))
+                                warn("[SU] Module exec error: SU-OUTFIT-EXPAND — " .. tostring(execErr))
                                 sendNotif("Outfit Expand", "Module offline ❌", 2)
                             end
                         end)
@@ -8067,7 +8067,7 @@ movePage = Instance.new("Frame", sSubArea)
                 movePage.Visible = false
                 
                 do
-                    local avMod = _TL_loadModule("SCRIPTS-TAB/TL-AntiVoid")
+                    local avMod = _TL_loadModule("SCRIPTS-TAB/SU-AntiVoid")
                     if avMod then
                         avMod.init({ RunService = RunService, LocalPlayer = LocalPlayer, sendNotif = sendNotif })
                         sRow(movePage, 0, "Anti-Void", "Im not letting you die in the Void!!", C.accent2, false,
@@ -8086,7 +8086,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local arMod = _TL_loadModule("SCRIPTS-TAB/TL-AntiRagdoll")
+                    local arMod = _TL_loadModule("SCRIPTS-TAB/SU-AntiRagdoll")
                     if arMod then
                         arMod.init({ RunService = RunService, LocalPlayer = LocalPlayer, flyActiveFn = function() return flyActive end })
                         sRow(movePage, 56, "Anti-Ragdoll", "Movement", C.red, false, function(on)
@@ -8097,7 +8097,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local pfMod = _TL_loadModule("SCRIPTS-TAB/TL-PunchFling")
+                    local pfMod = _TL_loadModule("SCRIPTS-TAB/SU-PunchFling")
                     if pfMod then
                         pfMod.init({ RunService = RunService, Players = Players, LocalPlayer = LocalPlayer, sendNotif = sendNotif })
                         sRow(movePage, 112, "Punch-Fling", "Combat", C.orange, false, function(on)
@@ -8118,7 +8118,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local tfMod = _TL_loadModule("SCRIPTS-TAB/TL-TouchFling")
+                    local tfMod = _TL_loadModule("SCRIPTS-TAB/SU-TouchFling")
                     if tfMod then
                         tfMod.init({ RunService = RunService, Players = Players, LocalPlayer = LocalPlayer, sendNotif = sendNotif, _AF_loadAndPlayAnimation = _AF_loadAndPlayAnimation, flyMuteSoundsFn = _flyMuteSounds })
                         local tfModeList = tfMod.getModes()
@@ -8243,7 +8243,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local ctMod = _TL_loadModule("SCRIPTS-TAB/TL-ClickTeleport")
+                    local ctMod = _TL_loadModule("SCRIPTS-TAB/SU-ClickTeleport")
                     if ctMod then
                         ctMod.init({ RunService = RunService, UserInputService = UserInputService or _SvcUIS, LocalPlayer = LocalPlayer, sendNotif = sendNotif })
                         sRow(movePage, 224, "Click Teleport", "Movement", C.accent2, false, function(on)
@@ -8289,8 +8289,7 @@ visualPage = Instance.new("Frame", sSubArea)
                     espColLbl                         = Instance.new("TextLabel", espColorPill)
                     espColLbl.Size                    = UDim2.new(1, -(SWATCH_SZ + 28), 1, 0)
                     espColLbl.Position                = UDim2.new(0, SWATCH_SZ + 10, 0, 0)
-                    espColLbl.BackgroundTransparency  = 1
-                    espColLbl.Text                    = ESP_COLORS[espColorIdx].name
+                    espColLbl.BackgroundTransparency  = 1                    if ESP_COLORS[espColorIdx] then espColLbl.Text = ESP_COLORS[espColorIdx].name end
                     espColLbl.Font                    = Enum.Font.GothamBold
                     espColLbl.TextSize                = 10
                     espColLbl.TextColor3              = C.text
@@ -8476,7 +8475,7 @@ visualPage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local _shdMod = _TL_loadModule("TL-Shader")
+                    local _shdMod = _TL_loadModule("SU-Shader")
                     local shRow = Instance.new("Frame", visualPage)
                     shRow.Size = UDim2.new(1, 0, 0, 54)
                     shRow.Position = UDim2.new(0, 0, 0, 52)
@@ -8986,7 +8985,7 @@ visualPage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local aimMod = _TL_loadModule("SCRIPTS-TAB/TL-Aimbot")
+                    local aimMod = _TL_loadModule("SCRIPTS-TAB/SU-Aimbot")
                     if aimMod then
                         aimMod.init({ Players = Players, RunService = RunService, UserInputService = UserInputService, Workspace = Workspace, LocalPlayer = LocalPlayer })
                         local cfg = aimMod.getConfig()
@@ -13585,7 +13584,7 @@ _TL_state.actions = {}
             end 
             
             do
-                local _bbMod = _TL_loadModule("SCRIPTS-TAB/TL-ByteBreaker")
+                local _bbMod = _TL_loadModule("SCRIPTS-TAB/SU-ByteBreaker")
                 if _bbMod then
                     _bbMod.initBB({
                         _AF = _AF,
@@ -25068,7 +25067,7 @@ local function _TL_showLoadingScreen()
 
             
             do
-                local _bbMod2 = _TL_loadModule("SCRIPTS-TAB/TL-QABar")
+                local _bbMod2 = _TL_loadModule("SCRIPTS-TAB/SU-QABar")
                 if _bbMod2 then
                     _bbMod2.initQABar({
                         _TL_refs = _TL_refs,

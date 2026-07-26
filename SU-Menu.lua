@@ -45,7 +45,7 @@ local task                    = (type(task) == "table" and task) or {
 local ROLES_URL               = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NametagRoles.json"
 local NAMETAG_CONFIG_URL      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NametagConfig.json"
 local SCRIPT_URL              = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/covertnet.lua"
-local EMOTEWHEEL_URL          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/refs/heads/main/SCRIPTS-TAB/SU-EX-EMOTEWHEEL"
+-- local EMOTEWHEEL_URL          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/refs/heads/main/SCRIPTS-TAB/SU-EX-EMOTEWHEEL" -- file does not exist
 local NameOverrides           = {}
 local AdminNames              = {}
 local LoadRolesFromGithub
@@ -61,18 +61,18 @@ local userProfilePicFileName = "assets/ROLE-ICONS/SUUSER-ROLE.png"
 
 local customUserAvatars = {
     ["usxirr"] = {
-        url  = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Oso.png",
-        file = "assets/SU-ROLE-PICS/TL-Usxirr.png",
+        url  = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/SU-Usxirr.png",
+        file = "assets/SU-ROLE-PICS/SU-Usxirr.png",
         strokeColor = ColorSequence.new(Color3.fromHex("#9A7211"), Color3.fromHex("#000000")),
     },
     ["Abxsent0"] = {
-        url  = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-Abxsent0.png",
-        file = "assets/ROLE-ICONS/SU-Abxsent0.png",
+        url  = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-Abxsent0.png",
+        file = "assets/ROLE-ICONS/TL-Abxsent0.png",
         strokeColor = ColorSequence.new(Color3.fromHex("#06402B"), Color3.fromHex("#88E788")),
     },
 }
 
-local dragonballMusicUrl             = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/THEME%20MUSICS/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
+local dragonballMusicUrl             = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/THEME%20MUSICS/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
 local dragonballMusicFileName        = "assets/SU-MP3-FILES/DragonBall-Music1.mp3"
 
 local dragonballSettingsIconUrl      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
@@ -84,8 +84,8 @@ local dragonballBgFileName = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Home-Wal
 local onePieceActionBgUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/THEMES/ONE%20PIECE/Theme-OnePiece-Action-Wallpaper.png"
 local onePieceActionBgFileName = "assets/THEMES/ONEPIECE/OP-ACT-BG.png"
 
-local adminAudioUrl           = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/TLMENU-STANDARD-SFX/TLSYSTEM-ADMIN-SFX.mp3"
-local adminAudioFileName      = "assets/SU-MP3-FILES/TLSYSTEM-ADMIN-SFX.mp3"
+local adminAudioUrl           = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/SUMENU-STANDARD-SFX/SUSYSTEM-ADMIN-SFX.mp3"
+local adminAudioFileName      = "assets/SU-MP3-FILES/SUSYSTEM-ADMIN-SFX.mp3"
 
 local theBoysScriptsIconUrl      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/THE%20BOYS/Theme-TheBoys-Scripts-Icon.png"
 local theBoysScriptsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Scripts-Icon.png"
@@ -97,26 +97,26 @@ local theBoysActionsIconUrl      = "https://raw.githubusercontent.com/shortviet/
 local theBoysActionsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Actions-Icon.png"
 local theBoysBgUrl               = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/THE%20BOYS/Theme-TheBoys2.jpg"
 local theBoysBgFileName          = "assets/THEMES/THEBOYS/Theme-TheBoys2.jpg"
-local theBoysMusicUrl            = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
+local theBoysMusicUrl            = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
 local theBoysMusicFileName       = "assets/SU-MP3-FILES/Theme-TheBoys-Music.mp3"
 
-local comTabIconUrl              = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Com-Icon.png"
-local comTabIconFileName         = "assets/SU-Icons/Com-Icon.png"
+local comTabIconUrl              = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Com-Icon.png"
+local comTabIconFileName         = "assets/TL-DEFAULT/Com-Icon.png"
 
-local homeTabIconUrl             = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/HomeTab-Icon.png"
-local homeTabIconFileName        = "assets/SU-Icons/HomeTab-Icon.png"
+local homeTabIconUrl             = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/HomeTab-Icon.png"
+local homeTabIconFileName        = "assets/TL-DEFAULT/HomeTab-Icon.png"
 
-local characterTabIconUrl        = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Character-Icon.png"
-local characterTabIconFileName   = "assets/SU-Icons/Character-Icon.png"
+local characterTabIconUrl        = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Character-Icon.png"
+local characterTabIconFileName   = "assets/TL-DEFAULT/Character-Icon.png"
 
-local scriptsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Scripts-Icon.png"
-local scriptsTabIconFileName     = "assets/SU-Icons/Scripts-Icon.png"
+local scriptsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Scripts-Icon.png"
+local scriptsTabIconFileName     = "assets/TL-DEFAULT/Scripts-Icon.png"
 
-local actionsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/ActionTab-Icon.png"
-local actionsTabIconFileName     = "assets/SU-Icons/ActionTab-Icon.png"
+local actionsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/ActionTab-Icon.png"
+local actionsTabIconFileName     = "assets/TL-DEFAULT/ActionTab-Icon.png"
 
-local playerlistTabIconUrl       = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Playerlist-Icon.png"
-local playerlistTabIconFileName  = "assets/SU-Icons/Playerlist-Icon.png"
+local playerlistTabIconUrl       = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Playerlist-Icon.png"
+local playerlistTabIconFileName  = "assets/TL-DEFAULT/Playerlist-Icon.png"
 
 local deathNoteHomeIconUrl         = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Icon.png"
 local deathNoteHomeIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Icon.png"
@@ -156,8 +156,8 @@ local dexterLoadingScreenFileName   = "assets/THEMES/DEXTER/Theme-Dexter-Loading
 local dexterPlayerlistIconUrl       = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 local dexterPlayerlistIconFileName  = "assets/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 
-local loadingScreenVoiceUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU-MP3/hi-aubrey-omori-tag.mp3"
-local loadingScreenVoiceFileName = "assets/SU-MP3-FILES/hi-aubrey-omori-tag.mp3"
+local loadingScreenVoiceUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU-MP3/SUMenuLoadingScreen.mp3"
+local loadingScreenVoiceFileName = "assets/SU-MP3-FILES/SUMenuLoadingScreen.mp3"
 
 local _TL_assetLoader = {
     started = false,
@@ -296,7 +296,7 @@ task.spawn(function()
     pcall(function()
         if not _TL_safeIsFolder("assets/SU-MP3-FILES") then _TL_safeMakeFolder("assets/SU-MP3-FILES") end
         if not _TL_safeIsFolder("assets/SU-ROLE-PICS") then _TL_safeMakeFolder("assets/SU-ROLE-PICS") end
-        if not _TL_safeIsFolder("assets/SU-Icons") then _TL_safeMakeFolder("assets/SU-Icons") end
+        if not _TL_safeIsFolder("assets/TL-DEFAULT") then _TL_safeMakeFolder("assets/TL-DEFAULT") end
         if not _TL_safeIsFolder("assets/ROLE-ICONS") then _TL_safeMakeFolder("assets/ROLE-ICONS") end
         if not _TL_safeIsFolder("assets/THEMES") then _TL_safeMakeFolder("assets/THEMES") end
         if not _TL_safeIsFolder("assets/THEMES/DRAGONBALL") then _TL_safeMakeFolder("assets/THEMES/DRAGONBALL") end
@@ -311,15 +311,15 @@ task.spawn(function()
     
     local assets = {
         
-        { name = "Syndicate Loading Screen",  url = loadingScreenVoiceUrl,        file = loadingScreenVoiceFileName,        kind = "audio", priority = 1 },
+        { name = "SUMenu Loading Screen",  url = loadingScreenVoiceUrl,        file = loadingScreenVoiceFileName,        kind = "audio", priority = 1 },
         { name = "SU Owner Profile Picture",   url = ownerProfilePicUrl,           file = ownerProfilePicFileName,           kind = "image", priority = 1 },
         { name = "SU User Profile Picture",    url = userProfilePicUrl,            file = userProfilePicFileName,            kind = "image", priority = 1 },
         { name = "usxirr Custom Avatar",       url = customUserAvatars["usxirr"].url, file = customUserAvatars["usxirr"].file, kind = "image", priority = 1 },
         { name = "Abxsent0 Custom Avatar",     url = customUserAvatars["Abxsent0"].url, file = customUserAvatars["Abxsent0"].file, kind = "image", priority = 1 },
-        { name = "SU Staff Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-*.png", kind = "image", priority = 1 },
-        { name = "SU Arda Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Arda.png", file = "assets/SU-ROLE-PICS/TL-Arda.png", kind = "image", priority = 1 },
-        { name = "SU Sec Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sec.png", file = "assets/SU-ROLE-PICS/TL-Sec.png", kind = "image", priority = 1 },
-        { name = "SU Sleepy Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sleepy.jpg", file = "assets/SU-ROLE-PICS/TL-Sleepy.jpg", kind = "image", priority = 1 },
+        { name = "SU Staff Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png", kind = "image", priority = 1 },
+        { name = "SU Arda Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/SU-Arda.png", file = "assets/SU-ROLE-PICS/SU-Arda.png", kind = "image", priority = 1 },
+        { name = "SU Sec Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/SU-Sec.png", file = "assets/SU-ROLE-PICS/SU-Sec.png", kind = "image", priority = 1 },
+        { name = "SU Sleepy Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/SU-Sleepy.jpg", file = "assets/SU-ROLE-PICS/SU-Sleepy.jpg", kind = "image", priority = 1 },
         { name = "R5yn Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/R5yn.png", file = "assets/SU-ROLE-PICS/R5yn.png", kind = "image", priority = 1 },
         { name = "Communication Tab Icon",     url = comTabIconUrl,                file = comTabIconFileName,                kind = "image", priority = 1 },
         { name = "Home Tab Icon",              url = homeTabIconUrl,               file = homeTabIconFileName,               kind = "image", priority = 1 },
@@ -327,39 +327,41 @@ task.spawn(function()
         { name = "Scripts Tab Icon",           url = scriptsTabIconUrl,            file = scriptsTabIconFileName,            kind = "image", priority = 1 },
         { name = "Actions Tab Icon",           url = actionsTabIconUrl,            file = actionsTabIconFileName,            kind = "image", priority = 1 },
         { name = "Playerlist Tab Icon",        url = playerlistTabIconUrl,         file = playerlistTabIconFileName,         kind = "image", priority = 1 },
-        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/ANTIVCBAN-Unmuted-Icon.png", file = "assets/SU-Icons/SU_Unmuted.png", kind = "image", priority = 1 },
-        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/ANTIVCBAN-Mute-Icon.png",    file = "assets/SU-Icons/SU_Muted.png",   kind = "image", priority = 1 },
+        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL-DEFAULT/TL_Unmuted.png", kind = "image", priority = 1 },
+        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL-DEFAULT/TL_Muted.png",   kind = "image", priority = 1 },
 
-        { name = "SU Default Emote Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Emote-Icon.png",          file = "assets/SU-Icons/Emote-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Music Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Music-Icon.png",          file = "assets/SU-Icons/Music-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Visual Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Visual-Icon.png",          file = "assets/SU-Icons/Visual-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Visual2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Visual2-Icon.png",         file = "assets/SU-Icons/Visual2-Icon.png",         kind = "image", priority = 2 },
-        { name = "SU Default Movement Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Movement-Icon.png",        file = "assets/SU-Icons/Movement-Icon.png",        kind = "image", priority = 2 },
-        { name = "SU Default Misc Icon",       url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Misc-Icon.png",            file = "assets/SU-Icons/Misc-Icon.png",            kind = "image", priority = 2 },
-        { name = "SU Default Colors Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Colors-Icon.png",          file = "assets/SU-Icons/Colors-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Theme Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Theme-Icon.png",           file = "assets/SU-Icons/Theme-Icon.png",           kind = "image", priority = 2 },
-        { name = "SU Default Themes Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Themes-Icon.png",          file = "assets/SU-Icons/Themes-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Keybind Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Keybind-Icon.png",         file = "assets/SU-Icons/Keybind-Icon.png",         kind = "image", priority = 2 },
-        { name = "SU Default Cursor Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Cursor-Icon.png",          file = "assets/SU-Icons/Cursor-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default CustomCursor Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/CustomCursor-Icon%20(2).png", file = "assets/SU-Icons/CustomCursor-Icon.png", kind = "image", priority = 2 },
-        { name = "SU Default Search Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Search-Icon.png",          file = "assets/SU-Icons/Search-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Search2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Search2-Icon.png",         file = "assets/SU-Icons/Search2-Icon.png",         kind = "image", priority = 2 },
-        { name = "SU Default Minimize Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Minimize-Icon.png",        file = "assets/SU-Icons/Minimize-Icon.png",        kind = "image", priority = 2 },
-        { name = "SU Default MusicPlay Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicPlay-Icon.png",       file = "assets/SU-Icons/MusicPlay-Icon.png",       kind = "image", priority = 2 },
-        { name = "SU Default MusicPause Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicPause-Icon.png",      file = "assets/SU-Icons/MusicPause-Icon.png",      kind = "image", priority = 2 },
-        { name = "SU Default MusicBack Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicBack-Icon.png",       file = "assets/SU-Icons/MusicBack-Icon.png",       kind = "image", priority = 2 },
-        { name = "SU Default MusicSkip Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicSkip-Icon.png",       file = "assets/SU-Icons/MusicSkip-Icon.png",       kind = "image", priority = 2 },
-        { name = "SU Default PING-WLAN Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/PING-WLAN-Icon.png",       file = "assets/SU-Icons/PING-WLAN-Icon.png",       kind = "image", priority = 2 },
-        { name = "SU Default PunchFling Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/PunchFling-Icon.png",      file = "assets/SU-Icons/PunchFling-Icon.png",      kind = "image", priority = 2 },
-        { name = "SU Magnifier Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SUMagnifier-Tool-Icon.png", file = "assets/SU-Icons/SUMagnifier-Tool-Icon.png", kind = "image", priority = 2 },
-        { name = "SU Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png", file = "assets/SU-Icons/Syndicate-App-Logo-Main.png", kind = "image", priority = 2 },
-        { name = "SU OpenBars",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SUOpenBars-Button.png",     file = "assets/SU-Icons/SUOpenBars-Button.png",    kind = "image", priority = 2 },
-        { name = "SU OpenedBars",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SUOpenedBars-Button.png",    file = "assets/SU-Icons/SUOpenedBars-Button.png",  kind = "image", priority = 2 },
-        { name = "SU Default QA Hug",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Hug-Icon.png",       file = "assets/SU-Icons/QuickAction-Hug-Icon.png",       kind = "image", priority = 2 },
-        { name = "SU Default QA Kiss",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Kiss-Icon.png",      file = "assets/SU-Icons/QuickAction-Kiss-Icon.png",      kind = "image", priority = 2 },
-        { name = "SU Default QA Slap",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Slap-Icon.png",      file = "assets/SU-Icons/QuickAction-Slap-Icon.png",      kind = "image", priority = 2 },
-        { name = "SU Default QA Headbutt",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Headbutt-Icon.png", file = "assets/SU-Icons/QuickAction-Headbutt-Icon.png", kind = "image", priority = 2 },
-        { name = "SU Default QA Backshots",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Backshots-Icon.png", file = "assets/SU-Icons/QuickAction-Backshots-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default Emote Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Emote-Icon.png",          file = "assets/TL-DEFAULT/Emote-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Music Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Music-Icon.png",          file = "assets/TL-DEFAULT/Music-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Visual Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Visual-Icon.png",          file = "assets/TL-DEFAULT/Visual-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Visual2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Visual2-Icon.png",         file = "assets/TL-DEFAULT/Visual2-Icon.png",         kind = "image", priority = 2 },
+        { name = "SU Default Movement Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Movement-Icon.png",        file = "assets/TL-DEFAULT/Movement-Icon.png",        kind = "image", priority = 2 },
+        { name = "SU Default Misc Icon",       url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Misc-Icon.png",            file = "assets/TL-DEFAULT/Misc-Icon.png",            kind = "image", priority = 2 },
+        { name = "SU Default Colors Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Colors-Icon.png",          file = "assets/TL-DEFAULT/Colors-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Theme Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Theme-Icon.png",           file = "assets/TL-DEFAULT/Theme-Icon.png",           kind = "image", priority = 2 },
+        { name = "SU Default Themes Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Themes-Icon.png",          file = "assets/TL-DEFAULT/Themes-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Keybind Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Keybind-Icon.png",         file = "assets/TL-DEFAULT/Keybind-Icon.png",         kind = "image", priority = 2 },
+        { name = "SU Default Cursor Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Cursor-Icon.png",          file = "assets/TL-DEFAULT/Cursor-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default CustomCursor Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/CustomCursor-Icon%20(2).png", file = "assets/TL-DEFAULT/CustomCursor-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default Search Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Search-Icon.png",          file = "assets/TL-DEFAULT/Search-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Search2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Search2-Icon.png",         file = "assets/TL-DEFAULT/Search2-Icon.png",         kind = "image", priority = 2 },
+        { name = "SU Default Minimize Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Minimize-Icon.png",        file = "assets/TL-DEFAULT/Minimize-Icon.png",        kind = "image", priority = 2 },
+        { name = "SU Default MusicPlay Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicPlay-Icon.png",       file = "assets/TL-DEFAULT/MusicPlay-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default MusicPause Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicPause-Icon.png",      file = "assets/TL-DEFAULT/MusicPause-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default MusicBack Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicBack-Icon.png",       file = "assets/TL-DEFAULT/MusicBack-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default MusicSkip Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicSkip-Icon.png",       file = "assets/TL-DEFAULT/MusicSkip-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default PING-WLAN Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/PING-WLAN-Icon.png",       file = "assets/TL-DEFAULT/PING-WLAN-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default PunchFling Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/PunchFling-Icon.png",      file = "assets/TL-DEFAULT/PunchFling-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default TLMagnifier Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TLMagnifier-Tool-Icon.png", file = "assets/TL-DEFAULT/TLMagnifier-Tool-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default SU-Icon",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/SU-Icon.png",              file = "assets/TL-DEFAULT/SU-Icon.png",              kind = "image", priority = 2 },
+        { name = "SU Default SUIcon",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/SUIcon.png",               file = "assets/TL-DEFAULT/SUIcon.png",               kind = "image", priority = 2 },
+        { name = "SU Default TL-ProfileIcon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TL-ProfileIcon.png",       file = "assets/TL-DEFAULT/TL-ProfileIcon.png",       kind = "image", priority = 2 },
+        { name = "SU Default TLOpenBars",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TLOpenBars-Button.png",     file = "assets/TL-DEFAULT/TLOpenBars-Button.png",    kind = "image", priority = 2 },
+        { name = "SU Default TLOpenedBars",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TLOpenedBars-Button.png",    file = "assets/TL-DEFAULT/TLOpenedBars-Button.png",  kind = "image", priority = 2 },
+        { name = "SU Default QA Hug",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Hug-Icon.png",       file = "assets/TL-DEFAULT/QuickAction-Hug-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default QA Kiss",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Kiss-Icon.png",      file = "assets/TL-DEFAULT/QuickAction-Kiss-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default QA Slap",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Slap-Icon.png",      file = "assets/TL-DEFAULT/QuickAction-Slap-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default QA Headbutt",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Headbutt-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Headbutt-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default QA Backshots",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Backshots-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Backshots-Icon.png", kind = "image", priority = 2 },
         { name = "Admin Join Audio",           url = adminAudioUrl,                file = adminAudioFileName,                kind = "audio", priority = 1 },
         
         { name = "The Boys Scripts Icon",      url = theBoysScriptsIconUrl,        file = theBoysScriptsIconFileName,        kind = "image", priority = 2 },
@@ -406,18 +408,18 @@ task.spawn(function()
         { "Usopp Theme",                   "Usopp%20Theme.mp3",                                           "assets/SU-MP3-FILES/OP-M-08.mp3" },
         { "Zoro Theme",                    "Zoro%20Theme.mp3",                                            "assets/SU-MP3-FILES/OP-M-09.mp3" },
     }
-    local _OP_BASE = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/THEME%20MUSICS/ONEPIECE/"
+    local _OP_BASE = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/THEME%20MUSICS/ONEPIECE/"
     for _, v in ipairs(_opMusic) do
         assets[#assets + 1] = { name = "OP Music: " .. v[1], url = _OP_BASE .. v[2], file = v[3], kind = "audio", priority = 2 }
     end
 
     
     local _afkFiles = {
-        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/SU-MP3-FILES/DB-AFK-VL0.mp3" },
-        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/SU-MP3-FILES/DB-AFK-VL1.mp3" },
-        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",      "assets/SU-MP3-FILES/OP-AFK-VL0.mp3" },
-        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",     "assets/SU-MP3-FILES/OP-AFK-VL1.mp3" },
-        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/AFKSFX/THE%20BOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",     "assets/SU-MP3-FILES/TB-AFK-VL0.mp3" },
+        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/SU-MP3-FILES/DB-AFK-VL0.mp3" },
+        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/SU-MP3-FILES/DB-AFK-VL1.mp3" },
+        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",      "assets/SU-MP3-FILES/OP-AFK-VL0.mp3" },
+        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",     "assets/SU-MP3-FILES/OP-AFK-VL1.mp3" },
+        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/AFKSFX/THE%20BOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",     "assets/SU-MP3-FILES/TB-AFK-VL0.mp3" },
     }
     for _, v in ipairs(_afkFiles) do
         assets[#assets + 1] = { name = "AFK VL: " .. v[2], url = v[1], file = v[2], kind = "audio", priority = 2 }
@@ -452,11 +454,11 @@ task.spawn(function()
             local writeOk = _TL_safeWriteFile(entry.file, bytes)
             if not writeOk then
                 _TL_assetLoader.failed = _TL_assetLoader.failed + 1
-                warn("[TL] writefile failed: " .. entry.file)
+                warn("[SU] writefile failed: " .. entry.file)
             end
         else
             _TL_assetLoader.failed = _TL_assetLoader.failed + 1
-            warn("[TL] Download failed: " .. entry.name)
+            warn("[SU] Download failed: " .. entry.name)
         end
         
         _TL_assetLoader.done = _TL_assetLoader.done + 1
@@ -538,7 +540,7 @@ task.spawn(function()
             task.wait(0.05)
         end
         if not preloadDone then
-            warn("[TL] Image preload timeout — continuing")
+            warn("[SU] Image preload timeout — continuing")
         end
         for _, img in ipairs(preloadObjs) do
             pcall(function() img:Destroy() end)
@@ -561,10 +563,9 @@ task.spawn(function()
         _TL_assetLoader.done    = _TL_assetLoader.total
         _TL_assetLoader.ready   = true
         _TL_assetLoader.current = "Asset loader recovered from error"
-        warn("[TL] Asset loader encountered an unhandled error — marked ready anyway")
+        warn("[SU] Asset loader encountered an unhandled error — marked ready anyway")
     end
 end) 
-
 
 task.spawn(function()
     while not _TL_assetLoader.ready do task.wait(0.1) end
@@ -834,26 +835,22 @@ end
 local function _handleError(err)
     local traceback = debug.traceback()
     local fullError = "╔══════════════════════════════════════════════╗\n" ..
-                      "║  SYNDICATE CRITICAL ERROR DETECTED              ║\n" ..
+                      "║  SUMENU CRITICAL ERROR DETECTED              ║\n" ..
                       "╟──────────────────────────────────────────────╢\n" ..
                       "║ Error: " .. tostring(err) .. "                 ╢\n" ..
                       "╟──────────────────────────────────────────────╢\n" ..
                       "║ Traceback:\n" .. traceback .. "                ╢\n" ..
                       "╚══════════════════════════════════════════════╝\n"
-    print(fullError)
     print(fullError) 
     pcall(function()
         _SvcSG:SetCore("SendNotification", {
-            Title = "⚠️ Syndicate Crash",
+            Title = "⚠️ SUMenu Crash",
             Text = "An error occurred. Check F9 console for details.",
             Duration = 15,
             Button1 = "OK"
         })
     end)
 end
-
-
-
 
 task.spawn(function()
     local success, result = xpcall(function()
@@ -1029,7 +1026,7 @@ task.spawn(function()
                         task.delay(1, function() pcall(function() obj:Destroy() end) end)
                     end)
                 elseif not _objDone then
-                    warn("[TL] game:GetObjects timeout for animation " .. cleanId .. " — using fallback ID")
+                    warn("[SU] game:GetObjects timeout for animation " .. cleanId .. " — using fallback ID")
                 end
             end
             local anim = Instance.new("Animation")
@@ -1081,7 +1078,7 @@ task.spawn(function()
             return track
         end
 
-        local FILE = "SU-Menu.lua"
+        local FILE = "SUMenu.lua"
         if not _genv._TLScriptSource then
             pcall(function()
                 if readfile and isfile and isfile(FILE) then
@@ -1133,10 +1130,10 @@ task.spawn(function()
         local _tlEnv = (getgenv ~= nil and _genv) or _G or {}
         pcall(function()
             local env = _genv
-            if env and type(env.SUCleanup) == "function" then
-                pcall(env.SUCleanup)
-            elseif env and type(env.SUUnload) == "function" then
-                pcall(env.SUUnload)
+            if env and type(env.SUMenuCleanup) == "function" then
+                pcall(env.SUMenuCleanup)
+            elseif env and type(env.TLUnload) == "function" then
+                pcall(env.TLUnload)
             end
         end)
         if getgenv then
@@ -1148,7 +1145,7 @@ task.spawn(function()
         
         
         
-        local _TL_MODULES_BASE = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/refs/heads/main/"
+        local _TL_MODULES_BASE = "https://raw.githubusercontent.com/SUMenu/SUMenuParts/main/"
         local _TL_MODULES = {}
         rawset(_genv, "_TL_MODULES", _TL_MODULES)
 
@@ -1157,17 +1154,17 @@ task.spawn(function()
             local url = _TL_MODULES_BASE .. name .. ".lua"
             local ok, source = pcall(function() return (game :: any):HttpGet(url) end)
             if not ok or not source or #source < 50 then
-                warn("[TL] Module load failed: " .. name .. " — " .. tostring(source))
+                warn("[SU] Module load failed: " .. name .. " — " .. tostring(source))
                 return nil
             end
             local fn, loadErr = loadstring(source)
             if not fn then
-                warn("[TL] Module compile error: " .. name .. " — " .. tostring(loadErr))
+                warn("[SU] Module compile error: " .. name .. " — " .. tostring(loadErr))
                 return nil
             end
             local modOk, mod = pcall(fn)
             if not modOk then
-                warn("[TL] Module exec error: " .. name .. " — " .. tostring(mod))
+                warn("[SU] Module exec error: " .. name .. " — " .. tostring(mod))
                 return nil
             end
             _TL_MODULES[name] = mod
@@ -1846,7 +1843,7 @@ local _TL_THEMES = {
                 
                 
                 
-                local TOOL_NAME  = "_SUInspect"
+                local TOOL_NAME  = "_TLInspect"
                 local SLOT_IMAGE = "rbxassetid://71807151037163"
                 local RS         = RunService or _SvcRS
                 local patched    = {}
@@ -1904,7 +1901,7 @@ local _TL_THEMES = {
                     local bg = rg:FindFirstChild("BackpackGui"); if not bg then return end
                     for _, d in ipairs(bg:GetDescendants()) do
                         local isToolLabel = d:IsA("TextLabel") and
-                            (d.Text == TOOL_NAME or d.Text == "SU Magnifier" or d.Text == "SU Magnifier" or d.Text == "SUInspect")
+                            (d.Text == TOOL_NAME or d.Text == "SU Magnifyer" or d.Text == "SU Magnifier" or d.Text == "TLInspect")
                         local isToolFrame = d:IsA("Frame") and d.Name == TOOL_NAME
                         if isToolLabel or isToolFrame then
                             local slot = d.Parent
@@ -2736,7 +2733,7 @@ local _TL_THEMES = {
                         Players.LocalPlayer.Character
                     }) do
                         if loc then
-                            local t = loc:FindFirstChild("_SUInspect")
+                            local t = loc:FindFirstChild("_TLInspect")
                             if t then t:Destroy() end
                         end
                     end
@@ -2745,7 +2742,7 @@ local _TL_THEMES = {
 
                 removeTLTool()
                 local tool   = Instance.new("Tool")
-                tool.Name    = "_SUInspect"
+                tool.Name    = "_TLInspect"
                 tool.ToolTip = ""
                 pcall(function() tool.TextureId = "rbxassetid://84392553014944" end)
                 tool.CanBeDropped   = false
@@ -2851,7 +2848,7 @@ local _TL_THEMES = {
                         Players.LocalPlayer.Character
                     }) do
                         if loc then
-                            local old = loc:FindFirstChild("_SUInspect")
+                            local old = loc:FindFirstChild("_TLInspect")
                             if old then old:Destroy() end
                         end
                     end
@@ -2866,12 +2863,12 @@ local _TL_THEMES = {
                         Players.LocalPlayer.Character
                     }) do
                         if loc then
-                            local old = loc:FindFirstChild("_SUInspect")
+                            local old = loc:FindFirstChild("_TLInspect")
                             if old then old:Destroy() end
                         end
                     end
                     local newTool   = Instance.new("Tool")
-                    newTool.Name    = "_SUInspect"
+                    newTool.Name    = "_TLInspect"
                     newTool.ToolTip = ""
                     pcall(function() newTool.TextureId = "rbxassetid://84392553014944" end)
                     newTool.CanBeDropped   = false
@@ -2915,7 +2912,7 @@ keybinds, keybindMainConn = {}, nil
                     if gpe then return end
                     if isConfiguringKeybind then return end
                     if lastConfiguredKey and input.KeyCode == lastConfiguredKey and tick() - lastConfiguredTime < 0.5 then return end
-                    if _tlMenuToggleKey and input.KeyCode == _tlMenuToggleKey then return end
+                    if input.KeyCode == Enum.KeyCode.K then return end
                     for actionName, data in pairs(keybinds) do
                         if data.key and input.KeyCode == data.key and data.callback then
                             data.callback()
@@ -3128,7 +3125,6 @@ keybinds, keybindMainConn = {}, nil
                     end
                 end)
             end
-            _TL_refs._TL_saveData = saveData
 
             local function extractJsonSection(json, section)
                 local startPat = '"' .. section .. '":%s*{'
@@ -3185,7 +3181,6 @@ keybinds, keybindMainConn = {}, nil
                                 end)
                                 if found then
                                     data.key = found
-                                    if name == "Toggle SmartBar" then _tlMenuToggleKey = found end
                                     if keybindLabelUpdaters[name] then
                                         pcall(function() keybindLabelUpdaters[name](found) end)
                                     end
@@ -3754,7 +3749,7 @@ keybinds, keybindMainConn = {}, nil
                 credit.Size                   = UDim2.new(0, 100, 1, 0)
                 credit.Position               = UDim2.new(1, -135, 0, 0)
                 credit.BackgroundTransparency = 1
-                credit.Text                   = "Syndicate Universal"
+                credit.Text                   = "telelumi"
                 credit.Font                   = Enum.Font.GothamBold
                 credit.TextSize               = 11
                 credit.TextColor3             = C.sub
@@ -3972,7 +3967,7 @@ keybinds, keybindMainConn = {}, nil
             _tryParentGui(flyScreenGui)
 
             
-            local _invisMod = _TL_loadModule("SU-Invisible")
+            local _invisMod = _TL_loadModule("TL-Invisible")
             if _invisMod then
                 if type(_invisMod.start) == "function" then
                     setInvis = function(on)
@@ -3980,20 +3975,20 @@ keybinds, keybindMainConn = {}, nil
                         if on then _invisMod.start() else _invisMod.stop() end
                     end
                 else
-                    setInvis = function(on) invisActive = on; warn("[TL] Invisible module: no start/stop") end
+                    setInvis = function(on) invisActive = on; warn("[SU] Invisible module: no start/stop") end
                 end
                 task.defer(function()
                     if type(_invisMod.isActive) == "function" then invisActive = _invisMod.isActive() end
                 end)
             else
-                setInvis = function(on) invisActive = on; warn("[TL] Invisible module offline") end
+                setInvis = function(on) invisActive = on; warn("[SU] Invisible module offline") end
             end
             local function invisSetupParts()
                 if _invisMod and type(_invisMod.setupParts) == "function" then pcall(_invisMod.setupParts) end
             end
 
             
-            local _flyMod = _TL_loadModule("SU-Fly")
+            local _flyMod = _TL_loadModule("TL-Fly")
             if _flyMod then
                 if type(_flyMod.start) == "function" then
                     setFly = function(on)
@@ -4001,14 +3996,14 @@ keybinds, keybindMainConn = {}, nil
                         if on then _flyMod.start() else _flyMod.stop() end
                     end
                 else
-                    setFly = function(on) flyActive = on; warn("[TL] Fly module: no start/stop") end
+                    setFly = function(on) flyActive = on; warn("[SU] Fly module: no start/stop") end
                 end
                 _flyPanelSetFn = setFly
                 task.defer(function()
                     if type(_flyMod.isActive) == "function" then flyActive = _flyMod.isActive() end
                 end)
             else
-                setFly = function(on) flyActive = on; warn("[TL] Fly module offline") end
+                setFly = function(on) flyActive = on; warn("[SU] Fly module offline") end
                 _flyPanelSetFn = setFly
             end
 
@@ -4070,7 +4065,7 @@ keybinds, keybindMainConn = {}, nil
             
             
             noclipActive = false
-            local espMod = _TL_loadModule("SU-ESP")
+            local espMod = _TL_loadModule("TL-ESP")
             espEnabled = false
             espHighlights = {}
             espBillboards = {}
@@ -4255,7 +4250,7 @@ sendNotif = function(title, text, dur, accentOverride)
                 }
                 task.spawn(function()
                     local ok, src = pcall(function()
-                        return (game :: any):HttpGet("https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/refs/heads/main/SU-ROLE-DETECTOR.lua")
+                        return (game :: any):HttpGet("https://raw.githubusercontent.com/SUMenu/SUMenuParts/refs/heads/main/TL-ROLE-DETECTOR.lua")
                     end)
                     if ok and src and #src > 50 then
                         src = src:gsub('ROBLOX_STAFF%s*=%s*true', 'ROBLOX_STAFF = false')
@@ -4304,12 +4299,12 @@ end
                         local fn, err = loadstring(src)
                         if fn then
                             local execOk, execErr = pcall(fn)
-                            if not execOk then warn("[TL] TL-ROLE-DETECTOR exec error: " .. tostring(execErr)) end
+                            if not execOk then warn("[SU] TL-ROLE-DETECTOR exec error: " .. tostring(execErr)) end
                         else
-                            warn("[TL] TL-ROLE-DETECTOR compile error: " .. tostring(err))
+                            warn("[SU] TL-ROLE-DETECTOR compile error: " .. tostring(err))
                         end
                     else
-                        warn("[TL] TL-ROLE-DETECTOR load failed: " .. tostring(src))
+                        warn("[SU] TL-ROLE-DETECTOR load failed: " .. tostring(src))
                     end
                 end)
             end
@@ -4680,7 +4675,7 @@ makePanel("Home", C.accent)
 
                 _u.verLbl = Instance.new("TextLabel", _u.verF)
                 _u.verLbl.Size = UDim2.new(1, 0, 1, 0); _u.verLbl.BackgroundTransparency = 1
-                _u.verLbl.Text = ""; _u.verLbl.Font = Enum.Font.GothamBlack; _u.verLbl.TextSize = 12
+                _u.verLbl.Text = "SUMenu"; _u.verLbl.Font = Enum.Font.GothamBlack; _u.verLbl.TextSize = 12
                 _u.verLbl.TextColor3 = C.accent; _u.verLbl.TextXAlignment = Enum.TextXAlignment.Center
 
                 Y = Y + PROF_CARD_H + 12
@@ -4820,7 +4815,8 @@ makePanel("Home", C.accent)
                     dStroke.Enabled                                  = _TL_isImgTheme(_TL_activeThemeId)
 
                     local _DISC_SERVERS                              = {
-                        { label = "Discord Server", link = "https://discord.com/invite/YTkzURjppm" },
+                        { label = "🇩🇪  German Server", link = "https://discord.gg/6RK7yANN7F" },
+                        { label = "🇬🇧  English Server", link = "https://discord.gg/fRt49bcpfE" },
                     }
 
                     for i, srv in ipairs(_DISC_SERVERS) do
@@ -6151,7 +6147,7 @@ local function RunCustomAnimation(Char)
                 
                 
                 do
-                    local _vcModule = _TL_loadModule("SU-ANTIVCBAN")
+                    local _vcModule = _TL_loadModule("TL-ANTIVCBAN")
                     sectionLbl(CY, "VOICE CHAT"); CY = CY + 18
                     local _vcSetToggle = nil
                     if _vcModule then
@@ -7458,7 +7454,7 @@ local function RunCustomAnimation(Char)
                 sSubArea.BorderSizePixel        = 0
                 sSubArea.ClipsDescendants       = false
                 local _TL_WIDGET_CLOSE_ICON     = "rbxassetid://111119570195816"
-                local _scriptWidgetMod = _TL_loadModule("SCRIPTS-TAB/SU-ScriptWidget")
+                local _scriptWidgetMod = _TL_loadModule("SCRIPTS-TAB/TL-ScriptWidget")
                 if _scriptWidgetMod then
                     _scriptWidgetMod.init({
                         ScreenGui = ScreenGui,
@@ -7737,7 +7733,7 @@ local function RunCustomAnimation(Char)
                         end
                         
                     end
-                    local flingMod = _TL_loadModule("SU-BALL-FLING")
+                    local flingMod = _TL_loadModule("TL-BALL-FLING")
                     local flingSelectedPlayer = nil
 
                     local FLING_SUB_H = 12
@@ -8039,23 +8035,23 @@ local function RunCustomAnimation(Char)
                     
                     
                     do
-                        local _oeUrl = _TL_MODULES_BASE .. "SU-OUTFIT-EXPAND.lua"
+                        local _oeUrl = _TL_MODULES_BASE .. "TL-OUTFIT-EXPAND.lua"
                         outfitExpandBtn.MouseButton1Click:Connect(function()
                             local ok, source = pcall(function() return (game :: any):HttpGet(_oeUrl) end)
                             if not ok or not source or #source < 50 then
-                                warn("[TL] Module load failed: SU-OUTFIT-EXPAND — " .. tostring(source))
+                                warn("[SU] Module load failed: TL-OUTFIT-EXPAND — " .. tostring(source))
                                 sendNotif("Outfit Expand", "Module offline ❌", 2)
                                 return
                             end
                             local fn, loadErr = loadstring(source)
                             if not fn then
-                                warn("[TL] Module compile error: SU-OUTFIT-EXPAND — " .. tostring(loadErr))
+                                warn("[SU] Module compile error: TL-OUTFIT-EXPAND — " .. tostring(loadErr))
                                 sendNotif("Outfit Expand", "Module offline ❌", 2)
                                 return
                             end
                             local execOk, execErr = pcall(fn)
                             if not execOk then
-                                warn("[TL] Module exec error: SU-OUTFIT-EXPAND — " .. tostring(execErr))
+                                warn("[SU] Module exec error: TL-OUTFIT-EXPAND — " .. tostring(execErr))
                                 sendNotif("Outfit Expand", "Module offline ❌", 2)
                             end
                         end)
@@ -8071,7 +8067,7 @@ movePage = Instance.new("Frame", sSubArea)
                 movePage.Visible = false
                 
                 do
-                    local avMod = _TL_loadModule("SCRIPTS-TAB/SU-AntiVoid")
+                    local avMod = _TL_loadModule("SCRIPTS-TAB/TL-AntiVoid")
                     if avMod then
                         avMod.init({ RunService = RunService, LocalPlayer = LocalPlayer, sendNotif = sendNotif })
                         sRow(movePage, 0, "Anti-Void", "Im not letting you die in the Void!!", C.accent2, false,
@@ -8090,7 +8086,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local arMod = _TL_loadModule("SCRIPTS-TAB/SU-AntiRagdoll")
+                    local arMod = _TL_loadModule("SCRIPTS-TAB/TL-AntiRagdoll")
                     if arMod then
                         arMod.init({ RunService = RunService, LocalPlayer = LocalPlayer, flyActiveFn = function() return flyActive end })
                         sRow(movePage, 56, "Anti-Ragdoll", "Movement", C.red, false, function(on)
@@ -8101,7 +8097,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local pfMod = _TL_loadModule("SCRIPTS-TAB/SU-PunchFling")
+                    local pfMod = _TL_loadModule("SCRIPTS-TAB/TL-PunchFling")
                     if pfMod then
                         pfMod.init({ RunService = RunService, Players = Players, LocalPlayer = LocalPlayer, sendNotif = sendNotif })
                         sRow(movePage, 112, "Punch-Fling", "Combat", C.orange, false, function(on)
@@ -8122,7 +8118,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local tfMod = _TL_loadModule("SCRIPTS-TAB/SU-TouchFling")
+                    local tfMod = _TL_loadModule("SCRIPTS-TAB/TL-TouchFling")
                     if tfMod then
                         tfMod.init({ RunService = RunService, Players = Players, LocalPlayer = LocalPlayer, sendNotif = sendNotif, _AF_loadAndPlayAnimation = _AF_loadAndPlayAnimation, flyMuteSoundsFn = _flyMuteSounds })
                         local tfModeList = tfMod.getModes()
@@ -8247,7 +8243,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local ctMod = _TL_loadModule("SCRIPTS-TAB/SU-ClickTeleport")
+                    local ctMod = _TL_loadModule("SCRIPTS-TAB/TL-ClickTeleport")
                     if ctMod then
                         ctMod.init({ RunService = RunService, UserInputService = UserInputService or _SvcUIS, LocalPlayer = LocalPlayer, sendNotif = sendNotif })
                         sRow(movePage, 224, "Click Teleport", "Movement", C.accent2, false, function(on)
@@ -8480,7 +8476,7 @@ visualPage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local _shdMod = _TL_loadModule("SU-Shader")
+                    local _shdMod = _TL_loadModule("TL-Shader")
                     local shRow = Instance.new("Frame", visualPage)
                     shRow.Size = UDim2.new(1, 0, 0, 54)
                     shRow.Position = UDim2.new(0, 0, 0, 52)
@@ -8978,7 +8974,7 @@ visualPage = Instance.new("Frame", sSubArea)
                     end
                 end)
 
-                combatContainer, combatContent, combatAddRow, _combatFolderApi = _sc.makeMiscFolder("Combat Tools", "SU",
+                combatContainer, combatContent, combatAddRow, _combatFolderApi = _sc.makeMiscFolder("Combat Tools", "TL",
                     C.red, 1, combatPage)
                 task.defer(function()
                     if _combatFolderApi then
@@ -8990,7 +8986,7 @@ visualPage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local aimMod = _TL_loadModule("SCRIPTS-TAB/SU-Aimbot")
+                    local aimMod = _TL_loadModule("SCRIPTS-TAB/TL-Aimbot")
                     if aimMod then
                         aimMod.init({ Players = Players, RunService = RunService, UserInputService = UserInputService, Workspace = Workspace, LocalPlayer = LocalPlayer })
                         local cfg = aimMod.getConfig()
@@ -13589,7 +13585,7 @@ _TL_state.actions = {}
             end 
             
             do
-                local _bbMod = _TL_loadModule("SCRIPTS-TAB/SU-ByteBreaker")
+                local _bbMod = _TL_loadModule("SCRIPTS-TAB/TL-ByteBreaker")
                 if _bbMod then
                     _bbMod.initBB({
                         _AF = _AF,
@@ -13629,7 +13625,7 @@ _TL_state.actions = {}
 
                 
                 local _OP_PlBgImg                  = Instance.new("ImageLabel")
-                _OP_PlBgImg.Name                   = "SU_OP_PlBg"
+                _OP_PlBgImg.Name                   = "SUMenu_OP_PlBg"
                 _OP_PlBgImg.Size                   = UDim2.new(1, 0, 1, 0)
                 _OP_PlBgImg.Position               = UDim2.new(0, 0, 0, 0)
                 _OP_PlBgImg.BackgroundTransparency = 1
@@ -13996,7 +13992,7 @@ _TL_state.actions = {}
                             local char = pl.Character
                             if char and not espHighlights[pl] then
                                 local h               = _tlTrackInst(Instance.new("Highlight", PlayerGui))
-                                h.Name                = "SU_ESP_Highlight"
+                                h.Name                = "TL_ESP_Highlight"
                                 h.Adornee             = char
                                 h.FillTransparency    = 1
                                 h.OutlineColor        = Color3.new(1, 1, 1)
@@ -14432,18 +14428,17 @@ _TL_state.actions = {}
                         if input.KeyCode == Enum.KeyCode.Backspace then
                             keybinds[actionName].key = nil
                             stopListening()
-                            task.spawn(_TL_refs._TL_saveData)
+                            task.spawn(saveData)
                             return
                         end
                         if input.UserInputType ~= Enum.UserInputType.Keyboard then return end
                         local newKey = input.KeyCode
                         keybinds[actionName].key = newKey
-                        if actionName == "Toggle SmartBar" then _tlMenuToggleKey = newKey end
                         lastConfiguredKey = newKey
                         lastConfiguredTime = tick()
                         stopListening()
                         kl.Text = keyName(newKey)
-                        task.spawn(_TL_refs._TL_saveData)
+                        task.spawn(saveData)
                     end)
                 end
                 keyBtn.MouseButton1Click:Connect(startListening)
@@ -14567,20 +14562,20 @@ local _ok_Settings, _err_Settings = pcall(function()
                     local _, notifSet = subRow(genPage, 0, T.settings_notif, T.settings_notif_badge, C.accent,
                         settingsState.notifications, function(on)
                         settingsState.notifications = on
-                        task.spawn(_TL_refs._TL_saveData)
+                        task.spawn(saveData)
                     end)
                     settingToggleSetters["notifications"] = notifSet
                     local _, autoSet = subRow(genPage, 54, T.settings_auto, T.settings_auto_badge, C.accent2,
                         settingsState.autoOpen, function(on)
                         settingsState.autoOpen = on
                         setupAutoReinject(on)
-                        task.spawn(_TL_refs._TL_saveData)
+                        task.spawn(saveData)
                     end)
                     settingToggleSetters["autoOpen"] = autoSet
                     local _, menuSoundsSet = subRow(genPage, 108, T.settings_menusounds, T.settings_menusounds_badge,
                         C.accent, settingsState.menuSounds, function(on)
                         settingsState.menuSounds = on
-                        task.spawn(_TL_refs._TL_saveData)
+                        task.spawn(saveData)
                     end)
                     settingToggleSetters["menuSounds"] = menuSoundsSet
 
@@ -14623,7 +14618,7 @@ local _ok_Settings, _err_Settings = pcall(function()
 
                         local function applyGuiPosition(pos)
                             settingsState.guiPosition = pos
-                            task.spawn(_TL_refs._TL_saveData)
+                            task.spawn(saveData)
                             for i, btn in pairs(_posBtns) do
                                 if i == pos then
                                     btn.BackgroundColor3 = C.accent
@@ -14864,7 +14859,7 @@ local _ok_Settings, _err_Settings = pcall(function()
                         _gsApplyBtn.MouseButton1Click:Connect(function()
                             _gsSavedScale = _gsCurrentScale
                             settingsState.guiScale = _gsCurrentScale
-                            task.spawn(_TL_refs._TL_saveData)
+                            task.spawn(saveData)
                             _gsApplyBtn.Visible = false
                             _gsResetBtn.Visible = false
                             if _gsResetTimer then task.cancel(_gsResetTimer); _gsResetTimer = nil end
@@ -14931,7 +14926,10 @@ local _ok_Settings, _err_Settings = pcall(function()
                     kbContainer.Position = UDim2.new(0, 0, 0, 26)
                     kbContainer.BackgroundTransparency = 1
                     kbContainer.BorderSizePixel = 0
-                    local keybindEntries = {        { "Toggle SmartBar", _tlMenuToggleKey or Enum.KeyCode.K, function() end },
+                    local keybindEntries = {
+                        { "Toggle SmartBar", Enum.KeyCode.K, function()
+                            if isOpen then closeBar() else openBar() end
+                        end },
                         { "Toggle Fly", Enum.KeyCode.F, function()
                             local newState = not flyActive
                             if _flyPanelSetFn then
@@ -15510,7 +15508,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
+                                    logo.Image = "rbxassetid://110896600564086"
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -15868,7 +15866,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
+                                    logo.Image = "rbxassetid://73800014230419"
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -16241,7 +16239,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
+                                    logo.Image = "rbxassetid://123326309117495"
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -16549,7 +16547,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
+                                    logo.Image = _TL_safeGetCustomAsset(dexterLoadingScreenFileName) or dexterLoadingScreenUrl
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -16808,7 +16806,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
+                                    logo.Image = _TL_safeGetCustomAsset(deathNoteLoadingScreenFileName) or deathNoteLoadingScreenUrl
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -17468,7 +17466,7 @@ local themePage = Instance.new("Frame", subArea)
                     
                     pcall(function()
                         local _OP_ComPanelBgImg = Instance.new("ImageLabel")
-                        _OP_ComPanelBgImg.Name = "SU_OP_ComPanelBg"
+                        _OP_ComPanelBgImg.Name = "SUMenu_OP_ComPanelBg"
                         _OP_ComPanelBgImg.Size = UDim2.new(1, 0, 1, 0)
                         _OP_ComPanelBgImg.Position = UDim2.new(0, 0, 0, 0)
                         _OP_ComPanelBgImg.BackgroundTransparency = 1
@@ -18349,12 +18347,12 @@ local themePage = Instance.new("Frame", subArea)
                         admin = { url = "", file = "" },
                         developer = { url = "", file = "" },
                         moderator = { url = "", file = "" },
-                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-*.png" },
+                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
                         advertising = { url = "", file = "" },
                     },
                     customAvatars = {},
                     tagImages = {
-                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-*.png" },
+                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
                     },
                     roleLabels = {},
                     displayNames = {},
@@ -21756,7 +21754,7 @@ local function parseFieldMessage(fullText, prefixLen)
                 
 
                 end)
-                if not _ok_covertNet then warn("[TL] CovertNet crashed inside Settings: " .. tostring(_err_covertNet)) end
+                if not _ok_covertNet then warn("[SU] CovertNet crashed inside Settings: " .. tostring(_err_covertNet)) end
 
                 recalculateThemeSizes()
 
@@ -22540,7 +22538,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         local _, ntVisSet = subRow(nametagPage, 0, "Nametag sichtbar", "Sichtbar für andere Spieler", C.accent,
                             settingsState.nametagVisible, function(on)
                             settingsState.nametagVisible = on
-                            task.spawn(_TL_refs._TL_saveData)
+                            task.spawn(saveData)
                             BroadcastNametagVisibility()
                         end)
                         settingToggleSetters["nametagVisible"] = ntVisSet
@@ -22548,7 +22546,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         local _, ntRemSet = subRow(nametagPage, 54, "Remove Nametag", "Removes nametag above your head", C.accent,
                             settingsState.removeNametag, function(on)
                             settingsState.removeNametag = on
-                            task.spawn(_TL_refs._TL_saveData)
+                            task.spawn(saveData)
                             
                             pcall(function()
                                 local myChar = LocalPlayer.Character
@@ -22742,7 +22740,7 @@ local function parseFieldMessage(fullText, prefixLen)
             if #catBtns > 0 then
                 switchCat(catBtns[1].id)
             end
-            end); if not _ok_Settings then warn("[TL] Settings-IIFE crashed: " .. tostring(_err_Settings)) end
+            end); if not _ok_Settings then warn("[SU] Settings-IIFE crashed: " .. tostring(_err_Settings)) end
             
             
             function getNearestPlayer()
@@ -22910,7 +22908,6 @@ local function parseFieldMessage(fullText, prefixLen)
                     corner(tabCardsHolder, 12)
 
                     local isOpen, activeTab, _closeTok = false, nil, 0
-                    if not _tlMenuToggleKey then _tlMenuToggleKey = Enum.KeyCode.K end
 
                     local tabBtns, selectTab = {}, nil
 
@@ -22918,7 +22915,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     
                     _TL_refs._TL_applyGuiPosition = function(pos)
                         settingsState.guiPosition = pos
-                        task.spawn(_TL_refs._TL_saveData)
+                        task.spawn(saveData)
                         local ax, xsc, xoff = getPanelXAnchor()
                         local newBarPos = UDim2.new(xsc, xoff, 1, 2)
                         local newPanelPos = UDim2.new(xsc, xoff, PANEL_SHOW.Y.Scale, PANEL_SHOW.Y.Offset)
@@ -23529,9 +23526,10 @@ local function parseFieldMessage(fullText, prefixLen)
                                 twP(tb.pill, 0.12, { BackgroundColor3 = MG_B() })
                             end
                         end)
-                    end                    _tlTrackConn(UserInputService.InputBegan:Connect(function(input, gpe)
+                    end
+                    _tlTrackConn(UserInputService.InputBegan:Connect(function(input, gpe)
                         if gpe then return end
-                        if input.KeyCode == _tlMenuToggleKey then
+                        if input.KeyCode == Enum.KeyCode.K then
                             if isOpen then closeBar() else openBar() end
                         end
                     end))
@@ -23658,14 +23656,14 @@ local function parseFieldMessage(fullText, prefixLen)
                     scIcon.Position = UDim2.fromScale(0.5, 0.5)
                     scIcon.AnchorPoint = Vector2.new(0.5, 0.5)
                     scIcon.BackgroundTransparency = 1
-                    scIcon.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
+                    scIcon.Image = "rbxassetid://6031068433"
                     scIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
                     scIcon.Visible = false
                     scIcon.ZIndex = 22
                     local scTlIcon = Instance.new("TextLabel", smartCapsule)
                     scTlIcon.Size = UDim2.fromScale(1, 1)
                     scTlIcon.BackgroundTransparency = 1
-                    scTlIcon.Text = "SU"
+                    scTlIcon.Text = "TL"
                     scTlIcon.Font = Enum.Font.GothamBlack
                     scTlIcon.TextSize = 12
                     scTlIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -23687,14 +23685,14 @@ local function parseFieldMessage(fullText, prefixLen)
                     qaIcon.Position = UDim2.fromScale(0.5, 0.5)
                     qaIcon.AnchorPoint = Vector2.new(0.5, 0.5)
                     qaIcon.BackgroundTransparency = 1
-                    qaIcon.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
+                    qaIcon.Image = "rbxassetid://6031265976"
                     qaIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
                     qaIcon.Visible = false
                     qaIcon.ZIndex = 22
                     local qaTlIcon = Instance.new("TextLabel", qaCapsule)
                     qaTlIcon.Size = UDim2.fromScale(1, 1)
                     qaTlIcon.BackgroundTransparency = 1
-                    qaTlIcon.Text = "SUQ"
+                    qaTlIcon.Text = "TLQ"
                     qaTlIcon.Font = Enum.Font.GothamBlack
                     qaTlIcon.TextSize = 12
                     qaTlIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -24056,370 +24054,1366 @@ local function parseFieldMessage(fullText, prefixLen)
             
             
 local function _TL_showLoadingScreen()
-    -- Loading screen disabled - menu shows directly
-end
+                        local TweenService = _tsProxy
+                        local Heartbeat    = game:GetService("RunService").Heartbeat
+                        local Players      = game:GetService("Players")
 
-    -- Helpers
-    local function lmake(class, props, parent)
-        local inst = Instance.new(class)
-        for k, v in pairs(props) do
-            pcall(function() inst[k] = v end)
-        end
-        if parent then inst.Parent = parent end
-        return inst
-    end
-    local function tw(obj, dur, props, style, dir)
-        local t = TweenService:Create(obj, TweenInfo.new(dur or 0.3, style or Enum.EasingStyle.Quad, dir or Enum.EasingDirection.Out), props)
-        t:Play()
-        return t
-    end
-    local function lerp(a, b, t) return a + (b - a) * math.clamp(t, 0, 1) end
+                        local LC = {
+                            bg           = Color3.fromRGB(  6,   6,  11),
+                            surface      = Color3.fromRGB( 18,  18,  24),
+                            border       = Color3.fromRGB( 32,  32,  40),
+                            accent       = Color3.fromRGB(130,  90, 245),
+                            accentDim    = Color3.fromRGB( 80,  50, 160),
+                            accentBright = Color3.fromRGB(168, 126, 248),
+                            text         = Color3.fromRGB(220, 220, 230),
+                            textDim      = Color3.fromRGB(130, 130, 145),
+                            textMuted    = Color3.fromRGB( 75,  75,  90),
+                            white        = Color3.fromRGB(245, 245, 250),
+                            green        = Color3.fromRGB(100, 210, 140),
+                            greenDim     = Color3.fromRGB( 55, 140,  90),
+                            nebula1      = Color3.fromRGB( 60,  30, 110),
+                            nebula2      = Color3.fromRGB( 25,  18,  70),
+                            indigo       = Color3.fromRGB( 35,  20,  80),
+                            deepPurple   = Color3.fromRGB( 18,  10,  42),
+                        }
 
-    -- Create GUI
-    local gui = lmake("ScreenGui", {
-        Name = SCREEN_NAME, IgnoreGuiInset = true, DisplayOrder = 999,
-        ResetOnSpawn = false, ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
-    })
-    pcall(function() gui.Parent = CoreGui end)
-    if not gui.Parent then pcall(function() gui.Parent = LocalPlayer.PlayerGui end) end
-    if not gui.Parent then return end
+                        local LAYOUT = {
+                            imgSize       = 130,
+                            frameSize     = 150,
+                            frameRadius   = 20,
+                            barWidth      = 360,
+                            barHeight     = 3,
+                            duration      = 3.5,
+                            stepCount     = 5,
+                            gridSpacing   = 60,
+                            gridAlpha     = 0.06,
+                            dustCount     = 80,
+                            orbCount      = 25,
+                            bokehCount    = 8,
+                            streakCount   = 4,
+                            emberCount    = 18,
+                            sparkleCount  = 15,
+                        }
 
-    -- Gaussian Blur
-    local blur = lmake("BlurEffect", { Size = 0 }, Lighting)
+                        local SCREEN_NAME = "TL_LoadingScreen"
+                        local MAX_WAIT    = 60
 
-    -- Semi-transparent overlay (Roblox visible behind)
-    local overlay = lmake("Frame", {
-        Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-        BackgroundTransparency = 0.35, BorderSizePixel = 0,
-    }, gui)
+                        pcall(function()
+                            local old = game:GetService("CoreGui"):FindFirstChild(SCREEN_NAME)
+                            if old then old:Destroy() end
+                        end)
+                        for _, child in ipairs(Players.LocalPlayer:WaitForChild("PlayerGui"):GetChildren()) do
+                            if child.Name == SCREEN_NAME then child:Destroy() end
+                        end
 
-    -- Dark gradient overlay for depth
-    local gradOverlay = lmake("Frame", {
-        Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 0, BorderSizePixel = 0,
-        ZIndex = 2,
-    }, gui)
-    lmake("UIGradient", {
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 5, 20)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(5, 2, 15)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 8, 30)),
-        }),
-        Transparency = NumberSequence.new({
-            NumberSequenceKeypoint.new(0, 0.7),
-            NumberSequenceKeypoint.new(0.5, 0.5),
-            NumberSequenceKeypoint.new(1, 0.7),
-        }),
-        Rotation = -25,
-    }, gradOverlay)
+                        local function lmake(cls, props, parent)
+                            local obj = Instance.new(cls)
+                            for k, v in pairs(props or {}) do pcall(function() obj[k] = v end) end
+                            if parent then obj.Parent = parent end
+                            return obj
+                        end
+                        local function addCorner(r, parent) return lmake("UICorner", {CornerRadius = UDim.new(0, r)}, parent) end
+                        local function addGradient(parent, cs, rot)
+                            local g = lmake("UIGradient", {Color = cs, Rotation = rot or 0}, parent)
+                            return g
+                        end
+                        local function tw(obj, dur, props, style, dir)
+                            local t = TweenService:Create(obj,
+                                TweenInfo.new(dur, style or Enum.EasingStyle.Quad, dir or Enum.EasingDirection.Out), props)
+                            t:Play(); return t
+                        end
+                        local function lerp(a, b, t2) return a + (b - a) * t2 end
+                        local function lerpColor(c1, c2, t2)
+                            return Color3.new(lerp(c1.R, c2.R, t2), lerp(c1.G, c2.G, t2), lerp(c1.B, c2.B, t2))
+                        end
 
-    -- Liquid blobs for motion design
-    local blobs = {}
-    local blobColors = {
-        Color3.fromRGB(80, 40, 180),
-        Color3.fromRGB(120, 50, 200),
-        Color3.fromRGB(60, 30, 150),
-        Color3.fromRGB(100, 60, 220),
-    }
-    for i = 1, 5 do
-        local size = math.random(120, 280)
-        local blob = lmake("ImageLabel", {
-            Size = UDim2.new(0, size, 0, size),
-            Position = UDim2.new(math.random() * 0.8, 0, math.random() * 0.8, 0),
-            BackgroundTransparency = 1,
-            Image = "rbxasset://textures/whiteCircle512.png",
-            ImageColor3 = blobColors[i % #blobColors + 1],
-            ImageTransparency = 0.75,
-            AnchorPoint = Vector2.new(0.5, 0.5),
-            ZIndex = 3,
-        }, gui)
-        blobs[i] = { baseSize = size,
-            obj = blob, baseX = blob.Position.X.Scale, baseY = blob.Position.Y.Scale,
-            speedX = (math.random() - 0.5) * 0.15, speedY = (math.random() - 0.5) * 0.1,
-            phase = math.random() * math.pi * 2, breatheSpeed = 0.3 + math.random() * 0.5,
-        }
-    end
+                        local rand = math.random
+                        local sin  = math.sin
+                        local cos  = math.cos
+                        local abs  = math.abs
+                        local pi2  = math.pi * 2
 
-    -- Center container
-    local center = lmake("Frame", {
-        Size = UDim2.new(0, 320, 0, 260),
-        Position = UDim2.new(0.5, -160, 0.5, -130),
-        BackgroundTransparency = 1,
-        ZIndex = 10,
-    }, gui)
+                        local gui = lmake("ScreenGui", {
+                            Name = SCREEN_NAME, ResetOnSpawn = false,
+                            ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+                            DisplayOrder = 999, IgnoreGuiInset = true,
+                        })
+                        pcall(function() gui.Parent = game:GetService("CoreGui") end)
+                        if not gui.Parent then
+                            pcall(function() gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui", 5) end)
+                        end
+                        if not gui.Parent then return end
 
-    -- Syndicate Logo with glow
-    local logoGlow = lmake("Frame", {
-        Size = UDim2.new(0, 100, 0, 100),
-        Position = UDim2.new(0.5, -50, 0, 20),
-        BackgroundColor3 = Color3.fromRGB(100, 60, 220),
-        BackgroundTransparency = 0.85,
-        ZIndex = 11,
-    }, center)
-    lmake("UICorner", { CornerRadius = UDim.new(1, 0) }, logoGlow)
-    lmake("UIBlurEffect", { Size = 30 }, logoGlow)
+                        local screenSize = workspace.CurrentCamera.ViewportSize
+                        local SW, SH = screenSize.X, screenSize.Y
 
-    local logoImg = lmake("ImageLabel", {
-        Size = UDim2.new(0, 72, 0, 72),
-        Position = UDim2.new(0.5, -36, 0, 34),
-        BackgroundTransparency = 1,
-        Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
-            or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png",
-        ImageColor3 = Color3.new(1, 1, 1),
-        ZIndex = 12,
-    }, center)
+                        task.spawn(function()
+                            pcall(function()
+                                local _vloader = rawget(_genv, "_TL_assetLoader")
+                                if _vloader then
+                                    local _vwait = 0
+                                    while not _vloader.ready and _vwait < 15 do
+                                        task.wait(0.2); _vwait = _vwait + 0.2
+                                    end
+                                end
+                                local snd = Instance.new("Sound")
+                                snd.Name = "SUMenu_VoiceLine"; snd.Volume = 1.0
+                                snd.RollOffMaxDistance = 10000
+                                local cached = nil
+                                if _TL_safeIsFile(loadingScreenVoiceFileName) then
+                                    cached = _TL_safeGetCustomAsset(loadingScreenVoiceFileName)
+                                end
+                                if cached then
+                                    snd.SoundId = cached; snd.Parent = gui
+                                    task.wait(0.1)
+                                    if snd and snd.Parent then snd:Play() end
+                                end
+                            end)
+                        end)
 
-    -- Title
-    local title = lmake("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 24),
-        Position = UDim2.new(0, 0, 0, 115),
-        BackgroundTransparency = 1,
-        Text = "SYNDICATE",
-        Font = Enum.Font.GothamBlack, TextSize = 20,
-        TextColor3 = Color3.fromRGB(220, 200, 255),
-        TextTransparency = 0.1,
-        ZIndex = 12,
-    }, center)
+                        lmake("Frame", {
+                            Size = UDim2.new(1,0,1,0), BackgroundColor3 = LC.bg,
+                            BorderSizePixel = 0, ZIndex = 1,
+                        }, gui)
 
-    -- Percentage text
-    local pctText = lmake("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 36),
-        Position = UDim2.new(0, 0, 0, 145),
-        BackgroundTransparency = 1,
-        Text = "0%",
-        Font = Enum.Font.GothamBold, TextSize = 28,
-        TextColor3 = Color3.fromRGB(180, 140, 255),
-        TextTransparency = 0,
-        ZIndex = 12,
-    }, center)
+                        local gradFrame = lmake("Frame", {
+                            Size = UDim2.new(2.4,0,2.4,0), Position = UDim2.new(-0.7,0,-0.7,0),
+                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 2,
+                        }, gui)
+                        local bgGradient = addGradient(gradFrame, ColorSequence.new({
+                            ColorSequenceKeypoint.new(0,    Color3.fromRGB(65, 35, 120)),
+                            ColorSequenceKeypoint.new(0.18, Color3.fromRGB(40, 20,  85)),
+                            ColorSequenceKeypoint.new(0.38, Color3.fromRGB(20, 12,  50)),
+                            ColorSequenceKeypoint.new(0.58, LC.bg),
+                            ColorSequenceKeypoint.new(0.78, Color3.fromRGB(12,  8,  30)),
+                            ColorSequenceKeypoint.new(1,    LC.bg),
+                        }), -35)
 
-    -- Progress bar track
-    local barTrack = lmake("Frame", {
-        Size = UDim2.new(0, 240, 0, 4),
-        Position = UDim2.new(0.5, -120, 0, 195),
-        BackgroundColor3 = Color3.fromRGB(40, 30, 60),
-        BackgroundTransparency = 0.3,
-        ZIndex = 12,
-    }, center)
-    lmake("UICorner", { CornerRadius = UDim.new(1, 0) }, barTrack)
+                        local fogHolder = lmake("Frame", {
+                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
+                            BorderSizePixel = 0, ClipsDescendants = true, ZIndex = 3,
+                        }, gui)
+                        local fogBlobs = {}
+                        local fogConfigs = {
+                            { size = 700, color = Color3.fromRGB(70, 35, 130), alpha = 0.90, x = 0.15, y = 0.20, vx =  14, vy =  9  },
+                            { size = 550, color = Color3.fromRGB(30, 20,  80), alpha = 0.86, x = 0.80, y = 0.65, vx = -11, vy = -7  },
+                            { size = 400, color = Color3.fromRGB(90, 50, 160), alpha = 0.93, x = 0.50, y = 0.80, vx =   8, vy = -12 },
+                        }
+                        for i, cfg in ipairs(fogConfigs) do
+                            local blob = lmake("ImageLabel", {
+                                Size = UDim2.new(0, cfg.size, 0, cfg.size),
+                                Position = UDim2.new(cfg.x, -cfg.size/2, cfg.y, -cfg.size/2),
+                                BackgroundTransparency = 1, ImageColor3 = cfg.color,
+                                ImageTransparency = cfg.alpha, Image = "rbxasset://textures/whiteCircle512.png",
+                                BorderSizePixel = 0, ZIndex = 3,
+                            }, fogHolder)
+                            fogBlobs[i] = {
+                                obj = blob, x = cfg.x * SW, y = cfg.y * SH,
+                                vx = cfg.vx, vy = cfg.vy, size = cfg.size, baseAlpha = cfg.alpha,
+                            }
+                        end
 
-    -- Progress bar fill
-    local barFillClip = lmake("Frame", {
-        Size = UDim2.new(0, 0, 1, 0),
-        BackgroundTransparency = 1,
-        ClipsDescendants = true,
-        ZIndex = 13,
-    }, barTrack)
+                        local gridHolder = lmake("Frame", {
+                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
+                            BorderSizePixel = 0, ZIndex = 4,
+                        }, gui)
+                        local gridColor = Color3.fromRGB(100, 70, 180)
+                        local gridTrans = 1 - LAYOUT.gridAlpha
+                        for x = 0, SW, LAYOUT.gridSpacing do
+                            lmake("Frame", {
+                                Size = UDim2.new(0,1,1,0), Position = UDim2.new(0,x,0,0),
+                                BackgroundColor3 = gridColor, BackgroundTransparency = gridTrans,
+                                BorderSizePixel = 0,
+                            }, gridHolder)
+                        end
+                        for y = 0, SH, LAYOUT.gridSpacing do
+                            lmake("Frame", {
+                                Size = UDim2.new(1,0,0,1), Position = UDim2.new(0,0,0,y),
+                                BackgroundColor3 = gridColor, BackgroundTransparency = gridTrans,
+                                BorderSizePixel = 0,
+                            }, gridHolder)
+                        end
 
-    local barFill = lmake("Frame", {
-        Size = UDim2.new(0, 240, 1, 0),
-        BackgroundColor3 = Color3.fromRGB(130, 80, 255),
-        ZIndex = 14,
-    }, barFillClip)
-    lmake("UICorner", { CornerRadius = UDim.new(1, 0) }, barFill)
+                        local vignetteFrame = lmake("Frame", {
+                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
+                            BorderSizePixel = 0, ZIndex = 4,
+                        }, gui)
+                        local vigTop = lmake("Frame", {
+                            Size = UDim2.new(1,0,0.22,0), BackgroundColor3 = Color3.new(0,0,0),
+                            BackgroundTransparency = 0.35, BorderSizePixel = 0, ZIndex = 4,
+                        }, vignetteFrame)
+                        addGradient(vigTop, NumberSequence.new({
+                            NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 1),
+                        }), 90)
+                        local vigBot = lmake("Frame", {
+                            Size = UDim2.new(1,0,0.22,0), Position = UDim2.new(0,0,0.78,0),
+                            BackgroundColor3 = Color3.new(0,0,0), BackgroundTransparency = 0.35,
+                            BorderSizePixel = 0, ZIndex = 4,
+                        }, vignetteFrame)
+                        addGradient(vigBot, NumberSequence.new({
+                            NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(1, 0),
+                        }), 90)
+                        local vigLeft = lmake("Frame", {
+                            Size = UDim2.new(0.15,0,1,0), BackgroundColor3 = Color3.new(0,0,0),
+                            BackgroundTransparency = 0.45, BorderSizePixel = 0, ZIndex = 4,
+                        }, vignetteFrame)
+                        addGradient(vigLeft, NumberSequence.new({
+                            NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 1),
+                        }), 0)
+                        local vigRight = lmake("Frame", {
+                            Size = UDim2.new(0.15,0,1,0), Position = UDim2.new(0.85,0,0,0),
+                            BackgroundColor3 = Color3.new(0,0,0), BackgroundTransparency = 0.45,
+                            BorderSizePixel = 0, ZIndex = 4,
+                        }, vignetteFrame)
+                        addGradient(vigRight, NumberSequence.new({
+                            NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(1, 0),
+                        }), 0)
 
-    -- Bar glow
-    local barGlow = lmake("Frame", {
-        Size = UDim2.new(0, 240, 0, 12),
-        Position = UDim2.new(0.5, -120, 0, 191),
-        BackgroundColor3 = Color3.fromRGB(130, 80, 255),
-        BackgroundTransparency = 0.8,
-        ZIndex = 11,
-    }, center)
-    lmake("UICorner", { CornerRadius = UDim.new(1, 0) }, barGlow)
-    lmake("UIBlurEffect", { Size = 15 }, barGlow)
+                        local scanFrame = lmake("Frame", {
+                            Size = UDim2.new(1,0,2,0), BackgroundColor3 = Color3.new(0,0,0),
+                            BackgroundTransparency = 0.94, BorderSizePixel = 0, ZIndex = 5,
+                        }, gui)
+                        local scanOffset = 0
 
-    -- Status text
-    local statusText = lmake("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 14),
-        Position = UDim2.new(0, 0, 0, 210),
-        BackgroundTransparency = 1,
-        Text = "Initializing...",
-        Font = Enum.Font.Gotham, TextSize = 10,
-        TextColor3 = Color3.fromRGB(150, 130, 180),
-        TextTransparency = 0.3,
-        ZIndex = 12,
-    }, center)
+                        local particleHolder = lmake("Frame", {
+                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
+                            BorderSizePixel = 0, ClipsDescendants = true, ZIndex = 6,
+                        }, gui)
 
-    -- Audio
-    local sound = lmake("Sound", {
-        Name = "SU_VoiceLine", RollOffMaxDistance = 100,
-        SoundId = "", Volume = 0.6,
-    }, LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui"))
-    task.spawn(function()
-        local cached = nil
-        pcall(function()
-            if _TL_safeIsFile("assets/SU-MP3-FILES/hi-aubrey-omori-tag.mp3") then
-                cached = _TL_safeGetCustomAsset("assets/SU-MP3-FILES/hi-aubrey-omori-tag.mp3")
-            end
-        end)
-        if not cached then
-            pcall(function()
-                local req = syn and syn.request or http_request or request
-                if req then
-                    local ok, res = pcall(function()
-                        return req({ Url = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU-MP3/hi-aubrey-omori-tag.mp3", Method = "GET" })
-                    end)
-                    if ok and res and res.StatusCode == 200 and res.Body and #res.Body > 0 then
-                        pcall(function() _TL_safeWriteFile("assets/SU-MP3-FILES/hi-aubrey-omori-tag.mp3", res.Body) end)
-                        cached = _TL_safeGetCustomAsset("assets/SU-MP3-FILES/hi-aubrey-omori-tag.mp3")
+                        local PARTICLE_COLORS = {
+                            Color3.fromRGB(130,  90, 245), Color3.fromRGB(168, 126, 248),
+                            Color3.fromRGB(100,  70, 200), Color3.fromRGB(180, 160, 255),
+                            Color3.fromRGB( 80, 120, 255), Color3.fromRGB(200, 180, 255),
+                            Color3.fromRGB(255, 255, 255),
+                        }
+                        local function pickColor() return PARTICLE_COLORS[rand(1, #PARTICLE_COLORS)] end
+
+                        local dustParticles = {}
+                        for i = 1, LAYOUT.dustCount do
+                            local sz = rand(1, 3)
+                            local alpha = rand(5, 20) / 100
+                            local px = rand() * SW
+                            local py = rand() * SH
+                            local col = lerpColor(LC.accent, LC.white, rand() * 0.3)
+                            local dot = lmake("Frame", {
+                                Size = UDim2.new(0,sz,0,sz), Position = UDim2.new(0,px,0,py),
+                                BackgroundColor3 = col, BackgroundTransparency = 1 - alpha,
+                                BorderSizePixel = 0, ZIndex = 6,
+                            }, particleHolder)
+                            addCorner(sz, dot)
+                            dustParticles[i] = {
+                                obj = dot, x = px, y = py,
+                                vx = (rand() - 0.5) * 0.3, vy = (rand() - 0.5) * 0.2 - 0.1,
+                                baseAlpha = alpha, phase = rand() * pi2, freq = 1.5 + rand() * 2, sz = sz,
+                            }
+                        end
+
+                        local orbParticles = {}
+                        for i = 1, LAYOUT.orbCount do
+                            local sz = rand(4, 12)
+                            local alpha = rand(10, 35) / 100
+                            local px = rand() * SW
+                            local py = rand() * SH
+                            local col = pickColor()
+                            local haloSz = sz * 4
+                            local halo = lmake("ImageLabel", {
+                                Size = UDim2.new(0,haloSz,0,haloSz),
+                                Position = UDim2.new(0,px-haloSz/2,0,py-haloSz/2),
+                                BackgroundTransparency = 1, ImageColor3 = col,
+                                ImageTransparency = 1 - (alpha * 0.3),
+                                Image = "rbxasset://textures/whiteCircle512.png",
+                                BorderSizePixel = 0, ZIndex = 6,
+                            }, particleHolder)
+                            local dot = lmake("Frame", {
+                                Size = UDim2.new(0,sz,0,sz),
+                                Position = UDim2.new(0,px-sz/2,0,py-sz/2),
+                                BackgroundColor3 = col, BackgroundTransparency = 1 - alpha,
+                                BorderSizePixel = 0, ZIndex = 7,
+                            }, particleHolder)
+                            addCorner(sz, dot)
+                            orbParticles[i] = {
+                                dot = dot, halo = halo, x = px, y = py,
+                                baseX = px, baseY = py,
+                                vx = (rand()-0.5)*0.6, vy = (rand()-0.5)*0.4-0.15,
+                                baseAlpha = alpha, phase = rand()*pi2, freq = 0.8+rand()*1.5,
+                                sz = sz, haloSz = haloSz, col = col,
+                                orbitR = rand(20,80), orbitSpeed = (rand()-0.5)*1.2,
+                                orbitAngle = rand()*pi2, driftX = 0, driftY = 0,
+                            }
+                        end
+
+                        local bokehParticles = {}
+                        for i = 1, LAYOUT.bokehCount do
+                            local sz = rand(40, 120)
+                            local alpha = rand(3, 8) / 100
+                            local px = rand() * SW
+                            local py = rand() * SH
+                            local col = lerpColor(LC.accent, Color3.fromRGB(60, 40, 140), rand())
+                            local circle = lmake("ImageLabel", {
+                                Size = UDim2.new(0,sz,0,sz),
+                                Position = UDim2.new(0,px-sz/2,0,py-sz/2),
+                                BackgroundTransparency = 1, ImageColor3 = col,
+                                ImageTransparency = 1 - alpha,
+                                Image = "rbxasset://textures/whiteCircle512.png",
+                                BorderSizePixel = 0, ZIndex = 5,
+                            }, particleHolder)
+                            local ring = lmake("Frame", {
+                                Size = UDim2.new(0,sz,0,sz),
+                                Position = UDim2.new(0,px-sz/2,0,py-sz/2),
+                                BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 5,
+                            }, particleHolder)
+                            addCorner(sz, ring)
+                            lmake("UIStroke", {Color = col, Thickness = 1, Transparency = 1 - (alpha*1.5)}, ring)
+                            bokehParticles[i] = {
+                                circle = circle, ring = ring, x = px, y = py,
+                                vx = (rand()-0.5)*0.15, vy = (rand()-0.5)*0.1,
+                                baseAlpha = alpha, phase = rand()*pi2, sz = sz, col = col,
+                                pulseFreq = 0.3+rand()*0.5,
+                            }
+                        end
+
+                        local streakParticles = {}
+                        for i = 1, LAYOUT.streakCount do
+                            local len = rand(60, 180)
+                            local thick = rand(1, 2)
+                            local streak = lmake("Frame", {
+                                Size = UDim2.new(0,len,0,thick),
+                                Position = UDim2.new(0,-len,0,rand()*SH),
+                                BackgroundColor3 = LC.accentBright, BackgroundTransparency = 0.5,
+                                BorderSizePixel = 0, Rotation = -25+rand(-10,10), ZIndex = 8,
+                            }, particleHolder)
+                            addCorner(thick, streak)
+                            lmake("UIGradient", {
+                                Transparency = NumberSequence.new({
+                                    NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.3, 0.4),
+                                    NumberSequenceKeypoint.new(0.7, 0.1), NumberSequenceKeypoint.new(1, 0.6),
+                                }),
+                            }, streak)
+                            streakParticles[i] = {
+                                obj = streak, x = -len-rand(0,SW), y = rand(50,SH-50),
+                                speed = rand(300,700), len = len, thick = thick,
+                                cooldown = rand(2,6), timer = rand()*4, active = false,
+                                rotation = -25+rand(-10,10),
+                            }
+                        end
+
+                        local emberParticles = {}
+                        for i = 1, LAYOUT.emberCount do
+                            local sz = rand(2, 5)
+                            local alpha = rand(15, 45) / 100
+                            local px = rand() * SW
+                            local py = SH + rand(20, 200)
+                            local ember = lmake("Frame", {
+                                Size = UDim2.new(0,sz,0,sz), Position = UDim2.new(0,px,0,py),
+                                BackgroundColor3 = lerpColor(Color3.fromRGB(200,140,255), Color3.fromRGB(255,200,100), rand()*0.4),
+                                BackgroundTransparency = 1 - alpha, BorderSizePixel = 0, ZIndex = 7,
+                            }, particleHolder)
+                            addCorner(sz, ember)
+                            local glowSz = sz * 3
+                            local glow = lmake("ImageLabel", {
+                                Size = UDim2.new(0,glowSz,0,glowSz),
+                                Position = UDim2.new(0,px-glowSz/2,0,py-glowSz/2),
+                                BackgroundTransparency = 1, ImageColor3 = Color3.fromRGB(180,130,255),
+                                ImageTransparency = 1 - (alpha*0.25),
+                                Image = "rbxasset://textures/whiteCircle512.png",
+                                BorderSizePixel = 0, ZIndex = 6,
+                            }, particleHolder)
+                            emberParticles[i] = {
+                                dot = ember, glow = glow, x = px, y = py,
+                                vx = (rand()-0.5)*0.8, vy = -(rand()*1.2+0.5),
+                                baseAlpha = alpha, phase = rand()*pi2, sz = sz, glowSz = glowSz,
+                                wobbleAmp = rand(15,40), wobbleFreq = 1+rand()*2, startX = px,
+                            }
+                        end
+
+                        local sparkleParticles = {}
+                        for i = 1, LAYOUT.sparkleCount do
+                            local container = lmake("Frame", {
+                                Size = UDim2.new(0,16,0,16),
+                                Position = UDim2.new(0,rand()*SW,0,rand()*SH),
+                                BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 9,
+                            }, particleHolder)
+                            local h = lmake("Frame", {
+                                Size = UDim2.new(1,0,0,2), Position = UDim2.new(0,0,0.5,-1),
+                                BackgroundColor3 = Color3.fromRGB(220,200,255),
+                                BackgroundTransparency = 0.2, BorderSizePixel = 0,
+                            }, container)
+                            addCorner(1, h)
+                            lmake("UIGradient", {
+                                Transparency = NumberSequence.new({
+                                    NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.4, 0),
+                                    NumberSequenceKeypoint.new(0.6, 0), NumberSequenceKeypoint.new(1, 1),
+                                }),
+                            }, h)
+                            local v = lmake("Frame", {
+                                Size = UDim2.new(0,2,1,0), Position = UDim2.new(0.5,-1,0,0),
+                                BackgroundColor3 = Color3.fromRGB(220,200,255),
+                                BackgroundTransparency = 0.2, BorderSizePixel = 0,
+                            }, container)
+                            addCorner(1, v)
+                            lmake("UIGradient", {
+                                Transparency = NumberSequence.new({
+                                    NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.4, 0),
+                                    NumberSequenceKeypoint.new(0.6, 0), NumberSequenceKeypoint.new(1, 1),
+                                }), Rotation = 90,
+                            }, v)
+                            lmake("ImageLabel", {
+                                Size = UDim2.new(0,20,0,20), Position = UDim2.new(0.5,-10,0.5,-10),
+                                BackgroundTransparency = 1, ImageColor3 = Color3.fromRGB(200,180,255),
+                                ImageTransparency = 0.7, Image = "rbxasset://textures/whiteCircle512.png",
+                                BorderSizePixel = 0,
+                            }, container)
+                            sparkleParticles[i] = {
+                                obj = container, x = rand()*SW, y = rand()*SH,
+                                timer = rand()*5, interval = 1.5+rand()*4, flashDur = 0.3+rand()*0.4,
+                                state = "hidden", stateTimer = 0, scale = 0,
+                                maxScale = 0.6+rand()*0.8, rotation = 0, rotSpeed = (rand()-0.5)*60,
+                            }
+                            container.Size = UDim2.new(0,0,0,0)
+                        end
+
+                        local FS = LAYOUT.frameSize
+                        local IS = LAYOUT.imgSize
+                        local FR = LAYOUT.frameRadius
+
+                        local logoGroup = lmake("Frame", {
+                            Size = UDim2.new(0,FS+40,0,FS+80),
+                            Position = UDim2.new(0.5,-(FS+40)/2, 0.30,-(FS+80)/2),
+                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 10,
+                        }, gui)
+
+                        local frameGlow = lmake("Frame", {
+                            Size = UDim2.new(0,FS+16,0,FS+16),
+                            Position = UDim2.new(0.5,-(FS+16)/2, 0,10),
+                            BackgroundColor3 = LC.accentDim, BackgroundTransparency = 0.82,
+                            BorderSizePixel = 0,
+                        }, logoGroup)
+                        addCorner(FR+6, frameGlow)
+
+                        local logoFrame = lmake("Frame", {
+                            Size = UDim2.new(0,FS,0,FS),
+                            Position = UDim2.new(0.5,-FS/2, 0,18),
+                            BackgroundColor3 = LC.surface, BackgroundTransparency = 0.3,
+                            BorderSizePixel = 0,
+                        }, logoGroup)
+                        addCorner(FR, logoFrame)
+
+                        local frameStroke = lmake("UIStroke", {
+                            Color = LC.accent, Thickness = 2, Transparency = 0.35,
+                            ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+                        }, logoFrame)
+
+                        local logoImage = lmake("ImageLabel", {
+                            Size = UDim2.new(0,IS,0,IS),
+                            Position = UDim2.new(0.5,-IS/2, 0.5,-IS/2),
+                            BackgroundTransparency = 1, BorderSizePixel = 0,
+                            Image = "rbxassetid://89872178631966",
+                            ScaleType = Enum.ScaleType.Fit,
+                        }, logoFrame)
+                        addCorner(FR-4, logoImage)
+
+                        local titleLabel = lmake("TextLabel", {
+                            Size = UDim2.new(1,0,0,28),
+                            Position = UDim2.new(0,0, 0,FS+26),
+                            Text = "", TextColor3 = LC.accent, TextSize = 22,
+                            Font = Enum.Font.GothamBlack,
+                            BackgroundTransparency = 1, BorderSizePixel = 0,
+                        }, logoGroup)
+
+                        lmake("TextLabel", {
+                            Size = UDim2.new(1,0,0,14),
+                            Position = UDim2.new(0,0, 0,FS+56),
+                            Text = "v1.03 \xc2\xb7 Enjoy it",
+                            TextColor3 = LC.textMuted, TextSize = 11,
+                            Font = Enum.Font.GothamMedium,
+                            BackgroundTransparency = 1, BorderSizePixel = 0,
+                        }, logoGroup)
+
+                        local TIPS = {
+                            "[PC] You can open the SUMenu quicker when u set up a keybind.",
+                            "U can select a color of your choice, based how you want the SUMenu to look!",
+                            "Ur using right now the best script, did you know that?",
+                        }
+
+                        local tipsBg = lmake("Frame", {
+                            Size = UDim2.new(0,LAYOUT.barWidth,0,34),
+                            Position = UDim2.new(0.5,-(LAYOUT.barWidth/2), 0.52,-17),
+                            BackgroundColor3 = LC.surface, BackgroundTransparency = 0.55,
+                            BorderSizePixel = 0, ZIndex = 10,
+                        }, gui)
+                        addCorner(8, tipsBg)
+                        lmake("UIStroke", {Color = LC.border, Thickness = 1, Transparency = 0.55}, tipsBg)
+
+                        lmake("TextLabel", {
+                            Size = UDim2.new(0,44,1,0), Position = UDim2.new(0,10,0,0),
+                            Text = "TIPP", TextColor3 = LC.accent, TextSize = 9,
+                            Font = Enum.Font.GothamBlack, BackgroundTransparency = 1,
+                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
+                            ZIndex = 11,
+                        }, tipsBg)
+
+                        lmake("Frame", {
+                            Size = UDim2.new(0,1,0,16), Position = UDim2.new(0,56,0.5,-8),
+                            BackgroundColor3 = LC.accent, BackgroundTransparency = 0.6,
+                            BorderSizePixel = 0, ZIndex = 11,
+                        }, tipsBg)
+
+                        local tipsClip = lmake("Frame", {
+                            Size = UDim2.new(1,-70,1,0), Position = UDim2.new(0,64,0,0),
+                            BackgroundTransparency = 1, BorderSizePixel = 0,
+                            ClipsDescendants = true, ZIndex = 11,
+                        }, tipsBg)
+                        lmake("UIGradient", {
+                            Transparency = NumberSequence.new({
+                                NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(0.80, 0),
+                                NumberSequenceKeypoint.new(1, 1),
+                            }),
+                        }, tipsClip)
+
+                        local tipsLabel = lmake("TextLabel", {
+                            Size = UDim2.new(0,900,1,0), Position = UDim2.new(0,0,0,0),
+                            Text = TIPS[1], TextColor3 = LC.textDim, TextSize = 10,
+                            Font = Enum.Font.GothamMedium, BackgroundTransparency = 1,
+                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
+                            TextTruncate = Enum.TextTruncate.None, ZIndex = 12,
+                        }, tipsClip)
+
+                        local MARQUEE_SPEED = 40
+                        local MARQUEE_PAUSE = 2.1
+                        local MARQUEE_GAP   = 55
+                        local tipIndex      = 1
+                        local marqueeX      = 0
+                        local marqueePause  = MARQUEE_PAUSE
+                        local tipsClipW     = LAYOUT.barWidth - 70
+
+                        local BW = LAYOUT.barWidth
+                        local BH = LAYOUT.barHeight
+
+                        local barGroup = lmake("Frame", {
+                            Size = UDim2.new(0,BW,0,56),
+                            Position = UDim2.new(0.5,-BW/2, 0.67,0),
+                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 10,
+                        }, gui)
+
+                        lmake("TextLabel", {
+                            Size = UDim2.new(0.65,0,0,13), Position = UDim2.new(0,0,0,0),
+                            Text = "LOADING ASSETS", TextColor3 = LC.textMuted, TextSize = 10,
+                            Font = Enum.Font.GothamBold, BackgroundTransparency = 1,
+                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
+                        }, barGroup)
+
+                        local barPct = lmake("TextLabel", {
+                            Size = UDim2.new(0.35,0,0,13), Position = UDim2.new(0.65,0,0,0),
+                            Text = "0%", TextColor3 = LC.accent, TextSize = 11,
+                            Font = Enum.Font.GothamBold, BackgroundTransparency = 1,
+                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Right,
+                        }, barGroup)
+
+                        local barTrack = lmake("Frame", {
+                            Size = UDim2.new(1,0,0,BH), Position = UDim2.new(0,0,0,18),
+                            BackgroundColor3 = Color3.fromRGB(32,28,52), BorderSizePixel = 0,
+                            ClipsDescendants = false, ZIndex = 10,
+                        }, barGroup)
+                        addCorner(999, barTrack)
+                        lmake("UIStroke", {Color = Color3.fromRGB(55,45,85), Thickness = 1, Transparency = 0.6}, barTrack)
+
+                        for _, frac in ipairs({0.25, 0.50, 0.75}) do
+                            lmake("Frame", {
+                                Size = UDim2.new(0,1,0,BH+4),
+                                Position = UDim2.new(frac,0,0.5,-(BH+4)/2),
+                                BackgroundColor3 = Color3.fromRGB(60,50,88), BackgroundTransparency = 0.4,
+                                BorderSizePixel = 0, ZIndex = 12,
+                            }, barTrack)
+                        end
+
+                        local barFillClip = lmake("Frame", {
+                            Size = UDim2.new(0,0,1,0), BackgroundTransparency = 1,
+                            BorderSizePixel = 0, ClipsDescendants = true, ZIndex = 11,
+                        }, barTrack)
+
+                        local barFill = lmake("Frame", {
+                            Size = UDim2.new(1,0,1,0), BackgroundColor3 = LC.accent,
+                            BorderSizePixel = 0, ZIndex = 11,
+                        }, barFillClip)
+                        addCorner(999, barFill)
+                        addGradient(barFill, ColorSequence.new({
+                            ColorSequenceKeypoint.new(0,   LC.accentDim),
+                            ColorSequenceKeypoint.new(0.6, LC.accent),
+                            ColorSequenceKeypoint.new(1,   LC.accentBright),
+                        }), 0)
+
+                        local tipDot = lmake("Frame", {
+                            Size = UDim2.new(0,8,0,8), Position = UDim2.new(0,-4,0.5,-4),
+                            BackgroundColor3 = LC.accentBright, BorderSizePixel = 0, ZIndex = 14,
+                        }, barTrack)
+                        addCorner(999, tipDot)
+
+                        local tipHalo = lmake("Frame", {
+                            Size = UDim2.new(0,18,0,18), Position = UDim2.new(0,-9,0.5,-9),
+                            BackgroundColor3 = LC.accent, BackgroundTransparency = 0.72,
+                            BorderSizePixel = 0, ZIndex = 13,
+                        }, barTrack)
+                        addCorner(999, tipHalo)
+
+                        local STEP_N   = LAYOUT.stepCount
+                        local stepDots = {}
+                        local dotsHolder = lmake("Frame", {
+                            Size = UDim2.new(0,(STEP_N*8)+((STEP_N-1)*5),0,8),
+                            Position = UDim2.new(1,-((STEP_N*8)+((STEP_N-1)*5)),0,27),
+                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 10,
+                        }, barGroup)
+                        for i = 1, STEP_N do
+                            local dot = lmake("Frame", {
+                                Size = UDim2.new(0,6,0,6), Position = UDim2.new(0,(i-1)*13,0,1),
+                                BackgroundColor3 = Color3.fromRGB(55,46,80), BorderSizePixel = 0, ZIndex = 10,
+                            }, dotsHolder)
+                            addCorner(999, dot)
+                            stepDots[i] = dot
+                        end
+
+                        local bottomBar = lmake("Frame", {
+                            Size = UDim2.new(1,0,0,28), Position = UDim2.new(0,0,1,-28),
+                            BackgroundColor3 = LC.bg, BackgroundTransparency = 0.15,
+                            BorderSizePixel = 0, ZIndex = 10,
+                        }, gui)
+                        lmake("Frame", {
+                            Size = UDim2.new(1,0,0,1), BackgroundColor3 = LC.accent,
+                            BackgroundTransparency = 0.82, BorderSizePixel = 0, ZIndex = 11,
+                        }, bottomBar)
+                        lmake("TextLabel", {
+                            Size = UDim2.new(0,260,1,0), Position = UDim2.new(0,16,0,0),
+                            Text = "SUMENU LOADING SYSTEM", TextColor3 = Color3.fromRGB(62,55,88),
+                            TextSize = 10, Font = Enum.Font.GothamBold, BackgroundTransparency = 1,
+                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
+                        }, bottomBar)
+                        lmake("TextLabel", {
+                            Size = UDim2.new(0,180,1,0), Position = UDim2.new(1,-196,0,0),
+                            Text = "\xc2\xa9 TL\xc2\xb7Productions", TextColor3 = Color3.fromRGB(58,52,80),
+                            TextSize = 10, Font = Enum.Font.GothamMedium, BackgroundTransparency = 1,
+                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Right,
+                        }, bottomBar)
+
+                        local statusLabel = lmake("TextLabel", {
+                            Size = UDim2.new(1,0,0,13), Position = UDim2.new(0,0,0,29),
+                            Text = "Initializing engine core...", TextColor3 = LC.textMuted,
+                            TextSize = 10, Font = Enum.Font.GothamMedium, BackgroundTransparency = 1,
+                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 10,
+                        }, barGroup)
+
+                        local STATUS_MESSAGES = {
+                            "Initializing engine core...", "Loading shader cache...",
+                            "Preparing asset pipeline...", "Compiling bytecode...",
+                            "Warming up render thread...", "Almost ready...",
+                        }
+                        local TITLE_FRAMES = {"T","TL","TLM","TLME","TLMEN","SUMENU"}
+                        local TITLE_DELAYS = {0.20, 0.20, 0.12, 0.12, 0.12, 0}
+
+                        local progress    = 0
+                        local startTime   = tick()
+                        local titleStep   = 1
+                        local titleTimer  = 0
+                        local closing     = false
+                        local GLOW_BASE   = FS + 16
+                        local loader      = rawget(_genv, "_TL_assetLoader")
+
+                        local function onComplete()
+                            closing = true
+                            loopConn:Disconnect()
+                            progress = 100
+                            barFillClip.Size = UDim2.new(1,0,1,0)
+                            barPct.Text = "100%"
+                            tw(barPct, 0.35, {TextColor3 = LC.green})
+                            tw(barFill, 0.35, {BackgroundColor3 = LC.green})
+                            tw(tipDot, 0.35, {BackgroundColor3 = LC.green})
+                            tw(tipHalo, 0.35, {BackgroundColor3 = LC.green})
+                            tipDot.Position = UDim2.new(1,-4,0.5,-4)
+                            tipHalo.Position = UDim2.new(1,-9,0.5,-9)
+                            task.wait(0.2)
+                            statusLabel.Text = "All systems operational."
+                            for _, d in ipairs(stepDots) do
+                                tw(d, 0.15, {BackgroundColor3 = LC.green})
+                                task.wait(0.06)
+                            end
+                            task.wait(0.5)
+                            local snd = gui:FindFirstChild("SUMenu_VoiceLine", true)
+                            if snd and snd.IsPlaying then
+                                tw(snd, 0.3, {Volume = 0})
+                                task.wait(0.3)
+                                pcall(function() snd:Stop() end)
+                            end
+                            local FADE_DUR = 0.55
+                            for _, v in ipairs(gui:GetDescendants()) do
+                                pcall(function()
+                                    local cn = v.ClassName
+                                    if cn == "Frame" or cn == "ScrollingFrame" then
+                                        local s = v:FindFirstChildOfClass("UIStroke")
+                                        if s then tw(s, FADE_DUR, {Transparency = 1}) end
+                                        tw(v, FADE_DUR, {BackgroundTransparency = 1})
+                                    elseif cn == "TextLabel" or cn == "TextButton" then
+                                        tw(v, FADE_DUR, {TextTransparency = 1, BackgroundTransparency = 1})
+                                    elseif cn == "ImageLabel" or cn == "ImageButton" then
+                                        tw(v, FADE_DUR, {ImageTransparency = 1, BackgroundTransparency = 1})
+                                    end
+                                end)
+                            end
+                            task.wait(FADE_DUR + 0.1)
+                            pcall(function() gui:Destroy() end)
+                            _TL_loading = false
+                            pcall(function()
+                                if settingsState and settingsState.autoOpen then
+                                    if not isOpen then openBar() end
+                                else
+                                    sendNotif("SUMenu", "System loaded. Press [K] to toggle.", 4)
+                                end
+                            end)
+                        end
+
+                        loopConn = Heartbeat:Connect(function(dt)
+                            if not gui or not gui.Parent then loopConn:Disconnect(); return end
+                            local now = tick()
+                            local elapsed = now - startTime
+
+                            local loaderReady = (not loader) or loader.ready == true
+                            local loaderProgress = 0
+                            if loader and (loader.total or 0) > 0 then
+                                loaderProgress = math.clamp((loader.done or 0) / loader.total, 0, 1)
+                            elseif loaderReady then
+                                loaderProgress = 1
+                            end
+                            local timeFloor = math.min((elapsed / LAYOUT.duration) * 65, 65)
+                            local target = math.max(timeFloor, loaderProgress * 99)
+                            if loaderReady and elapsed >= LAYOUT.duration then
+                                target = 100
+                            else
+                                target = math.min(target, 99)
+                            end
+                            progress = progress + (target - progress) * math.min(dt * 4, 0.12)
+                            local frac = math.clamp(progress / 100, 0, 1)
+                            barFillClip.Size = UDim2.new(frac, 0, 1, 0)
+                            barPct.Text = math.floor(progress) .. "%"
+
+                            local tipX = frac * BW
+                            tipDot.Position = UDim2.new(0, tipX - 4, 0.5, -4)
+                            tipHalo.Position = UDim2.new(0, tipX - 9, 0.5, -9)
+                            local tipPulse = (sin(now * 5) + 1) * 0.5
+                            tipHalo.BackgroundTransparency = 0.65 + tipPulse * 0.2
+
+                            if loader and not loaderReady and loader.current then
+                                statusLabel.Text = loader.current
+                            else
+                                local msgIdx = math.clamp(math.floor(progress / (100 / #STATUS_MESSAGES)) + 1, 1, #STATUS_MESSAGES)
+                                statusLabel.Text = STATUS_MESSAGES[msgIdx]
+                            end
+
+                            local activeDot = math.floor(frac * STEP_N)
+                            for i, d in ipairs(stepDots) do
+                                if i <= activeDot then
+                                    d.BackgroundColor3 = LC.accent
+                                    d.BackgroundTransparency = 0
+                                elseif i == activeDot + 1 then
+                                    local dp = (sin(now * 3) + 1) * 0.5
+                                    d.BackgroundColor3 = LC.accent
+                                    d.BackgroundTransparency = 0.4 + dp * 0.35
+                                else
+                                    d.BackgroundColor3 = Color3.fromRGB(55, 46, 80)
+                                    d.BackgroundTransparency = 0
+                                end
+                            end
+
+                            if bgGradient and bgGradient.Parent then
+                                bgGradient.Rotation = (bgGradient.Rotation + dt * 3) % 360
+                            end
+
+                            for _, fb in ipairs(fogBlobs) do
+                                fb.x = fb.x + fb.vx * dt
+                                fb.y = fb.y + fb.vy * dt
+                                if fb.x < -fb.size*0.3 or fb.x > SW+fb.size*0.3 then fb.vx = -fb.vx end
+                                if fb.y < -fb.size*0.3 or fb.y > SH+fb.size*0.3 then fb.vy = -fb.vy end
+                                local breathe = sin(now*0.4+fb.x*0.01)*0.04
+                                fb.obj.ImageTransparency = fb.baseAlpha + breathe
+                                fb.obj.Position = UDim2.new(0, fb.x-fb.size/2, 0, fb.y-fb.size/2)
+                            end
+
+                            scanOffset = (scanOffset + dt*25) % SH
+                            scanFrame.Position = UDim2.new(0, 0, 0, -scanOffset)
+
+                            local pulse = (sin(now*1.2)+1)*0.5
+                            local glowSize = GLOW_BASE + pulse*16
+                            local glowOff = pulse*8
+                            if frameGlow and frameGlow.Parent then
+                                frameGlow.BackgroundTransparency = 0.78+pulse*0.14
+                                frameGlow.Size = UDim2.new(0,glowSize,0,glowSize)
+                                frameGlow.Position = UDim2.new(0.5,-glowSize/2, 0,10-glowOff)
+                            end
+
+                            if frameStroke and frameStroke.Parent then
+                                frameStroke.Transparency = 0.25+(sin(now*1.5)+1)*0.2
+                            end
+
+                            if logoImage and logoImage.Parent then
+                                local s = IS + sin(now*0.6)*3
+                                logoImage.Size = UDim2.new(0,s,0,s)
+                                logoImage.Position = UDim2.new(0.5,-s/2, 0.5,-s/2)
+                            end
+
+                            for _, p in ipairs(dustParticles) do
+                                p.x = p.x + p.vx*(dt*60)
+                                p.y = p.y + p.vy*(dt*60)
+                                if p.x < -20 then p.x = SW+20 elseif p.x > SW+20 then p.x = -20 end
+                                if p.y < -20 then p.y = SH+20 elseif p.y > SH+20 then p.y = -20 end
+                                p.obj.Position = UDim2.new(0,p.x,0,p.y)
+                                local shimmer = (sin(now*p.freq+p.phase)+1)*0.5
+                                p.obj.BackgroundTransparency = 1-(p.baseAlpha*(0.3+shimmer*0.7))
+                            end
+
+                            for _, p in ipairs(orbParticles) do
+                                p.driftX = p.driftX+p.vx*dt*30
+                                p.driftY = p.driftY+p.vy*dt*30
+                                if p.baseX+p.driftX < -100 then p.driftX = p.driftX+SW+200 end
+                                if p.baseX+p.driftX > SW+100 then p.driftX = p.driftX-SW-200 end
+                                if p.baseY+p.driftY < -100 then p.driftY = p.driftY+SH+200 end
+                                if p.baseY+p.driftY > SH+100 then p.driftY = p.driftY-SH-200 end
+                                p.orbitAngle = p.orbitAngle+p.orbitSpeed*dt
+                                local ox = cos(p.orbitAngle)*p.orbitR
+                                local oy = sin(p.orbitAngle)*p.orbitR*0.6
+                                p.x = p.baseX+p.driftX+ox
+                                p.y = p.baseY+p.driftY+oy
+                                local pulse2 = (sin(now*p.freq+p.phase)+1)*0.5
+                                local alpha = p.baseAlpha*(0.4+pulse2*0.6)
+                                local szMult = 1+pulse2*0.3
+                                local curSz = p.sz*szMult
+                                local curHalo = p.haloSz*szMult
+                                p.dot.Size = UDim2.new(0,curSz,0,curSz)
+                                p.dot.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
+                                p.dot.BackgroundTransparency = 1-alpha
+                                p.halo.Size = UDim2.new(0,curHalo,0,curHalo)
+                                p.halo.Position = UDim2.new(0,p.x-curHalo/2,0,p.y-curHalo/2)
+                                p.halo.ImageTransparency = 1-(alpha*0.35)
+                            end
+
+                            for _, p in ipairs(bokehParticles) do
+                                p.x = p.x+p.vx*(dt*60)
+                                p.y = p.y+p.vy*(dt*60)
+                                if p.x < -p.sz then p.x = SW+p.sz elseif p.x > SW+p.sz then p.x = -p.sz end
+                                if p.y < -p.sz then p.y = SH+p.sz elseif p.y > SH+p.sz then p.y = -p.sz end
+                                local breathe = (sin(now*p.pulseFreq+p.phase)+1)*0.5
+                                local alpha = p.baseAlpha*(0.5+breathe*0.5)
+                                local curSz = p.sz*(0.9+breathe*0.2)
+                                p.circle.Size = UDim2.new(0,curSz,0,curSz)
+                                p.circle.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
+                                p.circle.ImageTransparency = 1-alpha
+                                p.ring.Size = UDim2.new(0,curSz,0,curSz)
+                                p.ring.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
+                            end
+
+                            for _, p in ipairs(streakParticles) do
+                                if p.active then
+                                    p.x = p.x+p.speed*dt
+                                    local sinY = sin(now*2)*15
+                                    p.obj.Position = UDim2.new(0,p.x,0,p.y+sinY)
+                                    local screenFrac = p.x/SW
+                                    local fade2 = 1-abs(screenFrac-0.5)*2
+                                    fade2 = math.clamp(fade2,0,1)
+                                    p.obj.BackgroundTransparency = 1-(fade2*0.6)
+                                    if p.x > SW+p.len+50 then
+                                        p.active = false
+                                        p.timer = 0
+                                        p.cooldown = 2+rand()*5
+                                        p.obj.Position = UDim2.new(0,-p.len-100,0,0)
+                                    end
+                                else
+                                    p.timer = p.timer+dt
+                                    if p.timer >= p.cooldown then
+                                        p.active = true
+                                        p.x = -p.len-rand(0,100)
+                                        p.y = rand(30,SH-30)
+                                        p.speed = rand(350,800)
+                                        p.rotation = -25+rand(-15,15)
+                                        p.obj.Rotation = p.rotation
+                                        p.obj.Size = UDim2.new(0,p.len,0,p.thick)
+                                    end
+                                end
+                            end
+
+                            for _, p in ipairs(emberParticles) do
+                                p.y = p.y+p.vy*(dt*60)
+                                local wobble = sin(now*p.wobbleFreq+p.phase)*p.wobbleAmp
+                                p.x = p.startX+wobble
+                                if p.y < -30 then
+                                    p.y = SH+rand(20,100)
+                                    p.startX = rand()*SW
+                                    p.x = p.startX
+                                end
+                                local yFrac = p.y/SH
+                                local fadeAlpha = p.baseAlpha
+                                if yFrac < 0.3 then fadeAlpha = fadeAlpha*(yFrac/0.3) end
+                                local emberPulse = (sin(now*3+p.phase)+1)*0.5
+                                fadeAlpha = fadeAlpha*(0.6+emberPulse*0.4)
+                                local curSz = p.sz*(0.8+emberPulse*0.4)
+                                p.dot.Size = UDim2.new(0,curSz,0,curSz)
+                                p.dot.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
+                                p.dot.BackgroundTransparency = 1-fadeAlpha
+                                local curGlow = p.glowSz*(0.8+emberPulse*0.4)
+                                p.glow.Size = UDim2.new(0,curGlow,0,curGlow)
+                                p.glow.Position = UDim2.new(0,p.x-curGlow/2,0,p.y-curGlow/2)
+                                p.glow.ImageTransparency = 1-(fadeAlpha*0.3)
+                            end
+
+                            for _, p in ipairs(sparkleParticles) do
+                                p.rotation = p.rotation+p.rotSpeed*dt
+                                if p.state == "hidden" then
+                                    p.timer = p.timer+dt
+                                    if p.timer >= p.interval then
+                                        p.x = rand(40,SW-40)
+                                        p.y = rand(40,SH-40)
+                                        p.state = "appearing"
+                                        p.stateTimer = 0
+                                        p.scale = 0
+                                        p.timer = 0
+                                    end
+                                elseif p.state == "appearing" then
+                                    p.stateTimer = p.stateTimer+dt
+                                    local t2 = math.clamp(p.stateTimer/0.15,0,1)
+                                    t2 = 1-(1-t2)*(1-t2)
+                                    p.scale = p.maxScale*t2
+                                    if p.stateTimer >= 0.15 then
+                                        p.state = "visible"
+                                        p.stateTimer = 0
+                                        p.scale = p.maxScale
+                                    end
+                                elseif p.state == "visible" then
+                                    p.stateTimer = p.stateTimer+dt
+                                    local vp = sin(p.stateTimer*8)*0.15
+                                    p.scale = p.maxScale*(1+vp)
+                                    if p.stateTimer >= p.flashDur then
+                                        p.state = "fading"
+                                        p.stateTimer = 0
+                                    end
+                                elseif p.state == "fading" then
+                                    p.stateTimer = p.stateTimer+dt
+                                    local t2 = math.clamp(p.stateTimer/0.2,0,1)
+                                    p.scale = p.maxScale*(1-t2)
+                                    if p.stateTimer >= 0.2 then
+                                        p.state = "hidden"
+                                        p.stateTimer = 0
+                                        p.timer = 0
+                                        p.interval = 1+rand()*4
+                                        p.scale = 0
+                                    end
+                                end
+                                local sz = 16*p.scale
+                                if sz < 0.5 then sz = 0 end
+                                p.obj.Size = UDim2.new(0,sz,0,sz)
+                                p.obj.Position = UDim2.new(0,p.x-sz/2,0,p.y-sz/2)
+                                p.obj.Rotation = p.rotation
+                            end
+
+                            if tipsLabel and tipsLabel.Parent then
+                                local textW = tipsLabel.TextBounds.X
+                                if textW <= tipsClipW then
+                                    marqueeX = 0
+                                    marqueePause = MARQUEE_PAUSE
+                                    tipsLabel.Position = UDim2.new(0,0,0,0)
+                                else
+                                    if marqueePause > 0 then
+                                        marqueePause = marqueePause-dt
+                                    else
+                                        marqueeX = marqueeX-MARQUEE_SPEED*dt
+                                        local maxScroll = -(textW+MARQUEE_GAP-tipsClipW)
+                                        if marqueeX <= maxScroll then
+                                            tipIndex = (tipIndex%#TIPS)+1
+                                            tipsLabel.Text = TIPS[tipIndex]
+                                            marqueeX = 0
+                                            marqueePause = MARQUEE_PAUSE
+                                        end
+                                        tipsLabel.Position = UDim2.new(0,math.floor(marqueeX),0,0)
+                                    end
+                                end
+                            end
+
+                            if titleStep <= #TITLE_FRAMES then
+                                titleTimer = titleTimer+dt
+                                if titleTimer >= (TITLE_DELAYS[titleStep] or 0) then
+                                    titleLabel.Text = TITLE_FRAMES[titleStep]
+                                    titleStep = titleStep+1
+                                    titleTimer = 0
+                                end
+                            end
+
+                            if not closing and loaderReady and elapsed >= LAYOUT.duration then
+                                task.spawn(onComplete)
+                            end
+                        end)
+
+                        task.spawn(function()
+                            local waited = 0
+                            while waited < MAX_WAIT do
+                                task.wait(1)
+                                waited = waited+1
+                                if closing then return end
+                            end
+                            pcall(function()
+                                if loader then
+                                    loader.done = math.max(loader.done or 0, loader.total or 1)
+                                    loader.ready = true
+                                    loader.current = "Timeout \xe2\x80\x94 continuing"
+                                end
+                            end)
+                        end)
+                    end 
+
+                    pcall(_TL_showLoadingScreen)
+                end); if not _ok_SmartBar then warn("[SU] SmartBar-IIFE crashed: " .. tostring(_err_SmartBar)) end
+            end)
+
+            
+            do
+                local _bbMod2 = _TL_loadModule("SCRIPTS-TAB/TL-QABar")
+                if _bbMod2 then
+                    _bbMod2.initQABar({
+                        _TL_refs = _TL_refs,
+                        _genv = _genv,
+                        C = C,
+                        _panelColorHooks = _panelColorHooks,
+                        _makeRealStroke = _makeRealStroke,
+                        _tlAlive = _tlAlive,
+                        twP = twP,
+                        getNearestPlayer = getNearestPlayer,
+                        _handleError = _handleError,
+                        stopStand = stopStand,
+                        standStopAnim = standStopAnim,
+                        closeBar = closeBar,
+                        LocalPlayer = LocalPlayer,
+                        RunService = RunService,
+                        _SvcUIS = _SvcUIS,
+                        _TL_VP = _TL_VP,
+                        _sc = _sc,
+                        _AF = _AF,
+                        stopQA74 = stopQA74,
+                        stopBB = function() pcall(function() stopBB() end) end,
+                        startBB = function(tgt, mode) pcall(function() startBB(tgt, mode) end) end,
+                        registerResetFn = function(fn) _G.TLQA_ResetUI = fn end,
+                    })
+                    _bbMod2.startQABar()
+                end
+            end 
+            
+            
+            
+            
+            
+            ; (function()
+                local _afk = _genv._TL_afkSystem
+                if not _afk then return end
+
+                local _afkFiles = {
+                    dragonball = { "assets/SU-MP3-FILES/DB-AFK-VL0.mp3", "assets/SU-MP3-FILES/DB-AFK-VL1.mp3" },
+                    onepiece   = { "assets/SU-MP3-FILES/OP-AFK-VL0.mp3", "assets/SU-MP3-FILES/OP-AFK-VL1.mp3" },
+                    theboys    = { "assets/SU-MP3-FILES/TB-AFK-VL0.mp3" },
+                }
+
+                
+                rawset(_genv, "_TL_afkSetTheme", function(id)
+                    _afk.themeId = id or "white"
+                end)
+
+                local function _afkStopSound()
+                    if _afk.currentSound then
+                        pcall(function() _afk.currentSound:Stop() end)
+                        pcall(function() _afk.currentSound:Destroy() end)
+                        _afk.currentSound = nil
                     end
                 end
-            end)
-        end
-        if cached then
-            sound.SoundId = cached
-            pcall(function() sound:Play() end)
-        end
-    end)
 
-    -- === ANIMATION LOOP ===
-    local startTime = tick()
-    local progress = 0
-    local closing = false
-    local loader = _TL_assetLoader or {}
+                local function _afkPlayRandom()
+                    local files = _afkFiles[_afk.themeId]
+                    if not files or #files == 0 then return end
 
-    -- Fade in
-    overlay.BackgroundTransparency = 1
-    tw(overlay, 0.6, { BackgroundTransparency = 0.35 })
-    title.TextTransparency = 1
-    tw(title, 0.8, { TextTransparency = 0.1 }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    pctText.TextTransparency = 1
-    tw(pctText, 0.8, { TextTransparency = 0 }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0.2)
-    barTrack.BackgroundTransparency = 1
-    tw(barTrack, 0.6, { BackgroundTransparency = 0.3 }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0.3)
-    statusText.TextTransparency = 1
-    tw(statusText, 0.6, { TextTransparency = 0.3 }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0.4)
+                    
+                    local chosen = files[math.random(1, #files)]
+                    if not (isfile and isfile(chosen)) then
+                        warn("[AFK] Datei nicht gefunden: " .. tostring(chosen))
+                        return
+                    end
 
-    -- Blur in
-    tw(blur, 0.8, { Size = 18 })
-
-    local loopConn
-    loopConn = Heartbeat:Connect(function(dt)
-        if closing then return end
-
-        local elapsed = tick() - startTime
-
-        -- Update progress from asset loader
-        if loader.total and loader.total > 0 then
-            progress = math.clamp((loader.done or 0) / loader.total, 0, 1)
-        else
-            progress = math.clamp(elapsed / 3, 0, 0.95)
-        end
-
-        -- Smooth progress display
-        local displayPct = math.floor(progress * 100)
-        pctText.Text = tostring(displayPct) .. "%"
-        barFillClip.Size = UDim2.new(math.clamp(progress, 0, 1), 0, 1, 0)
-
-        -- Liquid motion for blobs
-        for i, b in ipairs(blobs) do
-            local t = elapsed * b.breatheSpeed + b.phase
-            local nx = b.baseX + math.sin(t * b.speedX * 3) * 0.08
-            local ny = b.baseY + math.cos(t * b.speedY * 3) * 0.06
-            b.obj.Position = UDim2.new(nx, 0, ny, 0)
-            b.obj.ImageTransparency = 0.7 + math.sin(t * 1.2) * 0.1
-            b.obj.Size = UDim2.new(0, b.baseSize + math.sin(t * 0.8) * 4 + math.sin(t * 0.8) * 0.5, 0, b.baseSize + math.cos(t * 0.6) * 4)
-        end
-
-        -- Logo liquid motion
-        local logoT = elapsed * 0.8
-        local logoOffsetX = math.sin(logoT * 1.2) * 3
-        local logoOffsetY = math.cos(logoT * 0.9) * 2
-        logoImg.Position = UDim2.new(0.5, -36 + logoOffsetX, 0, 34 + logoOffsetY)
-
-        -- Logo glow pulse
-        local glowAlpha = 0.82 + math.sin(logoT * 1.5) * 0.06
-        logoGlow.BackgroundTransparency = glowAlpha
-
-        -- Bar glow pulse
-        barGlow.BackgroundTransparency = 0.75 + math.sin(elapsed * 2) * 0.1
-
-        -- Status messages
-        if progress < 0.3 then
-            statusText.Text = "Loading assets..."
-        elseif progress < 0.7 then
-            statusText.Text = "Preparing interface..."
-        elseif progress < 0.95 then
-            statusText.Text = "Almost ready..."
-        else
-            statusText.Text = "Welcome!"
-        end
-
-        -- Check completion
-        local loaderReady = loader.ready or false
-        if not closing and loaderReady and elapsed >= 2 then
-            closing = true
-            if loopConn then loopConn:Disconnect() end
-
-            -- Green flash on complete
-            tw(barFill, 0.3, { BackgroundColor3 = Color3.fromRGB(80, 220, 120) })
-            tw(barGlow, 0.3, { BackgroundColor3 = Color3.fromRGB(80, 220, 120) })
-            pctText.TextColor3 = Color3.fromRGB(80, 220, 120)
-            statusText.Text = "Ready!"
-            statusText.TextColor3 = Color3.fromRGB(80, 220, 120)
-
-            task.delay(0.4, function()
-                -- Fade out everything
-                tw(blur, 0.5, { Size = 0 })
-                for _, desc in ipairs(gui:GetDescendants()) do
+                    _afkStopSound()
                     pcall(function()
-                        if desc:IsA("TextLabel") or desc:IsA("TextButton") then
-                            tw(desc, 0.4, { TextTransparency = 1 })
-                        elseif desc:IsA("Frame") or desc:IsA("ImageLabel") then
-                            tw(desc, 0.4, { BackgroundTransparency = 1 })
-                            if desc:IsA("ImageLabel") then
-                                tw(desc, 0.4, { ImageTransparency = 1 })
-                            end
-                        end
+                        local snd   = Instance.new("Sound")
+                        snd.Name    = "SUMenu_AFK_VL"
+                        local _asset = _TL_safeGetCustomAsset(chosen)
+                        snd.SoundId = _asset or chosen
+                        snd.Volume  = 1.0
+                        snd.Looped  = false
+                        snd.Parent  = _SvcSnd
+                        snd:Play()
+                        _afk.currentSound = snd
+                        
+                        _SvcDeb:AddItem(snd, 30)
                     end)
                 end
-                tw(overlay, 0.5, { BackgroundTransparency = 1 })
 
-                -- Fade out sound
-                task.spawn(function()
-                    pcall(function()
-                        for i = 0, 10 do
-                            sound.Volume = 0.6 * (1 - i / 10)
-                            task.wait(0.05)
+                local _afkTriggered = false 
+
+                
+                local function _afkResetTimer()
+                    _afk.lastInputTime = tick()
+                    if _afkTriggered then
+                        _afkTriggered = false
+                        _afkStopSound()
+                    end
+                end
+
+                local _afkUIS = game:GetService("UserInputService")
+                local _afkInputConn1 = _afkUIS.InputBegan:Connect(function() _afkResetTimer() end)
+                local _afkInputConn2 = _afkUIS.InputChanged:Connect(function() _afkResetTimer() end)
+                table.insert(_afk.inputConns, _afkInputConn1)
+                table.insert(_afk.inputConns, _afkInputConn2)
+
+                
+                local _afkCheckInterval = 5
+                local _afkLastCheck     = tick()
+                local _afkHBConn        = game:GetService("RunService").Heartbeat:Connect(function()
+                    local now = tick()
+                    if now - _afkLastCheck < _afkCheckInterval then return end
+                    _afkLastCheck = now
+
+                    
+                    if not _afkFiles[_afk.themeId] then return end
+
+                    local elapsed = now - _afk.lastInputTime
+                    if elapsed >= _afk.AFK_THRESHOLD and not _afkTriggered then
+                        _afkTriggered = true
+                        task.spawn(_afkPlayRandom)
+                    end
+                end)
+                _afk.loopConn           = _afkHBConn
+                _afk.active             = true
+
+                
+            end)()
+
+            
+
+            _TL_refs.SUMenuCleanup = function()
+                pcall(function()
+                    local _afk = _genv._TL_afkSystem
+                    if _afk then
+                        if _afk.loopConn then
+                            pcall(function() _afk.loopConn:Disconnect() end); _afk.loopConn = nil
                         end
-                        sound:Stop()
-                        sound:Destroy()
-                    end)
+                        for _, c in ipairs(_afk.inputConns) do pcall(function() c:Disconnect() end) end
+                        _afk.inputConns = {}
+                        if _afk.currentSound then
+                            pcall(function() _afk.currentSound:Stop() end)
+                            pcall(function() _afk.currentSound:Destroy() end)
+                            _afk.currentSound = nil
+                        end
+                        _afk.active = false
+                    end
+                    if getgenv then
+                        _genv._TL_afkSystem   = nil
+                        _genv._TL_afkSetTheme = nil
+                    end
                 end)
 
-                task.delay(0.6, function()
-                    pcall(function() gui:Destroy() end)
-                    pcall(function() blur:Destroy() end)
-
-                    pcall(function()
-                        local env = _genv
-                        env.SUCleanup = _TL_refs.SUCleanup
-                        env.SUUnload = _TL_refs.SUCleanup
-                    end)
-                    _G.SUCleanup = _TL_refs and _TL_refs.SUCleanup
+                pcall(function()
+                    if keybindMainConn then
+                        pcall(function() keybindMainConn:Disconnect() end); keybindMainConn = nil
+                    end
                 end)
+                pcall(function()
+                    if _G.TLActionsStop then _G.TLActionsStop() end
+                end)
+                pcall(function()
+                    if getgenv and getgenv()._TLAllConns then
+                        for _, c in ipairs(_genv._TLAllConns) do
+                            pcall(function() c:Disconnect() end)
+                        end
+                        _genv._TLAllConns = nil
+                    end
+                end)
+                pcall(function()
+                    if getgenv and getgenv()._TLAllInsts then
+                        for _, obj in ipairs(_genv._TLAllInsts) do
+                            pcall(function()
+                                if obj and obj.Parent then obj:Destroy() end
+                            end)
+                        end
+                        _genv._TLAllInsts = nil
+                    end
+                end)
+
+                pcall(function()
+                    if getgenv and getgenv()._TLFlingConn then
+                        _genv._TLFlingConn:Disconnect()
+                        _genv._TLFlingConn = nil
+                    end
+                end)
+                
+                pcall(function()
+                    local mods = rawget(_genv, "_TL_MODULES")
+                    if mods then
+                        for name, mod in pairs(mods) do
+                            pcall(function()
+                                if type(mod) == "table" and type(mod.cleanup) == "function" then
+                                    mod.cleanup()
+                                end
+                            end)
+                        end
+                        rawset(_genv, "_TL_MODULES", nil)
+                    end
+                end)
+                pcall(function()
+                    local _modRunkeys = { "__TL_AntiVCBAN_Runtime", "__TL_FlyRuntime", "__TL_InvisRuntime", "__TL_ShaderRuntime" }
+                    for _, rk in ipairs(_modRunkeys) do
+                        local r = rawget(_genv, rk)
+                        if type(r) == "table" and type(r.cleanup) == "function" then
+                            pcall(r.cleanup)
+                        end
+                        rawset(_genv, rk, nil)
+                    end
+                end)
+                local _qb_ref = _TL_refs._TL_qb or {}
+                local _conns = {
+                    _TL_state.conns.flyConn, _TL_state.conns.noclipConn, _TL_state.conns._espRadConn,
+                    _TL_state.conns.rushConn, _TL_state.conns.rushNoclipConn, _TL_state.conns.updateConnUI,
+                    _TL_state.conns._act_followRSConn, _SOH and _SOH.conn,
+                    _AF and _AF.udConn,
+                    _TL_state.conns.friendConn, _TL_state.conns.spinConn, _TL_state.conns.ppConn, _TL_state.conns
+                    .pp2Conn,
+                    _TL_state.conns.kissConn, _TL_state.conns.bpConn, _TL_state.conns.lickingConn, _TL_state.conns
+                    .suckingConn,
+                    _TL_state.conns.facefuckConn, _TL_state.conns.backshotsConn, _TL_state.conns.psConn, _TL_state.conns
+                    .hugConn,
+                    _TL_state.conns.carryConn, _TL_state.conns.ssConn, _TL_state.conns.qa74Conn, _TL_state.conns
+                    .orbitConn,
+                    _TL_state.conns.ghostConn, _TL_state.conns.bbConn, _TL_state.conns.bbRespConn, _TL_state.conns
+                    .bbRemConn,
+                    _TL_state.conns.bbAnimConn_, _TL_state.conns.bbAnimConn2_, _TL_state.conns.bbAnimConn3_,
+                    _TL_state.conns.bbAnimConn4_, _TL_state.conns.bbAnimConn5_, _TL_state.conns.bbAnimConn6_, _TL_state
+                    .conns.bbAnimConn7_,
+                    _TL_state.conns.bbAnimConn8_, _TL_state.conns.bbAnimConn9_, _TL_state.conns.bbAnimConn10_, _TL_state
+                    .conns.bbHealthConn_,
+                    _TL_state.conns.bbRespAnimConn_,
+                    _TL_state.conns.invisHeartConn, _TL_state.conns.invisRenderConn, _TL_state.conns.invisSteppedConn,
+                    _TL_state.conns.orbitTargetRespConn, _TL_state.conns.ghostRespConn,
+                    _TL_state.conns.ppCharConn, _TL_state.conns.pp2CharConn, _TL_state.conns.kissCharConn, _TL_state
+                    .conns.bpCharConn,
+                    _TL_state.conns.lickingCharConn, _TL_state.conns.suckItCharConn, _TL_state.conns.suckingCharConn,
+                    _TL_state.conns.facefuckCharConn, _TL_state.conns.backshotsCharConn, _TL_state.conns.layFuckCharConn,
+                    _TL_state.conns.psCharConn, _TL_state.conns.hugCharConn, _TL_state.conns.hug2CharConn, _TL_state
+                    .conns.carryCharConn,
+                    _TL_state.conns.ssCharConn, _TL_state.conns.qa74CharConn, _TL_state.conns.avCharConn, _TL_state
+                    .conns._ui_charConn_,
+                    _TL_state.conns.cursorSyncConn, _TL_state.conns.fxConn, _TL_state.conns.antiRagdollConnection,
+                    _TL_state.conns.tfConn, _TL_state.conns.AimbotConnection, _TL_state.conns.TriggerBotConnection,
+                    _TL_state.conns._ctHoverConn, _qb_ref.qaNoSitConn, _qb_ref.qaNoSitSeatedConn,
+                    _qb_ref.qaRespawnConn, _qb_ref.qaTargetRespawnConn, _qb_ref.qaTargetWatchConn, _TL_state.conns
+                    ._dhAimConn,
+                    _TL_state.conns._dhPickConn, _TL_state.conns._dhFlyConn, _TL_state.conns._dhNoclipConn,
+                    _TL_state.conns._mm2FlyConn, _TL_state.conns._mm2NoclipConn,
+                }
+                for _, c in ipairs(_conns) do
+                    if c then pcall(function() c:Disconnect() end) end
+                end
+                _TL_state.conns.bbAnimConn_     = nil; _TL_state.conns.bbAnimConn2_ = nil; _TL_state.conns.bbAnimConn3_ = nil
+                _TL_state.conns.bbAnimConn4_    = nil; _TL_state.conns.bbAnimConn5_ = nil; _TL_state.conns.bbAnimConn6_ = nil
+                _TL_state.conns.bbAnimConn7_    = nil; _TL_state.conns.bbAnimConn8_ = nil; _TL_state.conns.bbAnimConn9_ = nil
+                _TL_state.conns.bbAnimConn10_   = nil; _TL_state.conns.bbHealthConn_ = nil; _TL_state.conns.bbRespAnimConn_ = nil
+                pcall(function()
+                    _TL_state.fly.active = false
+                    _flyMuteSounds(false)
+                    if _invisHL and _invisHL.Parent then
+                        _invisHL:Destroy(); _invisHL = nil
+                    end
+                end)
+                pcall(function() if stopBB then stopBB() end end)
+                pcall(function()
+                    if _G._TLCursorRSConn then
+                        pcall(function() _G._TLCursorRSConn:Disconnect() end); _G._TLCursorRSConn = nil
+                    end
+                    if _G._TLCursorGui and _G._TLCursorGui.Parent then
+                        _G._TLCursorGui:Destroy(); _G._TLCursorGui = nil
+                    end
+                    pcall(function() _SvcUIS.MouseIconEnabled = true end)
+                end)
+                pcall(function()
+                    local lp = _SvcPlr.LocalPlayer
+                    local pg = lp:FindFirstChild("PlayerGui")
+                    if pg then
+                        for _, n in ipairs({ "SmartBarGui", "MatrixTrackerGUI" }) do
+                            local g = pg:FindFirstChild(n); if g then g:Destroy() end
+                        end
+                    end
+                    local ok, cg = pcall(function() return game:GetService("CoreGui") end)
+                    if ok and cg then
+                        for _, n in ipairs({ "SmartBarGui", "MatrixTrackerGUI" }) do
+                            local gx = cg:FindFirstChild(n); if gx then gx:Destroy() end
+                        end
+                    end
+                    if gethui then
+                        pcall(function()
+                            local hui = gethui()
+                            for _, n in ipairs({ "SmartBarGui", "MatrixTrackerGUI" }) do
+                                local g = hui:FindFirstChild(n); if g then g:Destroy() end
+                            end
+                        end)
+                    end
+                    if ScreenGui and ScreenGui.Parent then ScreenGui:Destroy() end
+                end)
+                pcall(function()
+                    if _espGui and _espGui.Parent then
+                        _espGui:Destroy(); _espGui = nil
+                    end
+                end)
+                pcall(function()
+                    if _hoverSoundObj then
+                        _hoverSoundObj:Destroy(); _hoverSoundObj = nil
+                    end
+                end)
+
+                pcall(function()
+                    if getgenv and getgenv()._TLRemoveTool then
+                        _genv._TLRemoveTool()
+                        _genv._TLRemoveTool = nil
+                    end
+                end)
+                pcall(function()
+                    if getgenv and getgenv()._TLInvPatchCleanup then
+                        _genv._TLInvPatchCleanup()
+                        _genv._TLInvPatchCleanup = nil
+                    end
+                end)
+                _G.TLActions        = nil
+                _G.TLActionsStop    = nil
+                pcall(function()
+                    local env = _genv
+                    env._panelColorHooks = nil
+                end)
+                pcall(function()
+                    if getgenv then
+                        _genv._TL_AntiVoidStop    = nil
+                        _genv.SUMenuCleanup       = nil
+                        _genv.TLUnload            = nil
+                        _genv.SmartBarLoaded      = nil
+                        _genv.TLSendNotif         = nil
+
+                    end
+                end)
+                _G.SUMenuCleanup = nil
+            end
+            pcall(function()
+                local env = _genv
+                env.SUMenuCleanup = _TL_refs.SUMenuCleanup
+                env.TLUnload = _TL_refs.SUMenuCleanup
             end)
-        end
-    end)
-
-    -- Timeout safety
-    task.spawn(function()
-        for i = 1, MAX_WAIT do
-            task.wait(1)
-            if closing then return end
-        end
-        if not closing then
-            closing = true
-            if loopConn then loopConn:Disconnect() end
-            pcall(function() loader.ready = true end)
-        end
-    end)
-end
-
-_TL_showLoadingScreen()
+            _G.SUMenuCleanup = _TL_refs.SUMenuCleanup
+            end)() 
+    end, _handleError)
+end)
 
 task.spawn(function()
-    local ok, src = pcall(function() return (game :: any):HttpGet(EMOTEWHEEL_URL) end)
+    local ok, src = false, nil -- EMOTEWHEEL disabled: file does not exist
     if ok and src and #src > 10 then
         pcall(loadstring, src)
     end

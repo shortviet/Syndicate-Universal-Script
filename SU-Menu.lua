@@ -25141,6 +25141,7 @@ local function _TL_showLoadingScreen()
                     end
                 end
             end)
+            ; (function()
                 local _afk = _genv._TL_afkSystem
                 if not _afk then return end
 

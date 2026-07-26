@@ -24164,6 +24164,16 @@ local function _TL_showLoadingScreen()
                                 if _TL_safeIsFile(loadingScreenVoiceFileName) then
                                     cached = _TL_safeGetCustomAsset(loadingScreenVoiceFileName)
                                 end
+                                if not cached then
+                                    pcall(function()
+                                        local ok2, bytes2 = pcall(function() return (game :: any):HttpGet(loadingScreenVoiceUrl) end)
+                                        if ok2 and type(bytes2) == "string" and #bytes2 > 0 then
+                                            pcall(function() _TL_safeMakeFolder("assets/SU-MP3-FILES") end)
+                                            pcall(function() _TL_safeWriteFile(loadingScreenVoiceFileName, bytes2) end)
+                                            cached = _TL_safeGetCustomAsset(loadingScreenVoiceFileName)
+                                        end
+                                    end)
+                                end
                                 if cached then
                                     snd.SoundId = cached; snd.Parent = gui
                                     task.wait(0.1)

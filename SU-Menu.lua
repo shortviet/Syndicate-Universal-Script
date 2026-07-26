@@ -312,14 +312,14 @@ task.spawn(function()
     local assets = {
         
         { name = "Syndicate Loading Screen",  url = loadingScreenVoiceUrl,        file = loadingScreenVoiceFileName,        kind = "audio", priority = 1 },
-        { name = "TL Owner Profile Picture",   url = ownerProfilePicUrl,           file = ownerProfilePicFileName,           kind = "image", priority = 1 },
-        { name = "TL User Profile Picture",    url = userProfilePicUrl,            file = userProfilePicFileName,            kind = "image", priority = 1 },
+        { name = "SU Owner Profile Picture",   url = ownerProfilePicUrl,           file = ownerProfilePicFileName,           kind = "image", priority = 1 },
+        { name = "SU User Profile Picture",    url = userProfilePicUrl,            file = userProfilePicFileName,            kind = "image", priority = 1 },
         { name = "usxirr Custom Avatar",       url = customUserAvatars["usxirr"].url, file = customUserAvatars["usxirr"].file, kind = "image", priority = 1 },
         { name = "Abxsent0 Custom Avatar",     url = customUserAvatars["Abxsent0"].url, file = customUserAvatars["Abxsent0"].file, kind = "image", priority = 1 },
         { name = "SU Staff Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-*.png", kind = "image", priority = 1 },
-        { name = "TL Arda Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Arda.png", file = "assets/SU-ROLE-PICS/TL-Arda.png", kind = "image", priority = 1 },
-        { name = "TL Sec Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sec.png", file = "assets/SU-ROLE-PICS/TL-Sec.png", kind = "image", priority = 1 },
-        { name = "TL Sleepy Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sleepy.jpg", file = "assets/SU-ROLE-PICS/TL-Sleepy.jpg", kind = "image", priority = 1 },
+        { name = "SU Arda Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Arda.png", file = "assets/SU-ROLE-PICS/TL-Arda.png", kind = "image", priority = 1 },
+        { name = "SU Sec Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sec.png", file = "assets/SU-ROLE-PICS/TL-Sec.png", kind = "image", priority = 1 },
+        { name = "SU Sleepy Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sleepy.jpg", file = "assets/SU-ROLE-PICS/TL-Sleepy.jpg", kind = "image", priority = 1 },
         { name = "R5yn Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/R5yn.png", file = "assets/SU-ROLE-PICS/R5yn.png", kind = "image", priority = 1 },
         { name = "Communication Tab Icon",     url = comTabIconUrl,                file = comTabIconFileName,                kind = "image", priority = 1 },
         { name = "Home Tab Icon",              url = homeTabIconUrl,               file = homeTabIconFileName,               kind = "image", priority = 1 },
@@ -352,9 +352,7 @@ task.spawn(function()
         { name = "SU Default PING-WLAN Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/PING-WLAN-Icon.png",       file = "assets/SU-Icons/PING-WLAN-Icon.png",       kind = "image", priority = 2 },
         { name = "SU Default PunchFling Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/PunchFling-Icon.png",      file = "assets/SU-Icons/PunchFling-Icon.png",      kind = "image", priority = 2 },
         { name = "SU Magnifier Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SUMagnifier-Tool-Icon.png", file = "assets/SU-Icons/SUMagnifier-Tool-Icon.png", kind = "image", priority = 2 },
-        { name = "SU Icon",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SU-Icon.png",              file = "assets/SU-Icons/SU-Icon.png",              kind = "image", priority = 2 },
-        { name = "SU Default TLIcon",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/TLIcon.png",               file = "assets/SU-Icons/TLIcon.png",               kind = "image", priority = 2 },
-        { name = "SU ProfileIcon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SU-ProfileIcon.png",       file = "assets/SU-Icons/SU-ProfileIcon.png",       kind = "image", priority = 2 },
+        { name = "SU Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png", file = "assets/SU-Icons/Syndicate-App-Logo-Main.png", kind = "image", priority = 2 },
         { name = "SU OpenBars",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SUOpenBars-Button.png",     file = "assets/SU-Icons/SUOpenBars-Button.png",    kind = "image", priority = 2 },
         { name = "SU OpenedBars",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SUOpenedBars-Button.png",    file = "assets/SU-Icons/SUOpenedBars-Button.png",  kind = "image", priority = 2 },
         { name = "SU Default QA Hug",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Hug-Icon.png",       file = "assets/SU-Icons/QuickAction-Hug-Icon.png",       kind = "image", priority = 2 },
@@ -835,7 +833,7 @@ end
 local function _handleError(err)
     local traceback = debug.traceback()
     local fullError = "╔══════════════════════════════════════════════╗\n" ..
-                      "║  TLMENU CRITICAL ERROR DETECTED              ║\n" ..
+                      "║  SYNDICATE CRITICAL ERROR DETECTED              ║\n" ..
                       "╟──────────────────────────────────────────────╢\n" ..
                       "║ Error: " .. tostring(err) .. "                 ╢\n" ..
                       "╟──────────────────────────────────────────────╢\n" ..
@@ -1844,7 +1842,7 @@ local _TL_THEMES = {
                 
                 
                 
-                local TOOL_NAME  = "_TLInspect"
+                local TOOL_NAME  = "_SUInspect"
                 local SLOT_IMAGE = "rbxassetid://71807151037163"
                 local RS         = RunService or _SvcRS
                 local patched    = {}
@@ -1902,7 +1900,7 @@ local _TL_THEMES = {
                     local bg = rg:FindFirstChild("BackpackGui"); if not bg then return end
                     for _, d in ipairs(bg:GetDescendants()) do
                         local isToolLabel = d:IsA("TextLabel") and
-                            (d.Text == TOOL_NAME or d.Text == "TL Magnifyer" or d.Text == "TL Magnifier" or d.Text == "TLInspect")
+                            (d.Text == TOOL_NAME or d.Text == "SU Magnifier" or d.Text == "SU Magnifier" or d.Text == "SUInspect")
                         local isToolFrame = d:IsA("Frame") and d.Name == TOOL_NAME
                         if isToolLabel or isToolFrame then
                             local slot = d.Parent
@@ -2734,7 +2732,7 @@ local _TL_THEMES = {
                         Players.LocalPlayer.Character
                     }) do
                         if loc then
-                            local t = loc:FindFirstChild("_TLInspect")
+                            local t = loc:FindFirstChild("_SUInspect")
                             if t then t:Destroy() end
                         end
                     end
@@ -2743,7 +2741,7 @@ local _TL_THEMES = {
 
                 removeTLTool()
                 local tool   = Instance.new("Tool")
-                tool.Name    = "_TLInspect"
+                tool.Name    = "_SUInspect"
                 tool.ToolTip = ""
                 pcall(function() tool.TextureId = "rbxassetid://84392553014944" end)
                 tool.CanBeDropped   = false
@@ -2849,7 +2847,7 @@ local _TL_THEMES = {
                         Players.LocalPlayer.Character
                     }) do
                         if loc then
-                            local old = loc:FindFirstChild("_TLInspect")
+                            local old = loc:FindFirstChild("_SUInspect")
                             if old then old:Destroy() end
                         end
                     end
@@ -2864,12 +2862,12 @@ local _TL_THEMES = {
                         Players.LocalPlayer.Character
                     }) do
                         if loc then
-                            local old = loc:FindFirstChild("_TLInspect")
+                            local old = loc:FindFirstChild("_SUInspect")
                             if old then old:Destroy() end
                         end
                     end
                     local newTool   = Instance.new("Tool")
-                    newTool.Name    = "_TLInspect"
+                    newTool.Name    = "_SUInspect"
                     newTool.ToolTip = ""
                     pcall(function() newTool.TextureId = "rbxassetid://84392553014944" end)
                     newTool.CanBeDropped   = false
@@ -15509,7 +15507,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = "rbxassetid://110896600564086"
+                                    logo.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -15867,7 +15865,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = "rbxassetid://73800014230419"
+                                    logo.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -16240,7 +16238,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = "rbxassetid://123326309117495"
+                                    logo.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -16548,7 +16546,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = _TL_safeGetCustomAsset(dexterLoadingScreenFileName) or dexterLoadingScreenUrl
+                                    logo.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -16807,7 +16805,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = _TL_safeGetCustomAsset(deathNoteLoadingScreenFileName) or deathNoteLoadingScreenUrl
+                                    logo.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -19338,7 +19336,7 @@ local themePage = Instance.new("Frame", subArea)
                         or (override and override.role or nil)
 
                     
-                    local roleLower    = (roleLabel or (isAdmin and "TL Admin" or "TL User")):lower()
+                    local roleLower    = (roleLabel or (isAdmin and "SU Admin" or "SU User")):lower()
                     local displayLower = (override and override.display or ""):lower()
                     local themeKey     = "user"
 
@@ -19392,10 +19390,10 @@ local themePage = Instance.new("Frame", subArea)
                     
                     
                     if not roleLabel then
-                        local _NT_ROLE_DEFAULTS = { user="TL User", admin="TL Admin", owner="TL Owner", developer="TL Developer", advertising="TL Advertising", moderator="TL Moderator" }
+                        local _NT_ROLE_DEFAULTS = { user="SU User", admin="SU Admin", owner="SU Owner", developer="SU Developer", advertising="SU Advertising", moderator="SU Moderator" }
                         roleLabel = (_NT_CONFIG.roleDisplayNames and _NT_CONFIG.roleDisplayNames[themeKey])
                             or _NT_ROLE_DEFAULTS[themeKey]
-                            or "TL User"
+                            or "SU User"
                     end
 
                     local theme = _NT_CONFIG.themes[themeKey] or _NT_DEFAULTS.themes.user
@@ -24518,7 +24516,7 @@ local function _TL_showLoadingScreen()
                             Size = UDim2.new(0,IS,0,IS),
                             Position = UDim2.new(0.5,-IS/2, 0.5,-IS/2),
                             BackgroundTransparency = 1, BorderSizePixel = 0,
-                            Image = "rbxassetid://89872178631966",
+                            Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png",
                             ScaleType = Enum.ScaleType.Fit,
                         }, logoFrame)
                         addCorner(FR-4, logoImage)
@@ -24693,7 +24691,7 @@ local function _TL_showLoadingScreen()
                         }, bottomBar)
                         lmake("TextLabel", {
                             Size = UDim2.new(0,260,1,0), Position = UDim2.new(0,16,0,0),
-                            Text = "TLMENU LOADING SYSTEM", TextColor3 = Color3.fromRGB(62,55,88),
+                            Text = "SYNDICATE LOADING SYSTEM", TextColor3 = Color3.fromRGB(62,55,88),
                             TextSize = 10, Font = Enum.Font.GothamBold, BackgroundTransparency = 1,
                             BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
                         }, bottomBar)
@@ -24716,7 +24714,7 @@ local function _TL_showLoadingScreen()
                             "Preparing asset pipeline...", "Compiling bytecode...",
                             "Warming up render thread...", "Almost ready...",
                         }
-                        local TITLE_FRAMES = {"T","TL","TLM","TLME","TLMEN","TLMENU"}
+                        local TITLE_FRAMES = {"S","SY","SYN","SYND","SYNDI","SYNDIC"}
                         local TITLE_DELAYS = {0.20, 0.20, 0.12, 0.12, 0.12, 0}
 
                         local progress    = 0

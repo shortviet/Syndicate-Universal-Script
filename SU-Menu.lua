@@ -2911,7 +2911,7 @@ keybinds, keybindMainConn = {}, nil
                     if gpe then return end
                     if isConfiguringKeybind then return end
                     if lastConfiguredKey and input.KeyCode == lastConfiguredKey and tick() - lastConfiguredTime < 0.5 then return end
-                    if input.KeyCode == Enum.KeyCode.K then return end
+                    if _tlMenuToggleKey and input.KeyCode == _tlMenuToggleKey then return end
                     for actionName, data in pairs(keybinds) do
                         if data.key and input.KeyCode == data.key and data.callback then
                             data.callback()
@@ -4674,7 +4674,7 @@ makePanel("Home", C.accent)
 
                 _u.verLbl = Instance.new("TextLabel", _u.verF)
                 _u.verLbl.Size = UDim2.new(1, 0, 1, 0); _u.verLbl.BackgroundTransparency = 1
-                _u.verLbl.Text = "Syndicate Universal"; _u.verLbl.Font = Enum.Font.GothamBlack; _u.verLbl.TextSize = 12
+                _u.verLbl.Text = ""; _u.verLbl.Font = Enum.Font.GothamBlack; _u.verLbl.TextSize = 12
                 _u.verLbl.TextColor3 = C.accent; _u.verLbl.TextXAlignment = Enum.TextXAlignment.Center
 
                 Y = Y + PROF_CARD_H + 12
@@ -14432,6 +14432,7 @@ _TL_state.actions = {}
                         if input.UserInputType ~= Enum.UserInputType.Keyboard then return end
                         local newKey = input.KeyCode
                         keybinds[actionName].key = newKey
+                        if actionName == "Toggle SmartBar" then _tlMenuToggleKey = newKey end
                         lastConfiguredKey = newKey
                         lastConfiguredTime = tick()
                         stopListening()
@@ -22906,6 +22907,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     corner(tabCardsHolder, 12)
 
                     local isOpen, activeTab, _closeTok = false, nil, 0
+                    _tlMenuToggleKey = Enum.KeyCode.K
 
                     local tabBtns, selectTab = {}, nil
 
@@ -23527,8 +23529,8 @@ local function parseFieldMessage(fullText, prefixLen)
                     end
                     _tlTrackConn(UserInputService.InputBegan:Connect(function(input, gpe)
                         if gpe then return end
-                        if input.KeyCode == Enum.KeyCode.K then
-                            if isOpen then closeBar() else openBar() end
+                    if input.KeyCode == _tlMenuToggleKey then
+                        if isOpen then closeBar() else openBar() end
                         end
                     end))
                     

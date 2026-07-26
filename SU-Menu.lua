@@ -24052,15 +24052,13 @@ local function parseFieldMessage(fullText, prefixLen)
             
             
 local function _TL_showLoadingScreen()
+    local _tsProxy     = (getgenv and getgenv())._TL_tw or (function() end)
     local TweenService = _tsProxy
     local Heartbeat    = game:GetService("RunService").Heartbeat
     local Players      = game:GetService("Players")
     local Lighting     = game:GetService("Lighting")
     local CoreGui      = game:GetService("CoreGui")
-    local CoreGui      = game:GetService("CoreGui")
-    local CoreGui      = game:GetService("CoreGui")
     local LocalPlayer  = Players.LocalPlayer
-    local _tsProxy     = (getgenv and getgenv())._TL_tw or (function() end)
 
     local SCREEN_NAME = "TL_LoadingScreen"
     local MAX_WAIT    = 60

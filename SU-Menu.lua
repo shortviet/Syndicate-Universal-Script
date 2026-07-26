@@ -24052,7 +24052,7 @@ local function parseFieldMessage(fullText, prefixLen)
             
             
 local function _TL_showLoadingScreen()
-    local _tsProxy     = (getgenv and getgenv())._TL_tw or (function() end)
+    local _tsProxy     = (getgenv and getgenv())._TL_tw or game:GetService("TweenService")
     local TweenService = _tsProxy
     local Heartbeat    = game:GetService("RunService").Heartbeat
     local Players      = game:GetService("Players")

@@ -4814,8 +4814,7 @@ makePanel("Home", C.accent)
                     dStroke.Enabled                                  = _TL_isImgTheme(_TL_activeThemeId)
 
                     local _DISC_SERVERS                              = {
-                        { label = "🇩🇪  German Server", link = "https://discord.gg/6RK7yANN7F" },
-                        { label = "🇬🇧  English Server", link = "https://discord.gg/fRt49bcpfE" },
+                        { label = "Discord Server", link = "https://discord.com/invite/YTkzURjppm" },
                     }
 
                     for i, srv in ipairs(_DISC_SERVERS) do

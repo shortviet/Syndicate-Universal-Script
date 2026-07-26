@@ -8973,7 +8973,7 @@ visualPage = Instance.new("Frame", sSubArea)
                     end
                 end)
 
-                combatContainer, combatContent, combatAddRow, _combatFolderApi = _sc.makeMiscFolder("Combat Tools", "TL",
+                combatContainer, combatContent, combatAddRow, _combatFolderApi = _sc.makeMiscFolder("Combat Tools", "SU",
                     C.red, 1, combatPage)
                 task.defer(function()
                     if _combatFolderApi then
@@ -23655,14 +23655,14 @@ local function parseFieldMessage(fullText, prefixLen)
                     scIcon.Position = UDim2.fromScale(0.5, 0.5)
                     scIcon.AnchorPoint = Vector2.new(0.5, 0.5)
                     scIcon.BackgroundTransparency = 1
-                    scIcon.Image = "rbxassetid://6031068433"
+                    scIcon.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
                     scIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
                     scIcon.Visible = false
                     scIcon.ZIndex = 22
                     local scTlIcon = Instance.new("TextLabel", smartCapsule)
                     scTlIcon.Size = UDim2.fromScale(1, 1)
                     scTlIcon.BackgroundTransparency = 1
-                    scTlIcon.Text = "TL"
+                    scTlIcon.Text = "SU"
                     scTlIcon.Font = Enum.Font.GothamBlack
                     scTlIcon.TextSize = 12
                     scTlIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -23684,14 +23684,14 @@ local function parseFieldMessage(fullText, prefixLen)
                     qaIcon.Position = UDim2.fromScale(0.5, 0.5)
                     qaIcon.AnchorPoint = Vector2.new(0.5, 0.5)
                     qaIcon.BackgroundTransparency = 1
-                    qaIcon.Image = "rbxassetid://6031265976"
+                    qaIcon.Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png"
                     qaIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
                     qaIcon.Visible = false
                     qaIcon.ZIndex = 22
                     local qaTlIcon = Instance.new("TextLabel", qaCapsule)
                     qaTlIcon.Size = UDim2.fromScale(1, 1)
                     qaTlIcon.BackgroundTransparency = 1
-                    qaTlIcon.Text = "TLQ"
+                    qaTlIcon.Text = "SUQ"
                     qaTlIcon.Font = Enum.Font.GothamBlack
                     qaTlIcon.TextSize = 12
                     qaTlIcon.TextColor3 = Color3.fromRGB(255, 255, 255)

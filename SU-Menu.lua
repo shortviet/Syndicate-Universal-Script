@@ -56,8 +56,8 @@ local nametagImageFileName = "assets/SU-ROLE-PICS/nametag-image.png"
 local ownerProfilePicUrl      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/SU-owner.png"
 local ownerProfilePicFileName = "assets/SU-ROLE-PICS/SU-owner.png"
 
-local userProfilePicUrl      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TLUSER-ROLE.png"
-local userProfilePicFileName = "assets/ROLE-ICONS/TLUSER-ROLE.png"
+local userProfilePicUrl      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SUUSER-ROLE.png"
+local userProfilePicFileName = "assets/ROLE-ICONS/SUUSER-ROLE.png"
 
 local customUserAvatars = {
     ["usxirr"] = {
@@ -66,13 +66,13 @@ local customUserAvatars = {
         strokeColor = ColorSequence.new(Color3.fromHex("#9A7211"), Color3.fromHex("#000000")),
     },
     ["Abxsent0"] = {
-        url  = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-Abxsent0.png",
-        file = "assets/ROLE-ICONS/TL-Abxsent0.png",
+        url  = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-Abxsent0.png",
+        file = "assets/ROLE-ICONS/SU-Abxsent0.png",
         strokeColor = ColorSequence.new(Color3.fromHex("#06402B"), Color3.fromHex("#88E788")),
     },
 }
 
-local dragonballMusicUrl             = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/THEME%20MUSICS/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
+local dragonballMusicUrl             = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/THEME%20MUSICS/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
 local dragonballMusicFileName        = "assets/SU-MP3-FILES/DragonBall-Music1.mp3"
 
 local dragonballSettingsIconUrl      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
@@ -84,7 +84,7 @@ local dragonballBgFileName = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Home-Wal
 local onePieceActionBgUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/THEMES/ONE%20PIECE/Theme-OnePiece-Action-Wallpaper.png"
 local onePieceActionBgFileName = "assets/THEMES/ONEPIECE/OP-ACT-BG.png"
 
-local adminAudioUrl           = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/TLMENU-STANDARD-SFX/TLSYSTEM-ADMIN-SFX.mp3"
+local adminAudioUrl           = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/TLMENU-STANDARD-SFX/TLSYSTEM-ADMIN-SFX.mp3"
 local adminAudioFileName      = "assets/SU-MP3-FILES/TLSYSTEM-ADMIN-SFX.mp3"
 
 local theBoysScriptsIconUrl      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/THE%20BOYS/Theme-TheBoys-Scripts-Icon.png"
@@ -97,26 +97,26 @@ local theBoysActionsIconUrl      = "https://raw.githubusercontent.com/shortviet/
 local theBoysActionsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Actions-Icon.png"
 local theBoysBgUrl               = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/THE%20BOYS/Theme-TheBoys2.jpg"
 local theBoysBgFileName          = "assets/THEMES/THEBOYS/Theme-TheBoys2.jpg"
-local theBoysMusicUrl            = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
+local theBoysMusicUrl            = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
 local theBoysMusicFileName       = "assets/SU-MP3-FILES/Theme-TheBoys-Music.mp3"
 
-local comTabIconUrl              = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Com-Icon.png"
-local comTabIconFileName         = "assets/SU-DEFAULT/Com-Icon.png"
+local comTabIconUrl              = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Com-Icon.png"
+local comTabIconFileName         = "assets/SU-Icons/Com-Icon.png"
 
-local homeTabIconUrl             = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/HomeTab-Icon.png"
-local homeTabIconFileName        = "assets/SU-DEFAULT/HomeTab-Icon.png"
+local homeTabIconUrl             = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/HomeTab-Icon.png"
+local homeTabIconFileName        = "assets/SU-Icons/HomeTab-Icon.png"
 
-local characterTabIconUrl        = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Character-Icon.png"
-local characterTabIconFileName   = "assets/SU-DEFAULT/Character-Icon.png"
+local characterTabIconUrl        = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Character-Icon.png"
+local characterTabIconFileName   = "assets/SU-Icons/Character-Icon.png"
 
-local scriptsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Scripts-Icon.png"
-local scriptsTabIconFileName     = "assets/SU-DEFAULT/Scripts-Icon.png"
+local scriptsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Scripts-Icon.png"
+local scriptsTabIconFileName     = "assets/SU-Icons/Scripts-Icon.png"
 
-local actionsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/ActionTab-Icon.png"
-local actionsTabIconFileName     = "assets/SU-DEFAULT/ActionTab-Icon.png"
+local actionsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/ActionTab-Icon.png"
+local actionsTabIconFileName     = "assets/SU-Icons/ActionTab-Icon.png"
 
-local playerlistTabIconUrl       = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Playerlist-Icon.png"
-local playerlistTabIconFileName  = "assets/SU-DEFAULT/Playerlist-Icon.png"
+local playerlistTabIconUrl       = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Playerlist-Icon.png"
+local playerlistTabIconFileName  = "assets/SU-Icons/Playerlist-Icon.png"
 
 local deathNoteHomeIconUrl         = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Icon.png"
 local deathNoteHomeIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Icon.png"
@@ -156,8 +156,8 @@ local dexterLoadingScreenFileName   = "assets/THEMES/DEXTER/Theme-Dexter-Loading
 local dexterPlayerlistIconUrl       = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 local dexterPlayerlistIconFileName  = "assets/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 
-local loadingScreenVoiceUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL-MP3/SULoadingScreen.mp3"
-local loadingScreenVoiceFileName = "assets/SU-MP3-FILES/SULoadingScreen.mp3"
+local loadingScreenVoiceUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU-MP3/hi-aubrey-omori-tag.wav"
+local loadingScreenVoiceFileName = "assets/SU-MP3-FILES/hi-aubrey-omori-tag.wav"
 
 local _TL_assetLoader = {
     started = false,
@@ -296,7 +296,7 @@ task.spawn(function()
     pcall(function()
         if not _TL_safeIsFolder("assets/SU-MP3-FILES") then _TL_safeMakeFolder("assets/SU-MP3-FILES") end
         if not _TL_safeIsFolder("assets/SU-ROLE-PICS") then _TL_safeMakeFolder("assets/SU-ROLE-PICS") end
-        if not _TL_safeIsFolder("assets/SU-DEFAULT") then _TL_safeMakeFolder("assets/SU-DEFAULT") end
+        if not _TL_safeIsFolder("assets/SU-Icons") then _TL_safeMakeFolder("assets/SU-Icons") end
         if not _TL_safeIsFolder("assets/ROLE-ICONS") then _TL_safeMakeFolder("assets/ROLE-ICONS") end
         if not _TL_safeIsFolder("assets/THEMES") then _TL_safeMakeFolder("assets/THEMES") end
         if not _TL_safeIsFolder("assets/THEMES/DRAGONBALL") then _TL_safeMakeFolder("assets/THEMES/DRAGONBALL") end
@@ -316,7 +316,7 @@ task.spawn(function()
         { name = "TL User Profile Picture",    url = userProfilePicUrl,            file = userProfilePicFileName,            kind = "image", priority = 1 },
         { name = "usxirr Custom Avatar",       url = customUserAvatars["usxirr"].url, file = customUserAvatars["usxirr"].file, kind = "image", priority = 1 },
         { name = "Abxsent0 Custom Avatar",     url = customUserAvatars["Abxsent0"].url, file = customUserAvatars["Abxsent0"].file, kind = "image", priority = 1 },
-        { name = "TL Staff Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png", kind = "image", priority = 1 },
+        { name = "SU Staff Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-*.png", kind = "image", priority = 1 },
         { name = "TL Arda Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Arda.png", file = "assets/SU-ROLE-PICS/TL-Arda.png", kind = "image", priority = 1 },
         { name = "TL Sec Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sec.png", file = "assets/SU-ROLE-PICS/TL-Sec.png", kind = "image", priority = 1 },
         { name = "TL Sleepy Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sleepy.jpg", file = "assets/SU-ROLE-PICS/TL-Sleepy.jpg", kind = "image", priority = 1 },
@@ -327,41 +327,41 @@ task.spawn(function()
         { name = "Scripts Tab Icon",           url = scriptsTabIconUrl,            file = scriptsTabIconFileName,            kind = "image", priority = 1 },
         { name = "Actions Tab Icon",           url = actionsTabIconUrl,            file = actionsTabIconFileName,            kind = "image", priority = 1 },
         { name = "Playerlist Tab Icon",        url = playerlistTabIconUrl,         file = playerlistTabIconFileName,         kind = "image", priority = 1 },
-        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/ANTIVCBAN-Unmuted-Icon.png", file = "assets/SU-DEFAULT/TL_Unmuted.png", kind = "image", priority = 1 },
-        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/ANTIVCBAN-Mute-Icon.png",    file = "assets/SU-DEFAULT/TL_Muted.png",   kind = "image", priority = 1 },
+        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/ANTIVCBAN-Unmuted-Icon.png", file = "assets/SU-Icons/SU_Unmuted.png", kind = "image", priority = 1 },
+        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/ANTIVCBAN-Mute-Icon.png",    file = "assets/SU-Icons/SU_Muted.png",   kind = "image", priority = 1 },
 
-        { name = "TL Default Emote Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Emote-Icon.png",          file = "assets/SU-DEFAULT/Emote-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Music Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Music-Icon.png",          file = "assets/SU-DEFAULT/Music-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Visual Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Visual-Icon.png",          file = "assets/SU-DEFAULT/Visual-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Visual2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Visual2-Icon.png",         file = "assets/SU-DEFAULT/Visual2-Icon.png",         kind = "image", priority = 2 },
-        { name = "TL Default Movement Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Movement-Icon.png",        file = "assets/SU-DEFAULT/Movement-Icon.png",        kind = "image", priority = 2 },
-        { name = "TL Default Misc Icon",       url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Misc-Icon.png",            file = "assets/SU-DEFAULT/Misc-Icon.png",            kind = "image", priority = 2 },
-        { name = "TL Default Colors Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Colors-Icon.png",          file = "assets/SU-DEFAULT/Colors-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Theme Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Theme-Icon.png",           file = "assets/SU-DEFAULT/Theme-Icon.png",           kind = "image", priority = 2 },
-        { name = "TL Default Themes Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Themes-Icon.png",          file = "assets/SU-DEFAULT/Themes-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Keybind Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Keybind-Icon.png",         file = "assets/SU-DEFAULT/Keybind-Icon.png",         kind = "image", priority = 2 },
-        { name = "TL Default Cursor Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Cursor-Icon.png",          file = "assets/SU-DEFAULT/Cursor-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default CustomCursor Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/CustomCursor-Icon%20(2).png", file = "assets/SU-DEFAULT/CustomCursor-Icon.png", kind = "image", priority = 2 },
-        { name = "TL Default Search Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Search-Icon.png",          file = "assets/SU-DEFAULT/Search-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Search2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Search2-Icon.png",         file = "assets/SU-DEFAULT/Search2-Icon.png",         kind = "image", priority = 2 },
-        { name = "TL Default Minimize Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Minimize-Icon.png",        file = "assets/SU-DEFAULT/Minimize-Icon.png",        kind = "image", priority = 2 },
-        { name = "TL Default MusicPlay Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicPlay-Icon.png",       file = "assets/SU-DEFAULT/MusicPlay-Icon.png",       kind = "image", priority = 2 },
-        { name = "TL Default MusicPause Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicPause-Icon.png",      file = "assets/SU-DEFAULT/MusicPause-Icon.png",      kind = "image", priority = 2 },
-        { name = "TL Default MusicBack Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicBack-Icon.png",       file = "assets/SU-DEFAULT/MusicBack-Icon.png",       kind = "image", priority = 2 },
-        { name = "TL Default MusicSkip Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicSkip-Icon.png",       file = "assets/SU-DEFAULT/MusicSkip-Icon.png",       kind = "image", priority = 2 },
-        { name = "TL Default PING-WLAN Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/PING-WLAN-Icon.png",       file = "assets/SU-DEFAULT/PING-WLAN-Icon.png",       kind = "image", priority = 2 },
-        { name = "TL Default PunchFling Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/PunchFling-Icon.png",      file = "assets/SU-DEFAULT/PunchFling-Icon.png",      kind = "image", priority = 2 },
-        { name = "TL Default TLMagnifier Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TLMagnifier-Tool-Icon.png", file = "assets/SU-DEFAULT/TLMagnifier-Tool-Icon.png", kind = "image", priority = 2 },
-        { name = "TL Default TL-Icon",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TL-Icon.png",              file = "assets/SU-DEFAULT/TL-Icon.png",              kind = "image", priority = 2 },
-        { name = "TL Default TLIcon",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TLIcon.png",               file = "assets/SU-DEFAULT/TLIcon.png",               kind = "image", priority = 2 },
-        { name = "TL Default TL-ProfileIcon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TL-ProfileIcon.png",       file = "assets/SU-DEFAULT/TL-ProfileIcon.png",       kind = "image", priority = 2 },
-        { name = "TL Default TLOpenBars",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TLOpenBars-Button.png",     file = "assets/SU-DEFAULT/TLOpenBars-Button.png",    kind = "image", priority = 2 },
-        { name = "TL Default TLOpenedBars",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TLOpenedBars-Button.png",    file = "assets/SU-DEFAULT/TLOpenedBars-Button.png",  kind = "image", priority = 2 },
-        { name = "TL Default QA Hug",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Hug-Icon.png",       file = "assets/SU-DEFAULT/QuickAction-Hug-Icon.png",       kind = "image", priority = 2 },
-        { name = "TL Default QA Kiss",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Kiss-Icon.png",      file = "assets/SU-DEFAULT/QuickAction-Kiss-Icon.png",      kind = "image", priority = 2 },
-        { name = "TL Default QA Slap",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Slap-Icon.png",      file = "assets/SU-DEFAULT/QuickAction-Slap-Icon.png",      kind = "image", priority = 2 },
-        { name = "TL Default QA Headbutt",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Headbutt-Icon.png", file = "assets/SU-DEFAULT/QuickAction-Headbutt-Icon.png", kind = "image", priority = 2 },
-        { name = "TL Default QA Backshots",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Backshots-Icon.png", file = "assets/SU-DEFAULT/QuickAction-Backshots-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default Emote Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Emote-Icon.png",          file = "assets/SU-Icons/Emote-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Music Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Music-Icon.png",          file = "assets/SU-Icons/Music-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Visual Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Visual-Icon.png",          file = "assets/SU-Icons/Visual-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Visual2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Visual2-Icon.png",         file = "assets/SU-Icons/Visual2-Icon.png",         kind = "image", priority = 2 },
+        { name = "SU Default Movement Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Movement-Icon.png",        file = "assets/SU-Icons/Movement-Icon.png",        kind = "image", priority = 2 },
+        { name = "SU Default Misc Icon",       url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Misc-Icon.png",            file = "assets/SU-Icons/Misc-Icon.png",            kind = "image", priority = 2 },
+        { name = "SU Default Colors Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Colors-Icon.png",          file = "assets/SU-Icons/Colors-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Theme Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Theme-Icon.png",           file = "assets/SU-Icons/Theme-Icon.png",           kind = "image", priority = 2 },
+        { name = "SU Default Themes Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Themes-Icon.png",          file = "assets/SU-Icons/Themes-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Keybind Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Keybind-Icon.png",         file = "assets/SU-Icons/Keybind-Icon.png",         kind = "image", priority = 2 },
+        { name = "SU Default Cursor Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Cursor-Icon.png",          file = "assets/SU-Icons/Cursor-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default CustomCursor Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/CustomCursor-Icon%20(2).png", file = "assets/SU-Icons/CustomCursor-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default Search Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Search-Icon.png",          file = "assets/SU-Icons/Search-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Search2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Search2-Icon.png",         file = "assets/SU-Icons/Search2-Icon.png",         kind = "image", priority = 2 },
+        { name = "SU Default Minimize Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Minimize-Icon.png",        file = "assets/SU-Icons/Minimize-Icon.png",        kind = "image", priority = 2 },
+        { name = "SU Default MusicPlay Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicPlay-Icon.png",       file = "assets/SU-Icons/MusicPlay-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default MusicPause Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicPause-Icon.png",      file = "assets/SU-Icons/MusicPause-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default MusicBack Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicBack-Icon.png",       file = "assets/SU-Icons/MusicBack-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default MusicSkip Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicSkip-Icon.png",       file = "assets/SU-Icons/MusicSkip-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default PING-WLAN Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/PING-WLAN-Icon.png",       file = "assets/SU-Icons/PING-WLAN-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default PunchFling Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/PunchFling-Icon.png",      file = "assets/SU-Icons/PunchFling-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Magnifier Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SUMagnifier-Tool-Icon.png", file = "assets/SU-Icons/SUMagnifier-Tool-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Icon",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SU-Icon.png",              file = "assets/SU-Icons/SU-Icon.png",              kind = "image", priority = 2 },
+        { name = "SU Default TLIcon",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/TLIcon.png",               file = "assets/SU-Icons/TLIcon.png",               kind = "image", priority = 2 },
+        { name = "SU ProfileIcon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SU-ProfileIcon.png",       file = "assets/SU-Icons/SU-ProfileIcon.png",       kind = "image", priority = 2 },
+        { name = "SU OpenBars",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SUOpenBars-Button.png",     file = "assets/SU-Icons/SUOpenBars-Button.png",    kind = "image", priority = 2 },
+        { name = "SU OpenedBars",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SUOpenedBars-Button.png",    file = "assets/SU-Icons/SUOpenedBars-Button.png",  kind = "image", priority = 2 },
+        { name = "SU Default QA Hug",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Hug-Icon.png",       file = "assets/SU-Icons/QuickAction-Hug-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default QA Kiss",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Kiss-Icon.png",      file = "assets/SU-Icons/QuickAction-Kiss-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default QA Slap",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Slap-Icon.png",      file = "assets/SU-Icons/QuickAction-Slap-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default QA Headbutt",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Headbutt-Icon.png", file = "assets/SU-Icons/QuickAction-Headbutt-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default QA Backshots",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Backshots-Icon.png", file = "assets/SU-Icons/QuickAction-Backshots-Icon.png", kind = "image", priority = 2 },
         { name = "Admin Join Audio",           url = adminAudioUrl,                file = adminAudioFileName,                kind = "audio", priority = 1 },
         
         { name = "The Boys Scripts Icon",      url = theBoysScriptsIconUrl,        file = theBoysScriptsIconFileName,        kind = "image", priority = 2 },
@@ -408,18 +408,18 @@ task.spawn(function()
         { "Usopp Theme",                   "Usopp%20Theme.mp3",                                           "assets/SU-MP3-FILES/OP-M-08.mp3" },
         { "Zoro Theme",                    "Zoro%20Theme.mp3",                                            "assets/SU-MP3-FILES/OP-M-09.mp3" },
     }
-    local _OP_BASE = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/THEME%20MUSICS/ONEPIECE/"
+    local _OP_BASE = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/THEME%20MUSICS/ONEPIECE/"
     for _, v in ipairs(_opMusic) do
         assets[#assets + 1] = { name = "OP Music: " .. v[1], url = _OP_BASE .. v[2], file = v[3], kind = "audio", priority = 2 }
     end
 
     
     local _afkFiles = {
-        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/SU-MP3-FILES/DB-AFK-VL0.mp3" },
-        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/SU-MP3-FILES/DB-AFK-VL1.mp3" },
-        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",      "assets/SU-MP3-FILES/OP-AFK-VL0.mp3" },
-        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",     "assets/SU-MP3-FILES/OP-AFK-VL1.mp3" },
-        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/AFKSFX/THE%20BOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",     "assets/SU-MP3-FILES/TB-AFK-VL0.mp3" },
+        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/SU-MP3-FILES/DB-AFK-VL0.mp3" },
+        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/SU-MP3-FILES/DB-AFK-VL1.mp3" },
+        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",      "assets/SU-MP3-FILES/OP-AFK-VL0.mp3" },
+        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",     "assets/SU-MP3-FILES/OP-AFK-VL1.mp3" },
+        { "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU%20SFX/AFKSFX/THE%20BOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",     "assets/SU-MP3-FILES/TB-AFK-VL0.mp3" },
     }
     for _, v in ipairs(_afkFiles) do
         assets[#assets + 1] = { name = "AFK VL: " .. v[2], url = v[1], file = v[2], kind = "audio", priority = 2 }
@@ -8036,23 +8036,23 @@ local function RunCustomAnimation(Char)
                     
                     
                     do
-                        local _oeUrl = _TL_MODULES_BASE .. "TL-OUTFIT-EXPAND.lua"
+                        local _oeUrl = _TL_MODULES_BASE .. "SU-OUTFIT-EXPAND.lua"
                         outfitExpandBtn.MouseButton1Click:Connect(function()
                             local ok, source = pcall(function() return (game :: any):HttpGet(_oeUrl) end)
                             if not ok or not source or #source < 50 then
-                                warn("[TL] Module load failed: TL-OUTFIT-EXPAND — " .. tostring(source))
+                                warn("[TL] Module load failed: SU-OUTFIT-EXPAND — " .. tostring(source))
                                 sendNotif("Outfit Expand", "Module offline ❌", 2)
                                 return
                             end
                             local fn, loadErr = loadstring(source)
                             if not fn then
-                                warn("[TL] Module compile error: TL-OUTFIT-EXPAND — " .. tostring(loadErr))
+                                warn("[TL] Module compile error: SU-OUTFIT-EXPAND — " .. tostring(loadErr))
                                 sendNotif("Outfit Expand", "Module offline ❌", 2)
                                 return
                             end
                             local execOk, execErr = pcall(fn)
                             if not execOk then
-                                warn("[TL] Module exec error: TL-OUTFIT-EXPAND — " .. tostring(execErr))
+                                warn("[TL] Module exec error: SU-OUTFIT-EXPAND — " .. tostring(execErr))
                                 sendNotif("Outfit Expand", "Module offline ❌", 2)
                             end
                         end)
@@ -18348,12 +18348,12 @@ local themePage = Instance.new("Frame", subArea)
                         admin = { url = "", file = "" },
                         developer = { url = "", file = "" },
                         moderator = { url = "", file = "" },
-                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
+                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-*.png" },
                         advertising = { url = "", file = "" },
                     },
                     customAvatars = {},
                     tagImages = {
-                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
+                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-*.png" },
                     },
                     roleLabels = {},
                     displayNames = {},

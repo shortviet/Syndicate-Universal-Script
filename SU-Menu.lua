@@ -25128,10 +25128,10 @@ local function _TL_showLoadingScreen()
                 end
                 -- Patch Communication tab icon
                 local _comIcon = _TL_safeGetCustomAsset("assets/SU-Icons/Com-Icon.png")
-                if _comIcon then
-                    for _, desc in ipairs(_TL_refs._TL_ScreenGui:GetDescendants()) do
-                        if desc:IsA("ImageLabel") and desc.Image == "rbxassetid://117318347375651" then
-                            desc.Image = _comIcon
+                if _comIcon and _TL_refs._TL_tabBtns then
+                    for _, btn in ipairs(_TL_refs._TL_tabBtns) do
+                        if btn.name == "Communication" and btn.iconImg then
+                            btn.iconImg.Image = _comIcon
                         end
                     end
                 end

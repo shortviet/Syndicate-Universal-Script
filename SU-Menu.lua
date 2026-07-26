@@ -25115,28 +25115,12 @@ local function _TL_showLoadingScreen()
                 task.wait(1)
                 local _iconAsset = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
                 if not _iconAsset then return end
-                -- Patch header icon
                 local qaBar = _genv._TL_qaBar or _TL_refs._TL_qaBar
                 if qaBar then
-                    local hdr = qaBar:FindFirstChildOfClass("Frame")
-                    if hdr then
-                        local icoBox = hdr:FindFirstChildOfClass("Frame")
-                        if icoBox then
-                            local icoLbl = icoBox:FindFirstChildOfClass("ImageLabel")
-                            if icoLbl then icoLbl.Image = _iconAsset end
-                        end
-                    end
-                    -- Patch crossud card icon
-                    local scroll = qaBar:FindFirstChildOfClass("ScrollingFrame")
-                    if scroll then
-                        for _, child in ipairs(scroll:GetDescendants()) do
-                            if child:IsA("TextLabel") and child.Text == "Cross UD" then
-                                local card = child.Parent
-                                if card then
-                                    local img = card:FindFirstChildOfClass("ImageLabel")
-                                    if img then img.Image = _iconAsset end
-                                end
-                            end
+                    -- Replace ALL old TL logos in QABar with Syndicate logo
+                    for _, desc in ipairs(qaBar:GetDescendants()) do
+                        if desc:IsA("ImageLabel") and desc.Image == "rbxassetid://77458828386203" then
+                            desc.Image = _iconAsset
                         end
                     end
                 end

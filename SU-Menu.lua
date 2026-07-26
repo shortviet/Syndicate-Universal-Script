@@ -3124,6 +3124,7 @@ keybinds, keybindMainConn = {}, nil
                     end
                 end)
             end
+            _TL_refs._TL_saveData = saveData
 
             local function extractJsonSection(json, section)
                 local startPat = '"' .. section .. '":%s*{'
@@ -14427,7 +14428,7 @@ _TL_state.actions = {}
                         if input.KeyCode == Enum.KeyCode.Backspace then
                             keybinds[actionName].key = nil
                             stopListening()
-                            task.spawn(saveData)
+                            task.spawn(_TL_refs._TL_saveData)
                             return
                         end
                         if input.UserInputType ~= Enum.UserInputType.Keyboard then return end
@@ -14438,7 +14439,7 @@ _TL_state.actions = {}
                         lastConfiguredTime = tick()
                         stopListening()
                         kl.Text = keyName(newKey)
-                        task.spawn(saveData)
+                        task.spawn(_TL_refs._TL_saveData)
                     end)
                 end
                 keyBtn.MouseButton1Click:Connect(startListening)
@@ -14562,20 +14563,20 @@ local _ok_Settings, _err_Settings = pcall(function()
                     local _, notifSet = subRow(genPage, 0, T.settings_notif, T.settings_notif_badge, C.accent,
                         settingsState.notifications, function(on)
                         settingsState.notifications = on
-                        task.spawn(saveData)
+                        task.spawn(_TL_refs._TL_saveData)
                     end)
                     settingToggleSetters["notifications"] = notifSet
                     local _, autoSet = subRow(genPage, 54, T.settings_auto, T.settings_auto_badge, C.accent2,
                         settingsState.autoOpen, function(on)
                         settingsState.autoOpen = on
                         setupAutoReinject(on)
-                        task.spawn(saveData)
+                        task.spawn(_TL_refs._TL_saveData)
                     end)
                     settingToggleSetters["autoOpen"] = autoSet
                     local _, menuSoundsSet = subRow(genPage, 108, T.settings_menusounds, T.settings_menusounds_badge,
                         C.accent, settingsState.menuSounds, function(on)
                         settingsState.menuSounds = on
-                        task.spawn(saveData)
+                        task.spawn(_TL_refs._TL_saveData)
                     end)
                     settingToggleSetters["menuSounds"] = menuSoundsSet
 
@@ -14618,7 +14619,7 @@ local _ok_Settings, _err_Settings = pcall(function()
 
                         local function applyGuiPosition(pos)
                             settingsState.guiPosition = pos
-                            task.spawn(saveData)
+                            task.spawn(_TL_refs._TL_saveData)
                             for i, btn in pairs(_posBtns) do
                                 if i == pos then
                                     btn.BackgroundColor3 = C.accent
@@ -14859,7 +14860,7 @@ local _ok_Settings, _err_Settings = pcall(function()
                         _gsApplyBtn.MouseButton1Click:Connect(function()
                             _gsSavedScale = _gsCurrentScale
                             settingsState.guiScale = _gsCurrentScale
-                            task.spawn(saveData)
+                            task.spawn(_TL_refs._TL_saveData)
                             _gsApplyBtn.Visible = false
                             _gsResetBtn.Visible = false
                             if _gsResetTimer then task.cancel(_gsResetTimer); _gsResetTimer = nil end
@@ -22535,7 +22536,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         local _, ntVisSet = subRow(nametagPage, 0, "Nametag sichtbar", "Sichtbar für andere Spieler", C.accent,
                             settingsState.nametagVisible, function(on)
                             settingsState.nametagVisible = on
-                            task.spawn(saveData)
+                            task.spawn(_TL_refs._TL_saveData)
                             BroadcastNametagVisibility()
                         end)
                         settingToggleSetters["nametagVisible"] = ntVisSet
@@ -22543,7 +22544,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         local _, ntRemSet = subRow(nametagPage, 54, "Remove Nametag", "Removes nametag above your head", C.accent,
                             settingsState.removeNametag, function(on)
                             settingsState.removeNametag = on
-                            task.spawn(saveData)
+                            task.spawn(_TL_refs._TL_saveData)
                             
                             pcall(function()
                                 local myChar = LocalPlayer.Character
@@ -22913,7 +22914,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     
                     _TL_refs._TL_applyGuiPosition = function(pos)
                         settingsState.guiPosition = pos
-                        task.spawn(saveData)
+                        task.spawn(_TL_refs._TL_saveData)
                         local ax, xsc, xoff = getPanelXAnchor()
                         local newBarPos = UDim2.new(xsc, xoff, 1, 2)
                         local newPanelPos = UDim2.new(xsc, xoff, PANEL_SHOW.Y.Scale, PANEL_SHOW.Y.Offset)

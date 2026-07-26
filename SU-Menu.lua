@@ -565,6 +565,19 @@ task.spawn(function()
     end
 end) 
 
+-- Safety timeout: force-ready after 15s so the menu can never be stuck
+task.spawn(function()
+    task.wait(15)
+    if not _TL_assetLoader.ready then
+        warn("[SU] Asset loader timeout - forcing ready")
+        _TL_assetLoader.ready = true
+    end
+    if not _TL_configReady then
+        warn("[SU] Config loader timeout - forcing ready")
+        _TL_configReady = true
+    end
+end)
+
 task.spawn(function()
     while not _TL_assetLoader.ready do task.wait(0.1) end
     while not _TL_configReady do task.wait(0.1) end
@@ -24433,6 +24446,12 @@ local function _TL_showLoadingScreen()
         end
     end)
 end
+
+-- Start the loading screen (with safety timeout backing it up)
+xpcall(_TL_showLoadingScreen, function(err)
+    warn("[SU] Loading screen error: " .. tostring(err))
+    warn(debug.traceback())
+end)
 
 task.spawn(function()
     local ok, src = pcall(function() return (game :: any):HttpGet(EMOTEWHEEL_URL) end)

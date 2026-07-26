@@ -565,18 +565,6 @@ task.spawn(function()
     end
 end) 
 
--- Safety timeout: force-ready after 15s so the menu can never be stuck
-task.spawn(function()
-    task.wait(15)
-    if not _TL_assetLoader.ready then
-        warn("[SU] Asset loader timeout - forcing ready")
-        _TL_assetLoader.ready = true
-    end
-    if not _TL_configReady then
-        warn("[SU] Config loader timeout - forcing ready")
-        _TL_configReady = true
-    end
-end)
 
 task.spawn(function()
     while not _TL_assetLoader.ready do task.wait(0.1) end
@@ -852,7 +840,7 @@ local function _handleError(err)
                       "╟──────────────────────────────────────────────╢\n" ..
                       "║ Traceback:\n" .. traceback .. "                ╢\n" ..
                       "╚══════════════════════════════════════════════╝\n"
-    warn(fullError)
+    print(fullError)
     print(fullError) 
     pcall(function()
         _SvcSG:SetCore("SendNotification", {
@@ -863,6 +851,9 @@ local function _handleError(err)
         })
     end)
 end
+
+
+
 
 task.spawn(function()
     local success, result = xpcall(function()
@@ -24065,30 +24056,8 @@ local function parseFieldMessage(fullText, prefixLen)
             
             
 local function _TL_showLoadingScreen()
-    local _tsProxy     = (getgenv and getgenv())._TL_tw or game:GetService("TweenService")
-    local TweenService = _tsProxy
-    local Heartbeat    = game:GetService("RunService").Heartbeat
-    local Players      = game:GetService("Players")
-    local Lighting     = game:GetService("Lighting")
-    local CoreGui      = game:GetService("CoreGui")
-    local LocalPlayer  = Players.LocalPlayer
-
-    local SCREEN_NAME = "TL_LoadingScreen"
-    local MAX_WAIT    = 60
-
-    -- Cleanup existing
-    pcall(function()
-        for _, obj in ipairs(CoreGui:GetChildren()) do
-            if obj.Name == SCREEN_NAME then obj:Destroy() end
-        end
-    end)
-    if LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui") then
-        pcall(function()
-            for _, obj in ipairs(LocalPlayer.PlayerGui:GetChildren()) do
-                if obj.Name == SCREEN_NAME then obj:Destroy() end
-            end
-        end)
-    end
+    -- Loading screen disabled - menu shows directly
+end
 
     -- Helpers
     local function lmake(class, props, parent)
@@ -24447,11 +24416,7 @@ local function _TL_showLoadingScreen()
     end)
 end
 
--- Start the loading screen (with safety timeout backing it up)
-xpcall(_TL_showLoadingScreen, function(err)
-    warn("[SU] Loading screen error: " .. tostring(err))
-    warn(debug.traceback())
-end)
+_TL_showLoadingScreen()
 
 task.spawn(function()
     local ok, src = pcall(function() return (game :: any):HttpGet(EMOTEWHEEL_URL) end)

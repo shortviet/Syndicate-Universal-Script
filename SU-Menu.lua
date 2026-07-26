@@ -24771,7 +24771,7 @@ local function _TL_showLoadingScreen()
                                 if settingsState and settingsState.autoOpen then
                                     if not isOpen then openBar() end
                                 else
-                                    sendNotif("Syndicate Universal", "System loaded. Press [K] to toggle.", 4)
+                                    sendNotif("Syndicate Universal", "System loaded. Press [" .. tostring(_tlMenuToggleKey and _tlMenuToggleKey.Name or "K") .. "] to toggle.", 4)
                                 end
                             end)
                         end

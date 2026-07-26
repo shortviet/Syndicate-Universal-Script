@@ -25103,6 +25103,7 @@ local function _TL_showLoadingScreen()
                         startBB = function(tgt, mode) pcall(function() startBB(tgt, mode) end) end,
                         registerResetFn = function(fn) _G.TLQA_ResetUI = fn end,
                     _TL_safeGetCustomAsset = _TL_safeGetCustomAsset,
+                    _TL_assetLoader = _TL_assetLoader,
                     })
                     _bbMod2.startQABar()
                 end

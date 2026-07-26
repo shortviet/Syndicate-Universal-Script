@@ -25110,18 +25110,28 @@ local function _TL_showLoadingScreen()
                 end
             end
 
-            -- Patch Syndicate logos into QABar after assets are loaded
+            -- Patch icons after assets are loaded
             task.spawn(function()
                 while not _TL_assetLoader.ready do task.wait(0.5) end
                 task.wait(1)
+                -- Patch Syndicate logos in QABar
                 local _iconAsset = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
-                if not _iconAsset then return end
-                local qaBar = _genv._TL_qaBar or _TL_refs._TL_qaBar
-                if qaBar then
-                    -- Replace ALL old TL logos in QABar with Syndicate logo
-                    for _, desc in ipairs(qaBar:GetDescendants()) do
-                        if desc:IsA("ImageLabel") and desc.Image == "rbxassetid://77458828386203" then
-                            desc.Image = _iconAsset
+                if _iconAsset then
+                    local qaBar = _genv._TL_qaBar or _TL_refs._TL_qaBar
+                    if qaBar then
+                        for _, desc in ipairs(qaBar:GetDescendants()) do
+                            if desc:IsA("ImageLabel") and desc.Image == "rbxassetid://77458828386203" then
+                                desc.Image = _iconAsset
+                            end
+                        end
+                    end
+                end
+                -- Patch Communication tab icon
+                local _comIcon = _TL_safeGetCustomAsset("assets/SU-Icons/Com-Icon.png")
+                if _comIcon then
+                    for _, desc in ipairs(_TL_refs._TL_ScreenGui:GetDescendants()) do
+                        if desc:IsA("ImageLabel") and desc.Image == "rbxassetid://117318347375651" then
+                            desc.Image = _comIcon
                         end
                     end
                 end

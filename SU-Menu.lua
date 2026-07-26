@@ -25126,8 +25126,21 @@ local function _TL_showLoadingScreen()
                         end
                     end
                 end
-                -- Patch Communication tab icon
+                -- Patch Communication tab icon (download directly)
                 local _comIcon = _TL_safeGetCustomAsset("assets/SU-Icons/Com-Icon.png")
+                if not _comIcon and type(writefile) == "function" and type(getcustomasset) == "function" then
+                    local cok, cres = pcall(function()
+                        local req = syn and syn.request or http_request or request
+                        if req then return req({ Url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Com-Icon.png", Method = "GET" }) end
+                    end)
+                    if cok and cres and cres.StatusCode == 200 and cres.Body and #cres.Body > 0 then
+                        local cwok = pcall(writefile, "assets/SU-Icons/Com-Icon.png", cres.Body)
+                        if cwok then
+                            local caok, caid = pcall(getcustomasset, "assets/SU-Icons/Com-Icon.png")
+                            if caok and caid and #caid > 0 then _comIcon = caid end
+                        end
+                    end
+                end
                 if _comIcon and _TL_refs._TL_tabBtns then
                     for _, btn in ipairs(_TL_refs._TL_tabBtns) do
                         if btn.name == "Communication" and btn.iconImg then

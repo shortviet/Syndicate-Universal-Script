@@ -3180,6 +3180,7 @@ keybinds, keybindMainConn = {}, nil
                                 end)
                                 if found then
                                     data.key = found
+                                    if name == "Toggle SmartBar" then _tlMenuToggleKey = found end
                                     if keybindLabelUpdaters[name] then
                                         pcall(function() keybindLabelUpdaters[name](found) end)
                                     end
@@ -22904,7 +22905,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     corner(tabCardsHolder, 12)
 
                     local isOpen, activeTab, _closeTok = false, nil, 0
-                    _tlMenuToggleKey = Enum.KeyCode.K
+                    if not _tlMenuToggleKey then _tlMenuToggleKey = Enum.KeyCode.K end
 
                     local tabBtns, selectTab = {}, nil
 

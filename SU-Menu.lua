@@ -24052,1410 +24052,389 @@ local function parseFieldMessage(fullText, prefixLen)
             
             
 local function _TL_showLoadingScreen()
-                        local TweenService = _tsProxy
-                        local Heartbeat    = game:GetService("RunService").Heartbeat
-                        local Players      = game:GetService("Players")
-
-                        local LC = {
-                            bg           = Color3.fromRGB(  6,   6,  11),
-                            surface      = Color3.fromRGB( 18,  18,  24),
-                            border       = Color3.fromRGB( 32,  32,  40),
-                            accent       = Color3.fromRGB(130,  90, 245),
-                            accentDim    = Color3.fromRGB( 80,  50, 160),
-                            accentBright = Color3.fromRGB(168, 126, 248),
-                            text         = Color3.fromRGB(220, 220, 230),
-                            textDim      = Color3.fromRGB(130, 130, 145),
-                            textMuted    = Color3.fromRGB( 75,  75,  90),
-                            white        = Color3.fromRGB(245, 245, 250),
-                            green        = Color3.fromRGB(100, 210, 140),
-                            greenDim     = Color3.fromRGB( 55, 140,  90),
-                            nebula1      = Color3.fromRGB( 60,  30, 110),
-                            nebula2      = Color3.fromRGB( 25,  18,  70),
-                            indigo       = Color3.fromRGB( 35,  20,  80),
-                            deepPurple   = Color3.fromRGB( 18,  10,  42),
-                        }
-
-                        local LAYOUT = {
-                            imgSize       = 130,
-                            frameSize     = 150,
-                            frameRadius   = 20,
-                            barWidth      = 360,
-                            barHeight     = 3,
-                            duration      = 3.5,
-                            stepCount     = 5,
-                            gridSpacing   = 60,
-                            gridAlpha     = 0.06,
-                            dustCount     = 80,
-                            orbCount      = 25,
-                            bokehCount    = 8,
-                            streakCount   = 4,
-                            emberCount    = 18,
-                            sparkleCount  = 15,
-                        }
-
-                        local SCREEN_NAME = "TL_LoadingScreen"
-                        local MAX_WAIT    = 60
-
-                        pcall(function()
-                            local old = game:GetService("CoreGui"):FindFirstChild(SCREEN_NAME)
-                            if old then old:Destroy() end
-                        end)
-                        for _, child in ipairs(Players.LocalPlayer:WaitForChild("PlayerGui"):GetChildren()) do
-                            if child.Name == SCREEN_NAME then child:Destroy() end
-                        end
-
-                        local function lmake(cls, props, parent)
-                            local obj = Instance.new(cls)
-                            for k, v in pairs(props or {}) do pcall(function() obj[k] = v end) end
-                            if parent then obj.Parent = parent end
-                            return obj
-                        end
-                        local function addCorner(r, parent) return lmake("UICorner", {CornerRadius = UDim.new(0, r)}, parent) end
-                        local function addGradient(parent, cs, rot)
-                            local g = lmake("UIGradient", {Color = cs, Rotation = rot or 0}, parent)
-                            return g
-                        end
-                        local function tw(obj, dur, props, style, dir)
-                            local t = TweenService:Create(obj,
-                                TweenInfo.new(dur, style or Enum.EasingStyle.Quad, dir or Enum.EasingDirection.Out), props)
-                            t:Play(); return t
-                        end
-                        local function lerp(a, b, t2) return a + (b - a) * t2 end
-                        local function lerpColor(c1, c2, t2)
-                            return Color3.new(lerp(c1.R, c2.R, t2), lerp(c1.G, c2.G, t2), lerp(c1.B, c2.B, t2))
-                        end
-
-                        local rand = math.random
-                        local sin  = math.sin
-                        local cos  = math.cos
-                        local abs  = math.abs
-                        local pi2  = math.pi * 2
-
-                        local gui = lmake("ScreenGui", {
-                            Name = SCREEN_NAME, ResetOnSpawn = false,
-                            ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
-                            DisplayOrder = 999, IgnoreGuiInset = true,
-                        })
-                        pcall(function() gui.Parent = game:GetService("CoreGui") end)
-                        if not gui.Parent then
-                            pcall(function() gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui", 5) end)
-                        end
-                        if not gui.Parent then return end
-
-                        local screenSize = workspace.CurrentCamera.ViewportSize
-                        local SW, SH = screenSize.X, screenSize.Y
-
-                        task.spawn(function()
-                            pcall(function()
-                                local _vloader = rawget(_genv, "_TL_assetLoader")
-                                if _vloader then
-                                    local _vwait = 0
-                                    while not _vloader.ready and _vwait < 15 do
-                                        task.wait(0.2); _vwait = _vwait + 0.2
-                                    end
-                                end
-                                local snd = Instance.new("Sound")
-                                snd.Name = "SU_VoiceLine"; snd.Volume = 1.0
-                                snd.RollOffMaxDistance = 10000
-                                local cached = nil
-                                if _TL_safeIsFile(loadingScreenVoiceFileName) then
-                                    cached = _TL_safeGetCustomAsset(loadingScreenVoiceFileName)
-                                end
-                                if not cached then
-                                    pcall(function()
-                                        local ok2, bytes2 = pcall(function() return (game :: any):HttpGet(loadingScreenVoiceUrl) end)
-                                        if ok2 and type(bytes2) == "string" and #bytes2 > 0 then
-                                            pcall(function() _TL_safeMakeFolder("assets/SU-MP3-FILES") end)
-                                            pcall(function() _TL_safeWriteFile(loadingScreenVoiceFileName, bytes2) end)
-                                            cached = _TL_safeGetCustomAsset(loadingScreenVoiceFileName)
-                                        end
-                                    end)
-                                end
-                                if cached then
-                                    snd.SoundId = cached; snd.Parent = gui
-                                    task.wait(0.1)
-                                    if snd and snd.Parent then snd:Play() end
-                                end
-                            end)
-                        end)
-
-                        lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundColor3 = LC.bg,
-                            BorderSizePixel = 0, ZIndex = 1,
-                        }, gui)
-
-                        local gradFrame = lmake("Frame", {
-                            Size = UDim2.new(2.4,0,2.4,0), Position = UDim2.new(-0.7,0,-0.7,0),
-                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 2,
-                        }, gui)
-                        local bgGradient = addGradient(gradFrame, ColorSequence.new({
-                            ColorSequenceKeypoint.new(0,    Color3.fromRGB(65, 35, 120)),
-                            ColorSequenceKeypoint.new(0.18, Color3.fromRGB(40, 20,  85)),
-                            ColorSequenceKeypoint.new(0.38, Color3.fromRGB(20, 12,  50)),
-                            ColorSequenceKeypoint.new(0.58, LC.bg),
-                            ColorSequenceKeypoint.new(0.78, Color3.fromRGB(12,  8,  30)),
-                            ColorSequenceKeypoint.new(1,    LC.bg),
-                        }), -35)
-
-                        local fogHolder = lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
-                            BorderSizePixel = 0, ClipsDescendants = true, ZIndex = 3,
-                        }, gui)
-                        local fogBlobs = {}
-                        local fogConfigs = {
-                            { size = 700, color = Color3.fromRGB(70, 35, 130), alpha = 0.90, x = 0.15, y = 0.20, vx =  14, vy =  9  },
-                            { size = 550, color = Color3.fromRGB(30, 20,  80), alpha = 0.86, x = 0.80, y = 0.65, vx = -11, vy = -7  },
-                            { size = 400, color = Color3.fromRGB(90, 50, 160), alpha = 0.93, x = 0.50, y = 0.80, vx =   8, vy = -12 },
-                        }
-                        for i, cfg in ipairs(fogConfigs) do
-                            local blob = lmake("ImageLabel", {
-                                Size = UDim2.new(0, cfg.size, 0, cfg.size),
-                                Position = UDim2.new(cfg.x, -cfg.size/2, cfg.y, -cfg.size/2),
-                                BackgroundTransparency = 1, ImageColor3 = cfg.color,
-                                ImageTransparency = cfg.alpha, Image = "rbxasset://textures/whiteCircle512.png",
-                                BorderSizePixel = 0, ZIndex = 3,
-                            }, fogHolder)
-                            fogBlobs[i] = {
-                                obj = blob, x = cfg.x * SW, y = cfg.y * SH,
-                                vx = cfg.vx, vy = cfg.vy, size = cfg.size, baseAlpha = cfg.alpha,
-                            }
-                        end
-
-                        local gridHolder = lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
-                            BorderSizePixel = 0, ZIndex = 4,
-                        }, gui)
-                        local gridColor = Color3.fromRGB(100, 70, 180)
-                        local gridTrans = 1 - LAYOUT.gridAlpha
-                        for x = 0, SW, LAYOUT.gridSpacing do
-                            lmake("Frame", {
-                                Size = UDim2.new(0,1,1,0), Position = UDim2.new(0,x,0,0),
-                                BackgroundColor3 = gridColor, BackgroundTransparency = gridTrans,
-                                BorderSizePixel = 0,
-                            }, gridHolder)
-                        end
-                        for y = 0, SH, LAYOUT.gridSpacing do
-                            lmake("Frame", {
-                                Size = UDim2.new(1,0,0,1), Position = UDim2.new(0,0,0,y),
-                                BackgroundColor3 = gridColor, BackgroundTransparency = gridTrans,
-                                BorderSizePixel = 0,
-                            }, gridHolder)
-                        end
-
-                        local vignetteFrame = lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
-                            BorderSizePixel = 0, ZIndex = 4,
-                        }, gui)
-                        local vigTop = lmake("Frame", {
-                            Size = UDim2.new(1,0,0.22,0), BackgroundColor3 = Color3.new(0,0,0),
-                            BackgroundTransparency = 0.35, BorderSizePixel = 0, ZIndex = 4,
-                        }, vignetteFrame)
-                        addGradient(vigTop, NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 1),
-                        }), 90)
-                        local vigBot = lmake("Frame", {
-                            Size = UDim2.new(1,0,0.22,0), Position = UDim2.new(0,0,0.78,0),
-                            BackgroundColor3 = Color3.new(0,0,0), BackgroundTransparency = 0.35,
-                            BorderSizePixel = 0, ZIndex = 4,
-                        }, vignetteFrame)
-                        addGradient(vigBot, NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(1, 0),
-                        }), 90)
-                        local vigLeft = lmake("Frame", {
-                            Size = UDim2.new(0.15,0,1,0), BackgroundColor3 = Color3.new(0,0,0),
-                            BackgroundTransparency = 0.45, BorderSizePixel = 0, ZIndex = 4,
-                        }, vignetteFrame)
-                        addGradient(vigLeft, NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 1),
-                        }), 0)
-                        local vigRight = lmake("Frame", {
-                            Size = UDim2.new(0.15,0,1,0), Position = UDim2.new(0.85,0,0,0),
-                            BackgroundColor3 = Color3.new(0,0,0), BackgroundTransparency = 0.45,
-                            BorderSizePixel = 0, ZIndex = 4,
-                        }, vignetteFrame)
-                        addGradient(vigRight, NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(1, 0),
-                        }), 0)
-
-                        local scanFrame = lmake("Frame", {
-                            Size = UDim2.new(1,0,2,0), BackgroundColor3 = Color3.new(0,0,0),
-                            BackgroundTransparency = 0.94, BorderSizePixel = 0, ZIndex = 5,
-                        }, gui)
-                        local scanOffset = 0
-
-                        local particleHolder = lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
-                            BorderSizePixel = 0, ClipsDescendants = true, ZIndex = 6,
-                        }, gui)
-
-                        local PARTICLE_COLORS = {
-                            Color3.fromRGB(130,  90, 245), Color3.fromRGB(168, 126, 248),
-                            Color3.fromRGB(100,  70, 200), Color3.fromRGB(180, 160, 255),
-                            Color3.fromRGB( 80, 120, 255), Color3.fromRGB(200, 180, 255),
-                            Color3.fromRGB(255, 255, 255),
-                        }
-                        local function pickColor() return PARTICLE_COLORS[rand(1, #PARTICLE_COLORS)] end
-
-                        local dustParticles = {}
-                        for i = 1, LAYOUT.dustCount do
-                            local sz = rand(1, 3)
-                            local alpha = rand(5, 20) / 100
-                            local px = rand() * SW
-                            local py = rand() * SH
-                            local col = lerpColor(LC.accent, LC.white, rand() * 0.3)
-                            local dot = lmake("Frame", {
-                                Size = UDim2.new(0,sz,0,sz), Position = UDim2.new(0,px,0,py),
-                                BackgroundColor3 = col, BackgroundTransparency = 1 - alpha,
-                                BorderSizePixel = 0, ZIndex = 6,
-                            }, particleHolder)
-                            addCorner(sz, dot)
-                            dustParticles[i] = {
-                                obj = dot, x = px, y = py,
-                                vx = (rand() - 0.5) * 0.3, vy = (rand() - 0.5) * 0.2 - 0.1,
-                                baseAlpha = alpha, phase = rand() * pi2, freq = 1.5 + rand() * 2, sz = sz,
-                            }
-                        end
-
-                        local orbParticles = {}
-                        for i = 1, LAYOUT.orbCount do
-                            local sz = rand(4, 12)
-                            local alpha = rand(10, 35) / 100
-                            local px = rand() * SW
-                            local py = rand() * SH
-                            local col = pickColor()
-                            local haloSz = sz * 4
-                            local halo = lmake("ImageLabel", {
-                                Size = UDim2.new(0,haloSz,0,haloSz),
-                                Position = UDim2.new(0,px-haloSz/2,0,py-haloSz/2),
-                                BackgroundTransparency = 1, ImageColor3 = col,
-                                ImageTransparency = 1 - (alpha * 0.3),
-                                Image = "rbxasset://textures/whiteCircle512.png",
-                                BorderSizePixel = 0, ZIndex = 6,
-                            }, particleHolder)
-                            local dot = lmake("Frame", {
-                                Size = UDim2.new(0,sz,0,sz),
-                                Position = UDim2.new(0,px-sz/2,0,py-sz/2),
-                                BackgroundColor3 = col, BackgroundTransparency = 1 - alpha,
-                                BorderSizePixel = 0, ZIndex = 7,
-                            }, particleHolder)
-                            addCorner(sz, dot)
-                            orbParticles[i] = {
-                                dot = dot, halo = halo, x = px, y = py,
-                                baseX = px, baseY = py,
-                                vx = (rand()-0.5)*0.6, vy = (rand()-0.5)*0.4-0.15,
-                                baseAlpha = alpha, phase = rand()*pi2, freq = 0.8+rand()*1.5,
-                                sz = sz, haloSz = haloSz, col = col,
-                                orbitR = rand(20,80), orbitSpeed = (rand()-0.5)*1.2,
-                                orbitAngle = rand()*pi2, driftX = 0, driftY = 0,
-                            }
-                        end
-
-                        local bokehParticles = {}
-                        for i = 1, LAYOUT.bokehCount do
-                            local sz = rand(40, 120)
-                            local alpha = rand(3, 8) / 100
-                            local px = rand() * SW
-                            local py = rand() * SH
-                            local col = lerpColor(LC.accent, Color3.fromRGB(60, 40, 140), rand())
-                            local circle = lmake("ImageLabel", {
-                                Size = UDim2.new(0,sz,0,sz),
-                                Position = UDim2.new(0,px-sz/2,0,py-sz/2),
-                                BackgroundTransparency = 1, ImageColor3 = col,
-                                ImageTransparency = 1 - alpha,
-                                Image = "rbxasset://textures/whiteCircle512.png",
-                                BorderSizePixel = 0, ZIndex = 5,
-                            }, particleHolder)
-                            local ring = lmake("Frame", {
-                                Size = UDim2.new(0,sz,0,sz),
-                                Position = UDim2.new(0,px-sz/2,0,py-sz/2),
-                                BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 5,
-                            }, particleHolder)
-                            addCorner(sz, ring)
-                            lmake("UIStroke", {Color = col, Thickness = 1, Transparency = 1 - (alpha*1.5)}, ring)
-                            bokehParticles[i] = {
-                                circle = circle, ring = ring, x = px, y = py,
-                                vx = (rand()-0.5)*0.15, vy = (rand()-0.5)*0.1,
-                                baseAlpha = alpha, phase = rand()*pi2, sz = sz, col = col,
-                                pulseFreq = 0.3+rand()*0.5,
-                            }
-                        end
-
-                        local streakParticles = {}
-                        for i = 1, LAYOUT.streakCount do
-                            local len = rand(60, 180)
-                            local thick = rand(1, 2)
-                            local streak = lmake("Frame", {
-                                Size = UDim2.new(0,len,0,thick),
-                                Position = UDim2.new(0,-len,0,rand()*SH),
-                                BackgroundColor3 = LC.accentBright, BackgroundTransparency = 0.5,
-                                BorderSizePixel = 0, Rotation = -25+rand(-10,10), ZIndex = 8,
-                            }, particleHolder)
-                            addCorner(thick, streak)
-                            lmake("UIGradient", {
-                                Transparency = NumberSequence.new({
-                                    NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.3, 0.4),
-                                    NumberSequenceKeypoint.new(0.7, 0.1), NumberSequenceKeypoint.new(1, 0.6),
-                                }),
-                            }, streak)
-                            streakParticles[i] = {
-                                obj = streak, x = -len-rand(0,SW), y = rand(50,SH-50),
-                                speed = rand(300,700), len = len, thick = thick,
-                                cooldown = rand(2,6), timer = rand()*4, active = false,
-                                rotation = -25+rand(-10,10),
-                            }
-                        end
-
-                        local emberParticles = {}
-                        for i = 1, LAYOUT.emberCount do
-                            local sz = rand(2, 5)
-                            local alpha = rand(15, 45) / 100
-                            local px = rand() * SW
-                            local py = SH + rand(20, 200)
-                            local ember = lmake("Frame", {
-                                Size = UDim2.new(0,sz,0,sz), Position = UDim2.new(0,px,0,py),
-                                BackgroundColor3 = lerpColor(Color3.fromRGB(200,140,255), Color3.fromRGB(255,200,100), rand()*0.4),
-                                BackgroundTransparency = 1 - alpha, BorderSizePixel = 0, ZIndex = 7,
-                            }, particleHolder)
-                            addCorner(sz, ember)
-                            local glowSz = sz * 3
-                            local glow = lmake("ImageLabel", {
-                                Size = UDim2.new(0,glowSz,0,glowSz),
-                                Position = UDim2.new(0,px-glowSz/2,0,py-glowSz/2),
-                                BackgroundTransparency = 1, ImageColor3 = Color3.fromRGB(180,130,255),
-                                ImageTransparency = 1 - (alpha*0.25),
-                                Image = "rbxasset://textures/whiteCircle512.png",
-                                BorderSizePixel = 0, ZIndex = 6,
-                            }, particleHolder)
-                            emberParticles[i] = {
-                                dot = ember, glow = glow, x = px, y = py,
-                                vx = (rand()-0.5)*0.8, vy = -(rand()*1.2+0.5),
-                                baseAlpha = alpha, phase = rand()*pi2, sz = sz, glowSz = glowSz,
-                                wobbleAmp = rand(15,40), wobbleFreq = 1+rand()*2, startX = px,
-                            }
-                        end
-
-                        local sparkleParticles = {}
-                        for i = 1, LAYOUT.sparkleCount do
-                            local container = lmake("Frame", {
-                                Size = UDim2.new(0,16,0,16),
-                                Position = UDim2.new(0,rand()*SW,0,rand()*SH),
-                                BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 9,
-                            }, particleHolder)
-                            local h = lmake("Frame", {
-                                Size = UDim2.new(1,0,0,2), Position = UDim2.new(0,0,0.5,-1),
-                                BackgroundColor3 = Color3.fromRGB(220,200,255),
-                                BackgroundTransparency = 0.2, BorderSizePixel = 0,
-                            }, container)
-                            addCorner(1, h)
-                            lmake("UIGradient", {
-                                Transparency = NumberSequence.new({
-                                    NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.4, 0),
-                                    NumberSequenceKeypoint.new(0.6, 0), NumberSequenceKeypoint.new(1, 1),
-                                }),
-                            }, h)
-                            local v = lmake("Frame", {
-                                Size = UDim2.new(0,2,1,0), Position = UDim2.new(0.5,-1,0,0),
-                                BackgroundColor3 = Color3.fromRGB(220,200,255),
-                                BackgroundTransparency = 0.2, BorderSizePixel = 0,
-                            }, container)
-                            addCorner(1, v)
-                            lmake("UIGradient", {
-                                Transparency = NumberSequence.new({
-                                    NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.4, 0),
-                                    NumberSequenceKeypoint.new(0.6, 0), NumberSequenceKeypoint.new(1, 1),
-                                }), Rotation = 90,
-                            }, v)
-                            lmake("ImageLabel", {
-                                Size = UDim2.new(0,20,0,20), Position = UDim2.new(0.5,-10,0.5,-10),
-                                BackgroundTransparency = 1, ImageColor3 = Color3.fromRGB(200,180,255),
-                                ImageTransparency = 0.7, Image = "rbxasset://textures/whiteCircle512.png",
-                                BorderSizePixel = 0,
-                            }, container)
-                            sparkleParticles[i] = {
-                                obj = container, x = rand()*SW, y = rand()*SH,
-                                timer = rand()*5, interval = 1.5+rand()*4, flashDur = 0.3+rand()*0.4,
-                                state = "hidden", stateTimer = 0, scale = 0,
-                                maxScale = 0.6+rand()*0.8, rotation = 0, rotSpeed = (rand()-0.5)*60,
-                            }
-                            container.Size = UDim2.new(0,0,0,0)
-                        end
-
-                        local FS = LAYOUT.frameSize
-                        local IS = LAYOUT.imgSize
-                        local FR = LAYOUT.frameRadius
-
-                        local logoGroup = lmake("Frame", {
-                            Size = UDim2.new(0,FS+40,0,FS+80),
-                            Position = UDim2.new(0.5,-(FS+40)/2, 0.30,-(FS+80)/2),
-                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 10,
-                        }, gui)
-
-                        local frameGlow = lmake("Frame", {
-                            Size = UDim2.new(0,FS+16,0,FS+16),
-                            Position = UDim2.new(0.5,-(FS+16)/2, 0,10),
-                            BackgroundColor3 = LC.accentDim, BackgroundTransparency = 0.82,
-                            BorderSizePixel = 0,
-                        }, logoGroup)
-                        addCorner(FR+6, frameGlow)
-
-                        local logoFrame = lmake("Frame", {
-                            Size = UDim2.new(0,FS,0,FS),
-                            Position = UDim2.new(0.5,-FS/2, 0,18),
-                            BackgroundColor3 = LC.surface, BackgroundTransparency = 0.3,
-                            BorderSizePixel = 0,
-                        }, logoGroup)
-                        addCorner(FR, logoFrame)
-
-                        local frameStroke = lmake("UIStroke", {
-                            Color = LC.accent, Thickness = 2, Transparency = 0.35,
-                            ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-                        }, logoFrame)
-
-                        local logoImage = lmake("ImageLabel", {
-                            Size = UDim2.new(0,IS,0,IS),
-                            Position = UDim2.new(0.5,-IS/2, 0.5,-IS/2),
-                            BackgroundTransparency = 1, BorderSizePixel = 0,
-                            Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png") or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png",
-                            ScaleType = Enum.ScaleType.Fit,
-                        }, logoFrame)
-                        addCorner(FR-4, logoImage)
-
-                        local titleLabel = lmake("TextLabel", {
-                            Size = UDim2.new(1,0,0,28),
-                            Position = UDim2.new(0,0, 0,FS+26),
-                            Text = "", TextColor3 = LC.accent, TextSize = 22,
-                            Font = Enum.Font.GothamBlack,
-                            BackgroundTransparency = 1, BorderSizePixel = 0,
-                        }, logoGroup)
-
-                        lmake("TextLabel", {
-                            Size = UDim2.new(1,0,0,14),
-                            Position = UDim2.new(0,0, 0,FS+56),
-                            Text = "v1.03 \xc2\xb7 Enjoy it",
-                            TextColor3 = LC.textMuted, TextSize = 11,
-                            Font = Enum.Font.GothamMedium,
-                            BackgroundTransparency = 1, BorderSizePixel = 0,
-                        }, logoGroup)
-
-                        local TIPS = {
-                            "[PC] You can open the Syndicate quicker when u set up a keybind.",
-                            "U can select a color of your choice, based how you want the Syndicate to look!",
-                            "Ur using right now the best script, did you know that?",
-                        }
-
-                        local tipsBg = lmake("Frame", {
-                            Size = UDim2.new(0,LAYOUT.barWidth,0,34),
-                            Position = UDim2.new(0.5,-(LAYOUT.barWidth/2), 0.52,-17),
-                            BackgroundColor3 = LC.surface, BackgroundTransparency = 0.55,
-                            BorderSizePixel = 0, ZIndex = 10,
-                        }, gui)
-                        addCorner(8, tipsBg)
-                        lmake("UIStroke", {Color = LC.border, Thickness = 1, Transparency = 0.55}, tipsBg)
-
-                        lmake("TextLabel", {
-                            Size = UDim2.new(0,44,1,0), Position = UDim2.new(0,10,0,0),
-                            Text = "TIPP", TextColor3 = LC.accent, TextSize = 9,
-                            Font = Enum.Font.GothamBlack, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
-                            ZIndex = 11,
-                        }, tipsBg)
-
-                        lmake("Frame", {
-                            Size = UDim2.new(0,1,0,16), Position = UDim2.new(0,56,0.5,-8),
-                            BackgroundColor3 = LC.accent, BackgroundTransparency = 0.6,
-                            BorderSizePixel = 0, ZIndex = 11,
-                        }, tipsBg)
-
-                        local tipsClip = lmake("Frame", {
-                            Size = UDim2.new(1,-70,1,0), Position = UDim2.new(0,64,0,0),
-                            BackgroundTransparency = 1, BorderSizePixel = 0,
-                            ClipsDescendants = true, ZIndex = 11,
-                        }, tipsBg)
-                        lmake("UIGradient", {
-                            Transparency = NumberSequence.new({
-                                NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(0.80, 0),
-                                NumberSequenceKeypoint.new(1, 1),
-                            }),
-                        }, tipsClip)
-
-                        local tipsLabel = lmake("TextLabel", {
-                            Size = UDim2.new(0,900,1,0), Position = UDim2.new(0,0,0,0),
-                            Text = TIPS[1], TextColor3 = LC.textDim, TextSize = 10,
-                            Font = Enum.Font.GothamMedium, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
-                            TextTruncate = Enum.TextTruncate.None, ZIndex = 12,
-                        }, tipsClip)
-
-                        local MARQUEE_SPEED = 40
-                        local MARQUEE_PAUSE = 2.1
-                        local MARQUEE_GAP   = 55
-                        local tipIndex      = 1
-                        local marqueeX      = 0
-                        local marqueePause  = MARQUEE_PAUSE
-                        local tipsClipW     = LAYOUT.barWidth - 70
-
-                        local BW = LAYOUT.barWidth
-                        local BH = LAYOUT.barHeight
-
-                        local barGroup = lmake("Frame", {
-                            Size = UDim2.new(0,BW,0,56),
-                            Position = UDim2.new(0.5,-BW/2, 0.67,0),
-                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 10,
-                        }, gui)
-
-                        lmake("TextLabel", {
-                            Size = UDim2.new(0.65,0,0,13), Position = UDim2.new(0,0,0,0),
-                            Text = "LOADING ASSETS", TextColor3 = LC.textMuted, TextSize = 10,
-                            Font = Enum.Font.GothamBold, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
-                        }, barGroup)
-
-                        local barPct = lmake("TextLabel", {
-                            Size = UDim2.new(0.35,0,0,13), Position = UDim2.new(0.65,0,0,0),
-                            Text = "0%", TextColor3 = LC.accent, TextSize = 11,
-                            Font = Enum.Font.GothamBold, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Right,
-                        }, barGroup)
-
-                        local barTrack = lmake("Frame", {
-                            Size = UDim2.new(1,0,0,BH), Position = UDim2.new(0,0,0,18),
-                            BackgroundColor3 = Color3.fromRGB(32,28,52), BorderSizePixel = 0,
-                            ClipsDescendants = false, ZIndex = 10,
-                        }, barGroup)
-                        addCorner(999, barTrack)
-                        lmake("UIStroke", {Color = Color3.fromRGB(55,45,85), Thickness = 1, Transparency = 0.6}, barTrack)
-
-                        for _, frac in ipairs({0.25, 0.50, 0.75}) do
-                            lmake("Frame", {
-                                Size = UDim2.new(0,1,0,BH+4),
-                                Position = UDim2.new(frac,0,0.5,-(BH+4)/2),
-                                BackgroundColor3 = Color3.fromRGB(60,50,88), BackgroundTransparency = 0.4,
-                                BorderSizePixel = 0, ZIndex = 12,
-                            }, barTrack)
-                        end
-
-                        local barFillClip = lmake("Frame", {
-                            Size = UDim2.new(0,0,1,0), BackgroundTransparency = 1,
-                            BorderSizePixel = 0, ClipsDescendants = true, ZIndex = 11,
-                        }, barTrack)
-
-                        local barFill = lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundColor3 = LC.accent,
-                            BorderSizePixel = 0, ZIndex = 11,
-                        }, barFillClip)
-                        addCorner(999, barFill)
-                        addGradient(barFill, ColorSequence.new({
-                            ColorSequenceKeypoint.new(0,   LC.accentDim),
-                            ColorSequenceKeypoint.new(0.6, LC.accent),
-                            ColorSequenceKeypoint.new(1,   LC.accentBright),
-                        }), 0)
-
-                        local tipDot = lmake("Frame", {
-                            Size = UDim2.new(0,8,0,8), Position = UDim2.new(0,-4,0.5,-4),
-                            BackgroundColor3 = LC.accentBright, BorderSizePixel = 0, ZIndex = 14,
-                        }, barTrack)
-                        addCorner(999, tipDot)
-
-                        local tipHalo = lmake("Frame", {
-                            Size = UDim2.new(0,18,0,18), Position = UDim2.new(0,-9,0.5,-9),
-                            BackgroundColor3 = LC.accent, BackgroundTransparency = 0.72,
-                            BorderSizePixel = 0, ZIndex = 13,
-                        }, barTrack)
-                        addCorner(999, tipHalo)
-
-                        local STEP_N   = LAYOUT.stepCount
-                        local stepDots = {}
-                        local dotsHolder = lmake("Frame", {
-                            Size = UDim2.new(0,(STEP_N*8)+((STEP_N-1)*5),0,8),
-                            Position = UDim2.new(1,-((STEP_N*8)+((STEP_N-1)*5)),0,27),
-                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 10,
-                        }, barGroup)
-                        for i = 1, STEP_N do
-                            local dot = lmake("Frame", {
-                                Size = UDim2.new(0,6,0,6), Position = UDim2.new(0,(i-1)*13,0,1),
-                                BackgroundColor3 = Color3.fromRGB(55,46,80), BorderSizePixel = 0, ZIndex = 10,
-                            }, dotsHolder)
-                            addCorner(999, dot)
-                            stepDots[i] = dot
-                        end
-
-                        local bottomBar = lmake("Frame", {
-                            Size = UDim2.new(1,0,0,28), Position = UDim2.new(0,0,1,-28),
-                            BackgroundColor3 = LC.bg, BackgroundTransparency = 0.15,
-                            BorderSizePixel = 0, ZIndex = 10,
-                        }, gui)
-                        lmake("Frame", {
-                            Size = UDim2.new(1,0,0,1), BackgroundColor3 = LC.accent,
-                            BackgroundTransparency = 0.82, BorderSizePixel = 0, ZIndex = 11,
-                        }, bottomBar)
-                        lmake("TextLabel", {
-                            Size = UDim2.new(0,260,1,0), Position = UDim2.new(0,16,0,0),
-                            Text = "SYNDICATE LOADING SYSTEM", TextColor3 = Color3.fromRGB(62,55,88),
-                            TextSize = 10, Font = Enum.Font.GothamBold, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
-                        }, bottomBar)
-                        lmake("TextLabel", {
-                            Size = UDim2.new(0,180,1,0), Position = UDim2.new(1,-196,0,0),
-                            Text = "\xc2\xa9 TL\xc2\xb7Productions", TextColor3 = Color3.fromRGB(58,52,80),
-                            TextSize = 10, Font = Enum.Font.GothamMedium, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Right,
-                        }, bottomBar)
-
-                        local statusLabel = lmake("TextLabel", {
-                            Size = UDim2.new(1,0,0,13), Position = UDim2.new(0,0,0,29),
-                            Text = "Initializing engine core...", TextColor3 = LC.textMuted,
-                            TextSize = 10, Font = Enum.Font.GothamMedium, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 10,
-                        }, barGroup)
-
-                        local STATUS_MESSAGES = {
-                            "Initializing engine core...", "Loading shader cache...",
-                            "Preparing asset pipeline...", "Compiling bytecode...",
-                            "Warming up render thread...", "Almost ready...",
-                        }
-                        local TITLE_FRAMES = {"S","SY","SYN","SYND","SYNDI","SYNDIC"}
-                        local TITLE_DELAYS = {0.20, 0.20, 0.12, 0.12, 0.12, 0}
-
-                        local progress    = 0
-                        local startTime   = tick()
-                        local titleStep   = 1
-                        local titleTimer  = 0
-                        local closing     = false
-                        local GLOW_BASE   = FS + 16
-                        local loader      = rawget(_genv, "_TL_assetLoader")
-
-                        local function onComplete()
-                            closing = true
-                            loopConn:Disconnect()
-                            progress = 100
-                            barFillClip.Size = UDim2.new(1,0,1,0)
-                            barPct.Text = "100%"
-                            tw(barPct, 0.35, {TextColor3 = LC.green})
-                            tw(barFill, 0.35, {BackgroundColor3 = LC.green})
-                            tw(tipDot, 0.35, {BackgroundColor3 = LC.green})
-                            tw(tipHalo, 0.35, {BackgroundColor3 = LC.green})
-                            tipDot.Position = UDim2.new(1,-4,0.5,-4)
-                            tipHalo.Position = UDim2.new(1,-9,0.5,-9)
-                            task.wait(0.2)
-                            statusLabel.Text = "All systems operational."
-                            for _, d in ipairs(stepDots) do
-                                tw(d, 0.15, {BackgroundColor3 = LC.green})
-                                task.wait(0.06)
-                            end
-                            task.wait(0.5)
-                            local snd = gui:FindFirstChild("SU_VoiceLine", true)
-                            if snd and snd.IsPlaying then
-                                tw(snd, 0.3, {Volume = 0})
-                                task.wait(0.3)
-                                pcall(function() snd:Stop() end)
-                            end
-                            local FADE_DUR = 0.55
-                            for _, v in ipairs(gui:GetDescendants()) do
-                                pcall(function()
-                                    local cn = v.ClassName
-                                    if cn == "Frame" or cn == "ScrollingFrame" then
-                                        local s = v:FindFirstChildOfClass("UIStroke")
-                                        if s then tw(s, FADE_DUR, {Transparency = 1}) end
-                                        tw(v, FADE_DUR, {BackgroundTransparency = 1})
-                                    elseif cn == "TextLabel" or cn == "TextButton" then
-                                        tw(v, FADE_DUR, {TextTransparency = 1, BackgroundTransparency = 1})
-                                    elseif cn == "ImageLabel" or cn == "ImageButton" then
-                                        tw(v, FADE_DUR, {ImageTransparency = 1, BackgroundTransparency = 1})
-                                    end
-                                end)
-                            end
-                            task.wait(FADE_DUR + 0.1)
-                            pcall(function() gui:Destroy() end)
-                            _TL_loading = false
-                            pcall(function()
-                                if settingsState and settingsState.autoOpen then
-                                    if not isOpen then openBar() end
-                                else
-                                    sendNotif("Syndicate Universal", "System loaded. Press [" .. tostring(_tlMenuToggleKey and _tlMenuToggleKey.Name or "K") .. "] to toggle.", 4)
-                                end
-                            end)
-                        end
-
-                        loopConn = Heartbeat:Connect(function(dt)
-                            if not gui or not gui.Parent then loopConn:Disconnect(); return end
-                            local now = tick()
-                            local elapsed = now - startTime
-
-                            local loaderReady = (not loader) or loader.ready == true
-                            local loaderProgress = 0
-                            if loader and (loader.total or 0) > 0 then
-                                loaderProgress = math.clamp((loader.done or 0) / loader.total, 0, 1)
-                            elseif loaderReady then
-                                loaderProgress = 1
-                            end
-                            local timeFloor = math.min((elapsed / LAYOUT.duration) * 65, 65)
-                            local target = math.max(timeFloor, loaderProgress * 99)
-                            if loaderReady and elapsed >= LAYOUT.duration then
-                                target = 100
-                            else
-                                target = math.min(target, 99)
-                            end
-                            progress = progress + (target - progress) * math.min(dt * 4, 0.12)
-                            local frac = math.clamp(progress / 100, 0, 1)
-                            barFillClip.Size = UDim2.new(frac, 0, 1, 0)
-                            barPct.Text = math.floor(progress) .. "%"
-
-                            local tipX = frac * BW
-                            tipDot.Position = UDim2.new(0, tipX - 4, 0.5, -4)
-                            tipHalo.Position = UDim2.new(0, tipX - 9, 0.5, -9)
-                            local tipPulse = (sin(now * 5) + 1) * 0.5
-                            tipHalo.BackgroundTransparency = 0.65 + tipPulse * 0.2
-
-                            if loader and not loaderReady and loader.current then
-                                statusLabel.Text = loader.current
-                            else
-                                local msgIdx = math.clamp(math.floor(progress / (100 / #STATUS_MESSAGES)) + 1, 1, #STATUS_MESSAGES)
-                                statusLabel.Text = STATUS_MESSAGES[msgIdx]
-                            end
-
-                            local activeDot = math.floor(frac * STEP_N)
-                            for i, d in ipairs(stepDots) do
-                                if i <= activeDot then
-                                    d.BackgroundColor3 = LC.accent
-                                    d.BackgroundTransparency = 0
-                                elseif i == activeDot + 1 then
-                                    local dp = (sin(now * 3) + 1) * 0.5
-                                    d.BackgroundColor3 = LC.accent
-                                    d.BackgroundTransparency = 0.4 + dp * 0.35
-                                else
-                                    d.BackgroundColor3 = Color3.fromRGB(55, 46, 80)
-                                    d.BackgroundTransparency = 0
-                                end
-                            end
-
-                            if bgGradient and bgGradient.Parent then
-                                bgGradient.Rotation = (bgGradient.Rotation + dt * 3) % 360
-                            end
-
-                            for _, fb in ipairs(fogBlobs) do
-                                fb.x = fb.x + fb.vx * dt
-                                fb.y = fb.y + fb.vy * dt
-                                if fb.x < -fb.size*0.3 or fb.x > SW+fb.size*0.3 then fb.vx = -fb.vx end
-                                if fb.y < -fb.size*0.3 or fb.y > SH+fb.size*0.3 then fb.vy = -fb.vy end
-                                local breathe = sin(now*0.4+fb.x*0.01)*0.04
-                                fb.obj.ImageTransparency = fb.baseAlpha + breathe
-                                fb.obj.Position = UDim2.new(0, fb.x-fb.size/2, 0, fb.y-fb.size/2)
-                            end
-
-                            scanOffset = (scanOffset + dt*25) % SH
-                            scanFrame.Position = UDim2.new(0, 0, 0, -scanOffset)
-
-                            local pulse = (sin(now*1.2)+1)*0.5
-                            local glowSize = GLOW_BASE + pulse*16
-                            local glowOff = pulse*8
-                            if frameGlow and frameGlow.Parent then
-                                frameGlow.BackgroundTransparency = 0.78+pulse*0.14
-                                frameGlow.Size = UDim2.new(0,glowSize,0,glowSize)
-                                frameGlow.Position = UDim2.new(0.5,-glowSize/2, 0,10-glowOff)
-                            end
-
-                            if frameStroke and frameStroke.Parent then
-                                frameStroke.Transparency = 0.25+(sin(now*1.5)+1)*0.2
-                            end
-
-                            if logoImage and logoImage.Parent then
-                                local s = IS + sin(now*0.6)*3
-                                logoImage.Size = UDim2.new(0,s,0,s)
-                                logoImage.Position = UDim2.new(0.5,-s/2, 0.5,-s/2)
-                            end
-
-                            for _, p in ipairs(dustParticles) do
-                                p.x = p.x + p.vx*(dt*60)
-                                p.y = p.y + p.vy*(dt*60)
-                                if p.x < -20 then p.x = SW+20 elseif p.x > SW+20 then p.x = -20 end
-                                if p.y < -20 then p.y = SH+20 elseif p.y > SH+20 then p.y = -20 end
-                                p.obj.Position = UDim2.new(0,p.x,0,p.y)
-                                local shimmer = (sin(now*p.freq+p.phase)+1)*0.5
-                                p.obj.BackgroundTransparency = 1-(p.baseAlpha*(0.3+shimmer*0.7))
-                            end
-
-                            for _, p in ipairs(orbParticles) do
-                                p.driftX = p.driftX+p.vx*dt*30
-                                p.driftY = p.driftY+p.vy*dt*30
-                                if p.baseX+p.driftX < -100 then p.driftX = p.driftX+SW+200 end
-                                if p.baseX+p.driftX > SW+100 then p.driftX = p.driftX-SW-200 end
-                                if p.baseY+p.driftY < -100 then p.driftY = p.driftY+SH+200 end
-                                if p.baseY+p.driftY > SH+100 then p.driftY = p.driftY-SH-200 end
-                                p.orbitAngle = p.orbitAngle+p.orbitSpeed*dt
-                                local ox = cos(p.orbitAngle)*p.orbitR
-                                local oy = sin(p.orbitAngle)*p.orbitR*0.6
-                                p.x = p.baseX+p.driftX+ox
-                                p.y = p.baseY+p.driftY+oy
-                                local pulse2 = (sin(now*p.freq+p.phase)+1)*0.5
-                                local alpha = p.baseAlpha*(0.4+pulse2*0.6)
-                                local szMult = 1+pulse2*0.3
-                                local curSz = p.sz*szMult
-                                local curHalo = p.haloSz*szMult
-                                p.dot.Size = UDim2.new(0,curSz,0,curSz)
-                                p.dot.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
-                                p.dot.BackgroundTransparency = 1-alpha
-                                p.halo.Size = UDim2.new(0,curHalo,0,curHalo)
-                                p.halo.Position = UDim2.new(0,p.x-curHalo/2,0,p.y-curHalo/2)
-                                p.halo.ImageTransparency = 1-(alpha*0.35)
-                            end
-
-                            for _, p in ipairs(bokehParticles) do
-                                p.x = p.x+p.vx*(dt*60)
-                                p.y = p.y+p.vy*(dt*60)
-                                if p.x < -p.sz then p.x = SW+p.sz elseif p.x > SW+p.sz then p.x = -p.sz end
-                                if p.y < -p.sz then p.y = SH+p.sz elseif p.y > SH+p.sz then p.y = -p.sz end
-                                local breathe = (sin(now*p.pulseFreq+p.phase)+1)*0.5
-                                local alpha = p.baseAlpha*(0.5+breathe*0.5)
-                                local curSz = p.sz*(0.9+breathe*0.2)
-                                p.circle.Size = UDim2.new(0,curSz,0,curSz)
-                                p.circle.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
-                                p.circle.ImageTransparency = 1-alpha
-                                p.ring.Size = UDim2.new(0,curSz,0,curSz)
-                                p.ring.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
-                            end
-
-                            for _, p in ipairs(streakParticles) do
-                                if p.active then
-                                    p.x = p.x+p.speed*dt
-                                    local sinY = sin(now*2)*15
-                                    p.obj.Position = UDim2.new(0,p.x,0,p.y+sinY)
-                                    local screenFrac = p.x/SW
-                                    local fade2 = 1-abs(screenFrac-0.5)*2
-                                    fade2 = math.clamp(fade2,0,1)
-                                    p.obj.BackgroundTransparency = 1-(fade2*0.6)
-                                    if p.x > SW+p.len+50 then
-                                        p.active = false
-                                        p.timer = 0
-                                        p.cooldown = 2+rand()*5
-                                        p.obj.Position = UDim2.new(0,-p.len-100,0,0)
-                                    end
-                                else
-                                    p.timer = p.timer+dt
-                                    if p.timer >= p.cooldown then
-                                        p.active = true
-                                        p.x = -p.len-rand(0,100)
-                                        p.y = rand(30,SH-30)
-                                        p.speed = rand(350,800)
-                                        p.rotation = -25+rand(-15,15)
-                                        p.obj.Rotation = p.rotation
-                                        p.obj.Size = UDim2.new(0,p.len,0,p.thick)
-                                    end
-                                end
-                            end
-
-                            for _, p in ipairs(emberParticles) do
-                                p.y = p.y+p.vy*(dt*60)
-                                local wobble = sin(now*p.wobbleFreq+p.phase)*p.wobbleAmp
-                                p.x = p.startX+wobble
-                                if p.y < -30 then
-                                    p.y = SH+rand(20,100)
-                                    p.startX = rand()*SW
-                                    p.x = p.startX
-                                end
-                                local yFrac = p.y/SH
-                                local fadeAlpha = p.baseAlpha
-                                if yFrac < 0.3 then fadeAlpha = fadeAlpha*(yFrac/0.3) end
-                                local emberPulse = (sin(now*3+p.phase)+1)*0.5
-                                fadeAlpha = fadeAlpha*(0.6+emberPulse*0.4)
-                                local curSz = p.sz*(0.8+emberPulse*0.4)
-                                p.dot.Size = UDim2.new(0,curSz,0,curSz)
-                                p.dot.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
-                                p.dot.BackgroundTransparency = 1-fadeAlpha
-                                local curGlow = p.glowSz*(0.8+emberPulse*0.4)
-                                p.glow.Size = UDim2.new(0,curGlow,0,curGlow)
-                                p.glow.Position = UDim2.new(0,p.x-curGlow/2,0,p.y-curGlow/2)
-                                p.glow.ImageTransparency = 1-(fadeAlpha*0.3)
-                            end
-
-                            for _, p in ipairs(sparkleParticles) do
-                                p.rotation = p.rotation+p.rotSpeed*dt
-                                if p.state == "hidden" then
-                                    p.timer = p.timer+dt
-                                    if p.timer >= p.interval then
-                                        p.x = rand(40,SW-40)
-                                        p.y = rand(40,SH-40)
-                                        p.state = "appearing"
-                                        p.stateTimer = 0
-                                        p.scale = 0
-                                        p.timer = 0
-                                    end
-                                elseif p.state == "appearing" then
-                                    p.stateTimer = p.stateTimer+dt
-                                    local t2 = math.clamp(p.stateTimer/0.15,0,1)
-                                    t2 = 1-(1-t2)*(1-t2)
-                                    p.scale = p.maxScale*t2
-                                    if p.stateTimer >= 0.15 then
-                                        p.state = "visible"
-                                        p.stateTimer = 0
-                                        p.scale = p.maxScale
-                                    end
-                                elseif p.state == "visible" then
-                                    p.stateTimer = p.stateTimer+dt
-                                    local vp = sin(p.stateTimer*8)*0.15
-                                    p.scale = p.maxScale*(1+vp)
-                                    if p.stateTimer >= p.flashDur then
-                                        p.state = "fading"
-                                        p.stateTimer = 0
-                                    end
-                                elseif p.state == "fading" then
-                                    p.stateTimer = p.stateTimer+dt
-                                    local t2 = math.clamp(p.stateTimer/0.2,0,1)
-                                    p.scale = p.maxScale*(1-t2)
-                                    if p.stateTimer >= 0.2 then
-                                        p.state = "hidden"
-                                        p.stateTimer = 0
-                                        p.timer = 0
-                                        p.interval = 1+rand()*4
-                                        p.scale = 0
-                                    end
-                                end
-                                local sz = 16*p.scale
-                                if sz < 0.5 then sz = 0 end
-                                p.obj.Size = UDim2.new(0,sz,0,sz)
-                                p.obj.Position = UDim2.new(0,p.x-sz/2,0,p.y-sz/2)
-                                p.obj.Rotation = p.rotation
-                            end
-
-                            if tipsLabel and tipsLabel.Parent then
-                                local textW = tipsLabel.TextBounds.X
-                                if textW <= tipsClipW then
-                                    marqueeX = 0
-                                    marqueePause = MARQUEE_PAUSE
-                                    tipsLabel.Position = UDim2.new(0,0,0,0)
-                                else
-                                    if marqueePause > 0 then
-                                        marqueePause = marqueePause-dt
-                                    else
-                                        marqueeX = marqueeX-MARQUEE_SPEED*dt
-                                        local maxScroll = -(textW+MARQUEE_GAP-tipsClipW)
-                                        if marqueeX <= maxScroll then
-                                            tipIndex = (tipIndex%#TIPS)+1
-                                            tipsLabel.Text = TIPS[tipIndex]
-                                            marqueeX = 0
-                                            marqueePause = MARQUEE_PAUSE
-                                        end
-                                        tipsLabel.Position = UDim2.new(0,math.floor(marqueeX),0,0)
-                                    end
-                                end
-                            end
-
-                            if titleStep <= #TITLE_FRAMES then
-                                titleTimer = titleTimer+dt
-                                if titleTimer >= (TITLE_DELAYS[titleStep] or 0) then
-                                    titleLabel.Text = TITLE_FRAMES[titleStep]
-                                    titleStep = titleStep+1
-                                    titleTimer = 0
-                                end
-                            end
-
-                            if not closing and loaderReady and elapsed >= LAYOUT.duration then
-                                task.spawn(onComplete)
-                            end
-                        end)
-
-                        task.spawn(function()
-                            local waited = 0
-                            while waited < MAX_WAIT do
-                                task.wait(1)
-                                waited = waited+1
-                                if closing then return end
-                            end
-                            pcall(function()
-                                if loader then
-                                    loader.done = math.max(loader.done or 0, loader.total or 1)
-                                    loader.ready = true
-                                    loader.current = "Timeout \xe2\x80\x94 continuing"
-                                end
-                            end)
-                        end)
-                    end 
-
-                    pcall(_TL_showLoadingScreen)
-                end); if not _ok_SmartBar then warn("[TL] SmartBar-IIFE crashed: " .. tostring(_err_SmartBar)) end
-            end)
-
-            
-            do
-                local _bbMod2 = _TL_loadModule("SCRIPTS-TAB/SU-QABar")
-                if _bbMod2 then
-                    _bbMod2.initQABar({
-                        _TL_refs = _TL_refs,
-                        _genv = _genv,
-                        C = C,
-                        _panelColorHooks = _panelColorHooks,
-                        _makeRealStroke = _makeRealStroke,
-                        _tlAlive = _tlAlive,
-                        twP = twP,
-                        getNearestPlayer = getNearestPlayer,
-                        _handleError = _handleError,
-                        stopStand = stopStand,
-                        standStopAnim = standStopAnim,
-                        closeBar = closeBar,
-                        LocalPlayer = LocalPlayer,
-                        RunService = RunService,
-                        _SvcUIS = _SvcUIS,
-                        _TL_VP = _TL_VP,
-                        _sc = _sc,
-                        _AF = _AF,
-                        stopQA74 = stopQA74,
-                        stopBB = function() pcall(function() stopBB() end) end,
-                        startBB = function(tgt, mode) pcall(function() startBB(tgt, mode) end) end,
-                        registerResetFn = function(fn) _G.TLQA_ResetUI = fn end,
-                    _TL_safeGetCustomAsset = _TL_safeGetCustomAsset,
-                    _TL_assetLoader = _TL_assetLoader,
-                    })
-                    _bbMod2.startQABar()
-                end
+    local TweenService = _tsProxy
+    local Heartbeat    = game:GetService("RunService").Heartbeat
+    local Players      = game:GetService("Players")
+    local Lighting     = game:GetService("Lighting")
+    local CoreGui      = game:GetService("CoreGui")
+    local CoreGui      = game:GetService("CoreGui")
+    local CoreGui      = game:GetService("CoreGui")
+    local LocalPlayer  = Players.LocalPlayer
+    local _tsProxy     = (getgenv and getgenv())._TL_tw or (function() end)
+
+    local SCREEN_NAME = "TL_LoadingScreen"
+    local MAX_WAIT    = 60
+
+    -- Cleanup existing
+    pcall(function()
+        for _, obj in ipairs(CoreGui:GetChildren()) do
+            if obj.Name == SCREEN_NAME then obj:Destroy() end
+        end
+    end)
+    if LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui") then
+        pcall(function()
+            for _, obj in ipairs(LocalPlayer.PlayerGui:GetChildren()) do
+                if obj.Name == SCREEN_NAME then obj:Destroy() end
             end
+        end)
+    end
 
-            -- Patch icons after assets are loaded
-            task.spawn(function()
-                while not _TL_assetLoader.ready do task.wait(0.5) end
-                task.wait(1)
-                -- Patch Syndicate logos in QABar
-                local _iconAsset = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
-                if _iconAsset then
-                    local qaBar = _genv._TL_qaBar or _TL_refs._TL_qaBar
-                    if qaBar then
-                        for _, desc in ipairs(qaBar:GetDescendants()) do
-                            if desc:IsA("ImageLabel") and desc.Image == "rbxassetid://77458828386203" then
-                                desc.Image = _iconAsset
-                            end
-                        end
-                    end
-                end
-                -- Patch Communication tab icon (download directly)
-                local _comIcon = _TL_safeGetCustomAsset("assets/SU-Icons/Com-Icon.png")
-                if not _comIcon and type(writefile) == "function" and type(getcustomasset) == "function" then
-                    local cok, cres = pcall(function()
-                        local req = syn and syn.request or http_request or request
-                        if req then return req({ Url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Com-Icon.png", Method = "GET" }) end
-                    end)
-                    if cok and cres and cres.StatusCode == 200 and cres.Body and #cres.Body > 0 then
-                        local cwok = pcall(writefile, "assets/SU-Icons/Com-Icon.png", cres.Body)
-                        if cwok then
-                            local caok, caid = pcall(getcustomasset, "assets/SU-Icons/Com-Icon.png")
-                            if caok and caid and #caid > 0 then _comIcon = caid end
-                        end
-                    end
-                end
-                if _comIcon and _TL_refs._TL_tabBtns then
-                    for _, btn in ipairs(_TL_refs._TL_tabBtns) do
-                        if btn.name == "Communication" and btn.iconImg then
-                            btn.iconImg.Image = _comIcon
-                        end
-                    end
-                end
-            end)
-            ; (function()
-                local _afk = _genv._TL_afkSystem
-                if not _afk then return end
+    -- Helpers
+    local function lmake(class, props, parent)
+        local inst = Instance.new(class)
+        for k, v in pairs(props) do
+            pcall(function() inst[k] = v end)
+        end
+        if parent then inst.Parent = parent end
+        return inst
+    end
+    local function tw(obj, dur, props, style, dir)
+        local t = TweenService:Create(obj, TweenInfo.new(dur or 0.3, style or Enum.EasingStyle.Quad, dir or Enum.EasingDirection.Out), props)
+        t:Play()
+        return t
+    end
+    local function lerp(a, b, t) return a + (b - a) * math.clamp(t, 0, 1) end
 
-                local _afkFiles = {
-                    dragonball = { "assets/SU-MP3-FILES/DB-AFK-VL0.mp3", "assets/SU-MP3-FILES/DB-AFK-VL1.mp3" },
-                    onepiece   = { "assets/SU-MP3-FILES/OP-AFK-VL0.mp3", "assets/SU-MP3-FILES/OP-AFK-VL1.mp3" },
-                    theboys    = { "assets/SU-MP3-FILES/TB-AFK-VL0.mp3" },
-                }
+    -- Create GUI
+    local gui = lmake("ScreenGui", {
+        Name = SCREEN_NAME, IgnoreGuiInset = true, DisplayOrder = 999,
+        ResetOnSpawn = false, ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+    })
+    pcall(function() gui.Parent = CoreGui end)
+    if not gui.Parent then pcall(function() gui.Parent = LocalPlayer.PlayerGui end) end
+    if not gui.Parent then return end
 
-                
-                rawset(_genv, "_TL_afkSetTheme", function(id)
-                    _afk.themeId = id or "white"
-                end)
+    -- Gaussian Blur
+    local blur = lmake("BlurEffect", { Size = 0 }, Lighting)
 
-                local function _afkStopSound()
-                    if _afk.currentSound then
-                        pcall(function() _afk.currentSound:Stop() end)
-                        pcall(function() _afk.currentSound:Destroy() end)
-                        _afk.currentSound = nil
-                    end
-                end
+    -- Semi-transparent overlay (Roblox visible behind)
+    local overlay = lmake("Frame", {
+        Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+        BackgroundTransparency = 0.35, BorderSizePixel = 0,
+    }, gui)
 
-                local function _afkPlayRandom()
-                    local files = _afkFiles[_afk.themeId]
-                    if not files or #files == 0 then return end
+    -- Dark gradient overlay for depth
+    local gradOverlay = lmake("Frame", {
+        Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 0, BorderSizePixel = 0,
+        ZIndex = 2,
+    }, gui)
+    lmake("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 5, 20)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(5, 2, 15)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 8, 30)),
+        }),
+        Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0.7),
+            NumberSequenceKeypoint.new(0.5, 0.5),
+            NumberSequenceKeypoint.new(1, 0.7),
+        }),
+        Rotation = -25,
+    }, gradOverlay)
 
-                    
-                    local chosen = files[math.random(1, #files)]
-                    if not (isfile and isfile(chosen)) then
-                        warn("[AFK] Datei nicht gefunden: " .. tostring(chosen))
-                        return
-                    end
+    -- Liquid blobs for motion design
+    local blobs = {}
+    local blobColors = {
+        Color3.fromRGB(80, 40, 180),
+        Color3.fromRGB(120, 50, 200),
+        Color3.fromRGB(60, 30, 150),
+        Color3.fromRGB(100, 60, 220),
+    }
+    for i = 1, 5 do
+        local size = math.random(120, 280)
+        local blob = lmake("ImageLabel", {
+            Size = UDim2.new(0, size, 0, size),
+            Position = UDim2.new(math.random() * 0.8, 0, math.random() * 0.8, 0),
+            BackgroundTransparency = 1,
+            Image = "rbxasset://textures/whiteCircle512.png",
+            ImageColor3 = blobColors[i % #blobColors + 1],
+            ImageTransparency = 0.75,
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            ZIndex = 3,
+        }, gui)
+        blobs[i] = { baseSize = size,
+            obj = blob, baseX = blob.Position.X.Scale, baseY = blob.Position.Y.Scale,
+            speedX = (math.random() - 0.5) * 0.15, speedY = (math.random() - 0.5) * 0.1,
+            phase = math.random() * math.pi * 2, breatheSpeed = 0.3 + math.random() * 0.5,
+        }
+    end
 
-                    _afkStopSound()
-                    pcall(function()
-                        local snd   = Instance.new("Sound")
-                        snd.Name    = "SU_AFK_VL"
-                        local _asset = _TL_safeGetCustomAsset(chosen)
-                        snd.SoundId = _asset or chosen
-                        snd.Volume  = 1.0
-                        snd.Looped  = false
-                        snd.Parent  = _SvcSnd
-                        snd:Play()
-                        _afk.currentSound = snd
-                        
-                        _SvcDeb:AddItem(snd, 30)
-                    end)
-                end
+    -- Center container
+    local center = lmake("Frame", {
+        Size = UDim2.new(0, 320, 0, 260),
+        Position = UDim2.new(0.5, -160, 0.5, -130),
+        BackgroundTransparency = 1,
+        ZIndex = 10,
+    }, gui)
 
-                local _afkTriggered = false 
+    -- Syndicate Logo with glow
+    local logoGlow = lmake("Frame", {
+        Size = UDim2.new(0, 100, 0, 100),
+        Position = UDim2.new(0.5, -50, 0, 20),
+        BackgroundColor3 = Color3.fromRGB(100, 60, 220),
+        BackgroundTransparency = 0.85,
+        ZIndex = 11,
+    }, center)
+    lmake("UICorner", { CornerRadius = UDim.new(1, 0) }, logoGlow)
+    lmake("UIBlurEffect", { Size = 30 }, logoGlow)
 
-                
-                local function _afkResetTimer()
-                    _afk.lastInputTime = tick()
-                    if _afkTriggered then
-                        _afkTriggered = false
-                        _afkStopSound()
-                    end
-                end
+    local logoImg = lmake("ImageLabel", {
+        Size = UDim2.new(0, 72, 0, 72),
+        Position = UDim2.new(0.5, -36, 0, 34),
+        BackgroundTransparency = 1,
+        Image = _TL_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+            or "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png",
+        ImageColor3 = Color3.new(1, 1, 1),
+        ZIndex = 12,
+    }, center)
 
-                local _afkUIS = game:GetService("UserInputService")
-                local _afkInputConn1 = _afkUIS.InputBegan:Connect(function() _afkResetTimer() end)
-                local _afkInputConn2 = _afkUIS.InputChanged:Connect(function() _afkResetTimer() end)
-                table.insert(_afk.inputConns, _afkInputConn1)
-                table.insert(_afk.inputConns, _afkInputConn2)
+    -- Title
+    local title = lmake("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 24),
+        Position = UDim2.new(0, 0, 0, 115),
+        BackgroundTransparency = 1,
+        Text = "SYNDICATE",
+        Font = Enum.Font.GothamBlack, TextSize = 20,
+        TextColor3 = Color3.fromRGB(220, 200, 255),
+        TextTransparency = 0.1,
+        ZIndex = 12,
+    }, center)
 
-                
-                local _afkCheckInterval = 5
-                local _afkLastCheck     = tick()
-                local _afkHBConn        = game:GetService("RunService").Heartbeat:Connect(function()
-                    local now = tick()
-                    if now - _afkLastCheck < _afkCheckInterval then return end
-                    _afkLastCheck = now
+    -- Percentage text
+    local pctText = lmake("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 36),
+        Position = UDim2.new(0, 0, 0, 145),
+        BackgroundTransparency = 1,
+        Text = "0%",
+        Font = Enum.Font.GothamBold, TextSize = 28,
+        TextColor3 = Color3.fromRGB(180, 140, 255),
+        TextTransparency = 0,
+        ZIndex = 12,
+    }, center)
 
-                    
-                    if not _afkFiles[_afk.themeId] then return end
+    -- Progress bar track
+    local barTrack = lmake("Frame", {
+        Size = UDim2.new(0, 240, 0, 4),
+        Position = UDim2.new(0.5, -120, 0, 195),
+        BackgroundColor3 = Color3.fromRGB(40, 30, 60),
+        BackgroundTransparency = 0.3,
+        ZIndex = 12,
+    }, center)
+    lmake("UICorner", { CornerRadius = UDim.new(1, 0) }, barTrack)
 
-                    local elapsed = now - _afk.lastInputTime
-                    if elapsed >= _afk.AFK_THRESHOLD and not _afkTriggered then
-                        _afkTriggered = true
-                        task.spawn(_afkPlayRandom)
-                    end
-                end)
-                _afk.loopConn           = _afkHBConn
-                _afk.active             = true
+    -- Progress bar fill
+    local barFillClip = lmake("Frame", {
+        Size = UDim2.new(0, 0, 1, 0),
+        BackgroundTransparency = 1,
+        ClipsDescendants = true,
+        ZIndex = 13,
+    }, barTrack)
 
-                
-            end)()
+    local barFill = lmake("Frame", {
+        Size = UDim2.new(0, 240, 1, 0),
+        BackgroundColor3 = Color3.fromRGB(130, 80, 255),
+        ZIndex = 14,
+    }, barFillClip)
+    lmake("UICorner", { CornerRadius = UDim.new(1, 0) }, barFill)
 
-            
+    -- Bar glow
+    local barGlow = lmake("Frame", {
+        Size = UDim2.new(0, 240, 0, 12),
+        Position = UDim2.new(0.5, -120, 0, 191),
+        BackgroundColor3 = Color3.fromRGB(130, 80, 255),
+        BackgroundTransparency = 0.8,
+        ZIndex = 11,
+    }, center)
+    lmake("UICorner", { CornerRadius = UDim.new(1, 0) }, barGlow)
+    lmake("UIBlurEffect", { Size = 15 }, barGlow)
 
-            _TL_refs.SUCleanup = function()
-                pcall(function()
-                    local _afk = _genv._TL_afkSystem
-                    if _afk then
-                        if _afk.loopConn then
-                            pcall(function() _afk.loopConn:Disconnect() end); _afk.loopConn = nil
-                        end
-                        for _, c in ipairs(_afk.inputConns) do pcall(function() c:Disconnect() end) end
-                        _afk.inputConns = {}
-                        if _afk.currentSound then
-                            pcall(function() _afk.currentSound:Stop() end)
-                            pcall(function() _afk.currentSound:Destroy() end)
-                            _afk.currentSound = nil
-                        end
-                        _afk.active = false
-                    end
-                    if getgenv then
-                        _genv._TL_afkSystem   = nil
-                        _genv._TL_afkSetTheme = nil
-                    end
-                end)
+    -- Status text
+    local statusText = lmake("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 14),
+        Position = UDim2.new(0, 0, 0, 210),
+        BackgroundTransparency = 1,
+        Text = "Initializing...",
+        Font = Enum.Font.Gotham, TextSize = 10,
+        TextColor3 = Color3.fromRGB(150, 130, 180),
+        TextTransparency = 0.3,
+        ZIndex = 12,
+    }, center)
 
-                pcall(function()
-                    if keybindMainConn then
-                        pcall(function() keybindMainConn:Disconnect() end); keybindMainConn = nil
-                    end
-                end)
-                pcall(function()
-                    if _G.TLActionsStop then _G.TLActionsStop() end
-                end)
-                pcall(function()
-                    if getgenv and getgenv()._TLAllConns then
-                        for _, c in ipairs(_genv._TLAllConns) do
-                            pcall(function() c:Disconnect() end)
-                        end
-                        _genv._TLAllConns = nil
-                    end
-                end)
-                pcall(function()
-                    if getgenv and getgenv()._TLAllInsts then
-                        for _, obj in ipairs(_genv._TLAllInsts) do
-                            pcall(function()
-                                if obj and obj.Parent then obj:Destroy() end
-                            end)
-                        end
-                        _genv._TLAllInsts = nil
-                    end
-                end)
-
-                pcall(function()
-                    if getgenv and getgenv()._TLFlingConn then
-                        _genv._TLFlingConn:Disconnect()
-                        _genv._TLFlingConn = nil
-                    end
-                end)
-                
-                pcall(function()
-                    local mods = rawget(_genv, "_TL_MODULES")
-                    if mods then
-                        for name, mod in pairs(mods) do
-                            pcall(function()
-                                if type(mod) == "table" and type(mod.cleanup) == "function" then
-                                    mod.cleanup()
-                                end
-                            end)
-                        end
-                        rawset(_genv, "_TL_MODULES", nil)
-                    end
-                end)
-                pcall(function()
-                    local _modRunkeys = { "__TL_AntiVCBAN_Runtime", "__TL_FlyRuntime", "__TL_InvisRuntime", "__TL_ShaderRuntime" }
-                    for _, rk in ipairs(_modRunkeys) do
-                        local r = rawget(_genv, rk)
-                        if type(r) == "table" and type(r.cleanup) == "function" then
-                            pcall(r.cleanup)
-                        end
-                        rawset(_genv, rk, nil)
-                    end
-                end)
-                local _qb_ref = _TL_refs._TL_qb or {}
-                local _conns = {
-                    _TL_state.conns.flyConn, _TL_state.conns.noclipConn, _TL_state.conns._espRadConn,
-                    _TL_state.conns.rushConn, _TL_state.conns.rushNoclipConn, _TL_state.conns.updateConnUI,
-                    _TL_state.conns._act_followRSConn, _SOH and _SOH.conn,
-                    _AF and _AF.udConn,
-                    _TL_state.conns.friendConn, _TL_state.conns.spinConn, _TL_state.conns.ppConn, _TL_state.conns
-                    .pp2Conn,
-                    _TL_state.conns.kissConn, _TL_state.conns.bpConn, _TL_state.conns.lickingConn, _TL_state.conns
-                    .suckingConn,
-                    _TL_state.conns.facefuckConn, _TL_state.conns.backshotsConn, _TL_state.conns.psConn, _TL_state.conns
-                    .hugConn,
-                    _TL_state.conns.carryConn, _TL_state.conns.ssConn, _TL_state.conns.qa74Conn, _TL_state.conns
-                    .orbitConn,
-                    _TL_state.conns.ghostConn, _TL_state.conns.bbConn, _TL_state.conns.bbRespConn, _TL_state.conns
-                    .bbRemConn,
-                    _TL_state.conns.bbAnimConn_, _TL_state.conns.bbAnimConn2_, _TL_state.conns.bbAnimConn3_,
-                    _TL_state.conns.bbAnimConn4_, _TL_state.conns.bbAnimConn5_, _TL_state.conns.bbAnimConn6_, _TL_state
-                    .conns.bbAnimConn7_,
-                    _TL_state.conns.bbAnimConn8_, _TL_state.conns.bbAnimConn9_, _TL_state.conns.bbAnimConn10_, _TL_state
-                    .conns.bbHealthConn_,
-                    _TL_state.conns.bbRespAnimConn_,
-                    _TL_state.conns.invisHeartConn, _TL_state.conns.invisRenderConn, _TL_state.conns.invisSteppedConn,
-                    _TL_state.conns.orbitTargetRespConn, _TL_state.conns.ghostRespConn,
-                    _TL_state.conns.ppCharConn, _TL_state.conns.pp2CharConn, _TL_state.conns.kissCharConn, _TL_state
-                    .conns.bpCharConn,
-                    _TL_state.conns.lickingCharConn, _TL_state.conns.suckItCharConn, _TL_state.conns.suckingCharConn,
-                    _TL_state.conns.facefuckCharConn, _TL_state.conns.backshotsCharConn, _TL_state.conns.layFuckCharConn,
-                    _TL_state.conns.psCharConn, _TL_state.conns.hugCharConn, _TL_state.conns.hug2CharConn, _TL_state
-                    .conns.carryCharConn,
-                    _TL_state.conns.ssCharConn, _TL_state.conns.qa74CharConn, _TL_state.conns.avCharConn, _TL_state
-                    .conns._ui_charConn_,
-                    _TL_state.conns.cursorSyncConn, _TL_state.conns.fxConn, _TL_state.conns.antiRagdollConnection,
-                    _TL_state.conns.tfConn, _TL_state.conns.AimbotConnection, _TL_state.conns.TriggerBotConnection,
-                    _TL_state.conns._ctHoverConn, _qb_ref.qaNoSitConn, _qb_ref.qaNoSitSeatedConn,
-                    _qb_ref.qaRespawnConn, _qb_ref.qaTargetRespawnConn, _qb_ref.qaTargetWatchConn, _TL_state.conns
-                    ._dhAimConn,
-                    _TL_state.conns._dhPickConn, _TL_state.conns._dhFlyConn, _TL_state.conns._dhNoclipConn,
-                    _TL_state.conns._mm2FlyConn, _TL_state.conns._mm2NoclipConn,
-                }
-                for _, c in ipairs(_conns) do
-                    if c then pcall(function() c:Disconnect() end) end
-                end
-                _TL_state.conns.bbAnimConn_     = nil; _TL_state.conns.bbAnimConn2_ = nil; _TL_state.conns.bbAnimConn3_ = nil
-                _TL_state.conns.bbAnimConn4_    = nil; _TL_state.conns.bbAnimConn5_ = nil; _TL_state.conns.bbAnimConn6_ = nil
-                _TL_state.conns.bbAnimConn7_    = nil; _TL_state.conns.bbAnimConn8_ = nil; _TL_state.conns.bbAnimConn9_ = nil
-                _TL_state.conns.bbAnimConn10_   = nil; _TL_state.conns.bbHealthConn_ = nil; _TL_state.conns.bbRespAnimConn_ = nil
-                pcall(function()
-                    _TL_state.fly.active = false
-                    _flyMuteSounds(false)
-                    if _invisHL and _invisHL.Parent then
-                        _invisHL:Destroy(); _invisHL = nil
-                    end
-                end)
-                pcall(function() if stopBB then stopBB() end end)
-                pcall(function()
-                    if _G._TLCursorRSConn then
-                        pcall(function() _G._TLCursorRSConn:Disconnect() end); _G._TLCursorRSConn = nil
-                    end
-                    if _G._TLCursorGui and _G._TLCursorGui.Parent then
-                        _G._TLCursorGui:Destroy(); _G._TLCursorGui = nil
-                    end
-                    pcall(function() _SvcUIS.MouseIconEnabled = true end)
-                end)
-                pcall(function()
-                    local lp = _SvcPlr.LocalPlayer
-                    local pg = lp:FindFirstChild("PlayerGui")
-                    if pg then
-                        for _, n in ipairs({ "SmartBarGui", "MatrixTrackerGUI" }) do
-                            local g = pg:FindFirstChild(n); if g then g:Destroy() end
-                        end
-                    end
-                    local ok, cg = pcall(function() return game:GetService("CoreGui") end)
-                    if ok and cg then
-                        for _, n in ipairs({ "SmartBarGui", "MatrixTrackerGUI" }) do
-                            local gx = cg:FindFirstChild(n); if gx then gx:Destroy() end
-                        end
-                    end
-                    if gethui then
-                        pcall(function()
-                            local hui = gethui()
-                            for _, n in ipairs({ "SmartBarGui", "MatrixTrackerGUI" }) do
-                                local g = hui:FindFirstChild(n); if g then g:Destroy() end
-                            end
-                        end)
-                    end
-                    if ScreenGui and ScreenGui.Parent then ScreenGui:Destroy() end
-                end)
-                pcall(function()
-                    if _espGui and _espGui.Parent then
-                        _espGui:Destroy(); _espGui = nil
-                    end
-                end)
-                pcall(function()
-                    if _hoverSoundObj then
-                        _hoverSoundObj:Destroy(); _hoverSoundObj = nil
-                    end
-                end)
-
-                pcall(function()
-                    if getgenv and getgenv()._TLRemoveTool then
-                        _genv._TLRemoveTool()
-                        _genv._TLRemoveTool = nil
-                    end
-                end)
-                pcall(function()
-                    if getgenv and getgenv()._TLInvPatchCleanup then
-                        _genv._TLInvPatchCleanup()
-                        _genv._TLInvPatchCleanup = nil
-                    end
-                end)
-                _G.TLActions        = nil
-                _G.TLActionsStop    = nil
-                pcall(function()
-                    local env = _genv
-                    env._panelColorHooks = nil
-                end)
-                pcall(function()
-                    if getgenv then
-                        _genv._TL_AntiVoidStop    = nil
-                        _genv.SUCleanup       = nil
-                        _genv.SUUnload            = nil
-                        _genv.SmartBarLoaded      = nil
-                        _genv.TLSendNotif         = nil
-
-                    end
-                end)
-                _G.SUCleanup = nil
+    -- Audio
+    local sound = lmake("Sound", {
+        Name = "SU_VoiceLine", RollOffMaxDistance = 100,
+        SoundId = "", Volume = 0.6,
+    }, LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui"))
+    task.spawn(function()
+        local cached = nil
+        pcall(function()
+            if _TL_safeIsFile("assets/SU-MP3-FILES/hi-aubrey-omori-tag.mp3") then
+                cached = _TL_safeGetCustomAsset("assets/SU-MP3-FILES/hi-aubrey-omori-tag.mp3")
             end
+        end)
+        if not cached then
             pcall(function()
-                local env = _genv
-                env.SUCleanup = _TL_refs.SUCleanup
-                env.SUUnload = _TL_refs.SUCleanup
+                local req = syn and syn.request or http_request or request
+                if req then
+                    local ok, res = pcall(function()
+                        return req({ Url = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU-MP3/hi-aubrey-omori-tag.mp3", Method = "GET" })
+                    end)
+                    if ok and res and res.StatusCode == 200 and res.Body and #res.Body > 0 then
+                        pcall(function() _TL_safeWriteFile("assets/SU-MP3-FILES/hi-aubrey-omori-tag.mp3", res.Body) end)
+                        cached = _TL_safeGetCustomAsset("assets/SU-MP3-FILES/hi-aubrey-omori-tag.mp3")
+                    end
+                end
             end)
-            _G.SUCleanup = _TL_refs.SUCleanup
-            end)() 
-    end, _handleError)
-end)
+        end
+        if cached then
+            sound.SoundId = cached
+            pcall(function() sound:Play() end)
+        end
+    end)
+
+    -- === ANIMATION LOOP ===
+    local startTime = tick()
+    local progress = 0
+    local closing = false
+    local loader = _TL_assetLoader or {}
+
+    -- Fade in
+    overlay.BackgroundTransparency = 1
+    tw(overlay, 0.6, { BackgroundTransparency = 0.35 })
+    title.TextTransparency = 1
+    tw(title, 0.8, { TextTransparency = 0.1 }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    pctText.TextTransparency = 1
+    tw(pctText, 0.8, { TextTransparency = 0 }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0.2)
+    barTrack.BackgroundTransparency = 1
+    tw(barTrack, 0.6, { BackgroundTransparency = 0.3 }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0.3)
+    statusText.TextTransparency = 1
+    tw(statusText, 0.6, { TextTransparency = 0.3 }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0.4)
+
+    -- Blur in
+    tw(blur, 0.8, { Size = 18 })
+
+    local loopConn
+    loopConn = Heartbeat:Connect(function(dt)
+        if closing then return end
+
+        local elapsed = tick() - startTime
+
+        -- Update progress from asset loader
+        if loader.total and loader.total > 0 then
+            progress = math.clamp((loader.done or 0) / loader.total, 0, 1)
+        else
+            progress = math.clamp(elapsed / 3, 0, 0.95)
+        end
+
+        -- Smooth progress display
+        local displayPct = math.floor(progress * 100)
+        pctText.Text = tostring(displayPct) .. "%"
+        barFillClip.Size = UDim2.new(math.clamp(progress, 0, 1), 0, 1, 0)
+
+        -- Liquid motion for blobs
+        for i, b in ipairs(blobs) do
+            local t = elapsed * b.breatheSpeed + b.phase
+            local nx = b.baseX + math.sin(t * b.speedX * 3) * 0.08
+            local ny = b.baseY + math.cos(t * b.speedY * 3) * 0.06
+            b.obj.Position = UDim2.new(nx, 0, ny, 0)
+            b.obj.ImageTransparency = 0.7 + math.sin(t * 1.2) * 0.1
+            b.obj.Size = UDim2.new(0, b.baseSize + math.sin(t * 0.8) * 4 + math.sin(t * 0.8) * 0.5, 0, b.baseSize + math.cos(t * 0.6) * 4)
+        end
+
+        -- Logo liquid motion
+        local logoT = elapsed * 0.8
+        local logoOffsetX = math.sin(logoT * 1.2) * 3
+        local logoOffsetY = math.cos(logoT * 0.9) * 2
+        logoImg.Position = UDim2.new(0.5, -36 + logoOffsetX, 0, 34 + logoOffsetY)
+
+        -- Logo glow pulse
+        local glowAlpha = 0.82 + math.sin(logoT * 1.5) * 0.06
+        logoGlow.BackgroundTransparency = glowAlpha
+
+        -- Bar glow pulse
+        barGlow.BackgroundTransparency = 0.75 + math.sin(elapsed * 2) * 0.1
+
+        -- Status messages
+        if progress < 0.3 then
+            statusText.Text = "Loading assets..."
+        elseif progress < 0.7 then
+            statusText.Text = "Preparing interface..."
+        elseif progress < 0.95 then
+            statusText.Text = "Almost ready..."
+        else
+            statusText.Text = "Welcome!"
+        end
+
+        -- Check completion
+        local loaderReady = loader.ready or false
+        if not closing and loaderReady and elapsed >= 2 then
+            closing = true
+            if loopConn then loopConn:Disconnect() end
+
+            -- Green flash on complete
+            tw(barFill, 0.3, { BackgroundColor3 = Color3.fromRGB(80, 220, 120) })
+            tw(barGlow, 0.3, { BackgroundColor3 = Color3.fromRGB(80, 220, 120) })
+            pctText.TextColor3 = Color3.fromRGB(80, 220, 120)
+            statusText.Text = "Ready!"
+            statusText.TextColor3 = Color3.fromRGB(80, 220, 120)
+
+            task.delay(0.4, function()
+                -- Fade out everything
+                tw(blur, 0.5, { Size = 0 })
+                for _, desc in ipairs(gui:GetDescendants()) do
+                    pcall(function()
+                        if desc:IsA("TextLabel") or desc:IsA("TextButton") then
+                            tw(desc, 0.4, { TextTransparency = 1 })
+                        elseif desc:IsA("Frame") or desc:IsA("ImageLabel") then
+                            tw(desc, 0.4, { BackgroundTransparency = 1 })
+                            if desc:IsA("ImageLabel") then
+                                tw(desc, 0.4, { ImageTransparency = 1 })
+                            end
+                        end
+                    end)
+                end
+                tw(overlay, 0.5, { BackgroundTransparency = 1 })
+
+                -- Fade out sound
+                task.spawn(function()
+                    pcall(function()
+                        for i = 0, 10 do
+                            sound.Volume = 0.6 * (1 - i / 10)
+                            task.wait(0.05)
+                        end
+                        sound:Stop()
+                        sound:Destroy()
+                    end)
+                end)
+
+                task.delay(0.6, function()
+                    pcall(function() gui:Destroy() end)
+                    pcall(function() blur:Destroy() end)
+
+                    pcall(function()
+                        local env = _genv
+                        env.SUCleanup = _TL_refs.SUCleanup
+                        env.SUUnload = _TL_refs.SUCleanup
+                    end)
+                    _G.SUCleanup = _TL_refs and _TL_refs.SUCleanup
+                end)
+            end)
+        end
+    end)
+
+    -- Timeout safety
+    task.spawn(function()
+        for i = 1, MAX_WAIT do
+            task.wait(1)
+            if closing then return end
+        end
+        if not closing then
+            closing = true
+            if loopConn then loopConn:Disconnect() end
+            pcall(function() loader.ready = true end)
+        end
+    end)
+end
 
 task.spawn(function()
     local ok, src = pcall(function() return (game :: any):HttpGet(EMOTEWHEEL_URL) end)

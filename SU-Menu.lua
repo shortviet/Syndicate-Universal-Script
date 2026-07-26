@@ -45,7 +45,7 @@ local task                    = (type(task) == "table" and task) or {
 local ROLES_URL               = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NametagRoles.json"
 local NAMETAG_CONFIG_URL      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NametagConfig.json"
 local SCRIPT_URL              = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/covertnet.lua"
-local EMOTEWHEEL_URL          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/refs/heads/main/TL-SCRIPTS/TL-EX-EMOTEWHEEL"
+local EMOTEWHEEL_URL          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/refs/heads/main/SCRIPTS-TAB/SU-EX-EMOTEWHEEL"
 local NameOverrides           = {}
 local AdminNames              = {}
 local LoadRolesFromGithub

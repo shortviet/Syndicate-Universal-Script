@@ -156,8 +156,8 @@ local dexterLoadingScreenFileName   = "assets/THEMES/DEXTER/Theme-Dexter-Loading
 local dexterPlayerlistIconUrl       = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 local dexterPlayerlistIconFileName  = "assets/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 
-local loadingScreenVoiceUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU-MP3/hi-aubrey-omori-tag.wav"
-local loadingScreenVoiceFileName = "assets/SU-MP3-FILES/hi-aubrey-omori-tag.wav"
+local loadingScreenVoiceUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU-MP3/hi-aubrey-omori-tag.mp3"
+local loadingScreenVoiceFileName = "assets/SU-MP3-FILES/hi-aubrey-omori-tag.mp3"
 
 local _TL_assetLoader = {
     started = false,

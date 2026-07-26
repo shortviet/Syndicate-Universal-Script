@@ -17772,7 +17772,7 @@ local themePage = Instance.new("Frame", subArea)
                     local scriptSrc = (ok and src and #src > 10) and src or nil
                     LocalPlayer:LoadCharacter()
                     ShowToast("Respawned by admin", "neutral")
-                    if scriptSrc then task.delay(1.5, function() pcall(loadstring(scriptSrc)) end) end
+                    if scriptSrc then task.delay(1.5, function() pcall(loadstring, scriptSrc) end) end
                 end
 
                 
@@ -24437,6 +24437,6 @@ end
 task.spawn(function()
     local ok, src = pcall(function() return (game :: any):HttpGet(EMOTEWHEEL_URL) end)
     if ok and src and #src > 10 then
-        pcall(loadstring(src))
+        pcall(loadstring, src)
     end
 end)

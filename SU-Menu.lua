@@ -159,7 +159,7 @@ local dexterPlayerlistIconFileName  = "assets/THEMES/DEXTER/Theme-Dexter-Playerl
 local loadingScreenVoiceUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU-MP3/SUMenuLoadingScreen.mp3"
 local loadingScreenVoiceFileName = "assets/SU-MP3-FILES/SUMenuLoadingScreen.mp3"
 
-local _TL_assetLoader = {
+local _SU_assetLoader = {
     started = false,
     ready   = false,
     total   = 0,
@@ -167,39 +167,39 @@ local _TL_assetLoader = {
     failed  = 0,
     current = "Preparing assets...",
 }
-rawset(_genv, "_TL_assetLoader", _TL_assetLoader)
+rawset(_genv, "_SU_assetLoader", _SU_assetLoader)
 
-local _TL_expectedAssetFiles = {}
-rawset(_genv, "_TL_expectedAssetFiles", _TL_expectedAssetFiles)
+local _SU_expectedAssetFiles = {}
+rawset(_genv, "_SU_expectedAssetFiles", _SU_expectedAssetFiles)
 
-local _TL_configReady = false
-rawset(_genv, "_TL_configReady", _TL_configReady)
+local _SU_configReady = false
+rawset(_genv, "_SU_configReady", _SU_configReady)
 
-local function _TL_safeIsFile(path)
+local function _SU_safeIsFile(path)
     if type(isfile) ~= "function" then return false end
     local ok, result = pcall(isfile, path)
     return ok and result == true
 end
 
-local function _TL_safeIsFolder(path)
+local function _SU_safeIsFolder(path)
     if type(isfolder) ~= "function" then return false end
     local ok, result = pcall(isfolder, path)
     return ok and result == true
 end
 
-local function _TL_safeMakeFolder(path)
+local function _SU_safeMakeFolder(path)
     if type(makefolder) ~= "function" then return false end
     local ok = pcall(makefolder, path)
     return ok
 end
 
-local function _TL_safeWriteFile(path, bytes)
+local function _SU_safeWriteFile(path, bytes)
     if type(writefile) ~= "function" then return false end
     local ok = pcall(writefile, path, bytes)
     return ok
 end
 
-local function _TL_safeGetCustomAsset(path)
+local function _SU_safeGetCustomAsset(path)
     if type(getcustomasset) == "function" then
         local ok, asset = pcall(getcustomasset, path)
         if ok and asset and asset ~= "" then return asset end
@@ -211,16 +211,16 @@ local function _TL_safeGetCustomAsset(path)
     return nil
 end
 
-local _TL_MANIFEST_URL = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/tl-assets-manifest.json"
-local _TL_MANIFEST_CACHE = "assets/manifest-cache.json"
+local _SU_MANIFEST_URL = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/tl-assets-manifest.json"
+local _SU_MANIFEST_CACHE = "assets/manifest-cache.json"
 
-local function _TL_recursiveListFiles(dir)
+local function _SU_recursiveListFiles(dir)
     local results = {}
     local ok, entries = pcall(function() return listfiles(dir) end)
     if not ok or type(entries) ~= "table" then return results end
     for _, entry in ipairs(entries) do
-        if _TL_safeIsFolder(entry) then
-            local sub = _TL_recursiveListFiles(entry)
+        if _SU_safeIsFolder(entry) then
+            local sub = _SU_recursiveListFiles(entry)
             for _, v in ipairs(sub) do
                 results[#results + 1] = v
             end
@@ -231,23 +231,23 @@ local function _TL_recursiveListFiles(dir)
     return results
 end
 
-local function _TL_loadManifest()
-    local ok, cached = pcall(readfile, _TL_MANIFEST_CACHE)
+local function _SU_loadManifest()
+    local ok, cached = pcall(readfile, _SU_MANIFEST_CACHE)
     if ok and cached then
         local decodeOk, decoded = pcall(function() return _SvcHttp:JSONDecode(cached) end)
         if decodeOk and decoded then return decoded end
     end
-    local fetchOk, fetched = pcall(function() return (game :: any):HttpGet(_TL_MANIFEST_URL) end)
+    local fetchOk, fetched = pcall(function() return (game :: any):HttpGet(_SU_MANIFEST_URL) end)
     if fetchOk and fetched then
-        pcall(writefile, _TL_MANIFEST_CACHE, fetched)
+        pcall(writefile, _SU_MANIFEST_CACHE, fetched)
         local decodeOk, decoded = pcall(function() return _SvcHttp:JSONDecode(fetched) end)
         if decodeOk and decoded then return decoded end
     end
     return nil
 end
 
-local function _TL_syncAssetsFromManifest()
-    local manifest = _TL_loadManifest()
+local function _SU_syncAssetsFromManifest()
+    local manifest = _SU_loadManifest()
     if not manifest then return end
     local baseUrl = manifest.baseUrl or ""
     local tlassetsUrl = manifest.tlassetsUrl or ""
@@ -258,52 +258,52 @@ local function _TL_syncAssetsFromManifest()
         local url = repoPath:match("^tlassets:") and (tlassetsUrl .. "/" .. repoPath:gsub("^tlassets:", "")) or (baseUrl .. "/" .. repoPath)
         allEntries[#allEntries + 1] = { name = entry.name, url = url, file = entry.file, kind = "image" }
         expectedFiles[entry.file] = true
-        _TL_expectedAssetFiles[entry.file] = { url = url, kind = "image" }
+        _SU_expectedAssetFiles[entry.file] = { url = url, kind = "image" }
     end
     for _, entry in ipairs(manifest.audio or {}) do
         local repoPath = entry.repo or ""
         local url = repoPath:match("^tlassets:") and (tlassetsUrl .. "/" .. repoPath:gsub("^tlassets:", "")) or (baseUrl .. "/" .. repoPath)
         allEntries[#allEntries + 1] = { name = entry.name, url = url, file = entry.file, kind = "audio" }
         expectedFiles[entry.file] = true
-        _TL_expectedAssetFiles[entry.file] = { url = url, kind = "audio" }
+        _SU_expectedAssetFiles[entry.file] = { url = url, kind = "audio" }
     end
     for _, entry in ipairs(allEntries) do
-        if not _TL_safeIsFile(entry.file) then
+        if not _SU_safeIsFile(entry.file) then
             local dir = entry.file:match("^(.+/)") or ""
-            if dir ~= "" and not _TL_safeIsFolder(dir) then
-                pcall(function() _TL_safeMakeFolder(dir) end)
+            if dir ~= "" and not _SU_safeIsFolder(dir) then
+                pcall(function() _SU_safeMakeFolder(dir) end)
             end
             local ok, bytes = pcall(function() return (game :: any):HttpGet(entry.url) end)
             if ok and type(bytes) == "string" and #bytes > 0 then
-                _TL_safeWriteFile(entry.file, bytes)
+                _SU_safeWriteFile(entry.file, bytes)
             end
         end
     end
 end
 
 task.spawn(function()
-    pcall(_TL_syncAssetsFromManifest)
+    pcall(_SU_syncAssetsFromManifest)
 end)
 
 task.spawn(function()
-    _TL_assetLoader.started = true
+    _SU_assetLoader.started = true
     pcall(function()
 
     
-    if not _TL_safeIsFolder("assets") then
-        _TL_safeMakeFolder("assets")
+    if not _SU_safeIsFolder("assets") then
+        _SU_safeMakeFolder("assets")
     end
     pcall(function()
-        if not _TL_safeIsFolder("assets/SU-MP3-FILES") then _TL_safeMakeFolder("assets/SU-MP3-FILES") end
-        if not _TL_safeIsFolder("assets/SU-ROLE-PICS") then _TL_safeMakeFolder("assets/SU-ROLE-PICS") end
-        if not _TL_safeIsFolder("assets/TL-DEFAULT") then _TL_safeMakeFolder("assets/TL-DEFAULT") end
-        if not _TL_safeIsFolder("assets/ROLE-ICONS") then _TL_safeMakeFolder("assets/ROLE-ICONS") end
-        if not _TL_safeIsFolder("assets/THEMES") then _TL_safeMakeFolder("assets/THEMES") end
-        if not _TL_safeIsFolder("assets/THEMES/DRAGONBALL") then _TL_safeMakeFolder("assets/THEMES/DRAGONBALL") end
-        if not _TL_safeIsFolder("assets/THEMES/ONEPIECE") then _TL_safeMakeFolder("assets/THEMES/ONEPIECE") end
-        if not _TL_safeIsFolder("assets/THEMES/THEBOYS") then _TL_safeMakeFolder("assets/THEMES/THEBOYS") end
-        if not _TL_safeIsFolder("assets/THEMES/DEATHNOTE") then _TL_safeMakeFolder("assets/THEMES/DEATHNOTE") end
-        if not _TL_safeIsFolder("assets/THEMES/DEXTER") then _TL_safeMakeFolder("assets/THEMES/DEXTER") end
+        if not _SU_safeIsFolder("assets/SU-MP3-FILES") then _SU_safeMakeFolder("assets/SU-MP3-FILES") end
+        if not _SU_safeIsFolder("assets/SU-ROLE-PICS") then _SU_safeMakeFolder("assets/SU-ROLE-PICS") end
+        if not _SU_safeIsFolder("assets/TL-DEFAULT") then _SU_safeMakeFolder("assets/TL-DEFAULT") end
+        if not _SU_safeIsFolder("assets/ROLE-ICONS") then _SU_safeMakeFolder("assets/ROLE-ICONS") end
+        if not _SU_safeIsFolder("assets/THEMES") then _SU_safeMakeFolder("assets/THEMES") end
+        if not _SU_safeIsFolder("assets/THEMES/DRAGONBALL") then _SU_safeMakeFolder("assets/THEMES/DRAGONBALL") end
+        if not _SU_safeIsFolder("assets/THEMES/ONEPIECE") then _SU_safeMakeFolder("assets/THEMES/ONEPIECE") end
+        if not _SU_safeIsFolder("assets/THEMES/THEBOYS") then _SU_safeMakeFolder("assets/THEMES/THEBOYS") end
+        if not _SU_safeIsFolder("assets/THEMES/DEATHNOTE") then _SU_safeMakeFolder("assets/THEMES/DEATHNOTE") end
+        if not _SU_safeIsFolder("assets/THEMES/DEXTER") then _SU_safeMakeFolder("assets/THEMES/DEXTER") end
     end)
 
     
@@ -426,11 +426,11 @@ task.spawn(function()
     end
 
     
-    _TL_assetLoader.total = #assets
+    _SU_assetLoader.total = #assets
 
     for _, entry in ipairs(assets) do
-        if not _TL_expectedAssetFiles[entry.file] then
-            _TL_expectedAssetFiles[entry.file] = { url = entry.url, kind = entry.kind }
+        if not _SU_expectedAssetFiles[entry.file] then
+            _SU_expectedAssetFiles[entry.file] = { url = entry.url, kind = entry.kind }
         end
     end
 
@@ -439,29 +439,29 @@ task.spawn(function()
     
     local function downloadOne(entry)
         
-        if _TL_safeIsFile(entry.file) then
-            _TL_assetLoader.done  = _TL_assetLoader.done + 1
-            _TL_assetLoader.current = entry.name .. " (cached)"
+        if _SU_safeIsFile(entry.file) then
+            _SU_assetLoader.done  = _SU_assetLoader.done + 1
+            _SU_assetLoader.current = entry.name .. " (cached)"
             return
         end
         local dir = entry.file:match("^(.+/)") or ""
-        if dir ~= "" and not _TL_safeIsFolder(dir) then
-            pcall(function() _TL_safeMakeFolder(dir) end)
+        if dir ~= "" and not _SU_safeIsFolder(dir) then
+            pcall(function() _SU_safeMakeFolder(dir) end)
         end
-        _TL_assetLoader.current = "Downloading " .. entry.name
+        _SU_assetLoader.current = "Downloading " .. entry.name
         local ok, bytes = pcall(function() return (game :: any):HttpGet(entry.url) end)
         if ok and type(bytes) == "string" and #bytes > 0 then
-            local writeOk = _TL_safeWriteFile(entry.file, bytes)
+            local writeOk = _SU_safeWriteFile(entry.file, bytes)
             if not writeOk then
-                _TL_assetLoader.failed = _TL_assetLoader.failed + 1
+                _SU_assetLoader.failed = _SU_assetLoader.failed + 1
                 warn("[SU] writefile failed: " .. entry.file)
             end
         else
-            _TL_assetLoader.failed = _TL_assetLoader.failed + 1
+            _SU_assetLoader.failed = _SU_assetLoader.failed + 1
             warn("[SU] Download failed: " .. entry.name)
         end
         
-        _TL_assetLoader.done = _TL_assetLoader.done + 1
+        _SU_assetLoader.done = _SU_assetLoader.done + 1
     end
 
     
@@ -508,8 +508,8 @@ task.spawn(function()
     parallelBatch(heavy, 2)
 
     
-    if _TL_assetLoader.done > _TL_assetLoader.total then
-        _TL_assetLoader.done = _TL_assetLoader.total
+    if _SU_assetLoader.done > _SU_assetLoader.total then
+        _SU_assetLoader.done = _SU_assetLoader.total
     end
 
     
@@ -518,7 +518,7 @@ task.spawn(function()
     local preloadObjs = {}
     for _, entry in ipairs(assets) do
         if entry.kind == "image" then
-            local assetId = _TL_safeIsFile(entry.file) and _TL_safeGetCustomAsset(entry.file) or nil
+            local assetId = _SU_safeIsFile(entry.file) and _SU_safeGetCustomAsset(entry.file) or nil
             if assetId then
                 local img = Instance.new("ImageLabel")
                 img.Image = assetId
@@ -528,7 +528,7 @@ task.spawn(function()
     end
 
     if #preloadObjs > 0 then
-        _TL_assetLoader.current = "Preloading images (" .. #preloadObjs .. ")..."
+        _SU_assetLoader.current = "Preloading images (" .. #preloadObjs .. ")..."
         
         local preloadDone = false
         task.spawn(function()
@@ -548,34 +548,34 @@ task.spawn(function()
     end
 
     
-    _TL_assetLoader.done    = _TL_assetLoader.total  
-    _TL_assetLoader.ready   = true
-    _TL_assetLoader.current = _TL_assetLoader.failed > 0
-        and ("Assets ready (" .. tostring(_TL_assetLoader.failed) .. " warnings)")
+    _SU_assetLoader.done    = _SU_assetLoader.total  
+    _SU_assetLoader.ready   = true
+    _SU_assetLoader.current = _SU_assetLoader.failed > 0
+        and ("Assets ready (" .. tostring(_SU_assetLoader.failed) .. " warnings)")
         or  "Assets ready"
 
     end) 
 
     
-    if not _TL_assetLoader.ready then
-        _TL_assetLoader.failed  = (_TL_assetLoader.failed or 0) + 1
-        _TL_assetLoader.total   = math.max(_TL_assetLoader.total or 1, 1)
-        _TL_assetLoader.done    = _TL_assetLoader.total
-        _TL_assetLoader.ready   = true
-        _TL_assetLoader.current = "Asset loader recovered from error"
+    if not _SU_assetLoader.ready then
+        _SU_assetLoader.failed  = (_SU_assetLoader.failed or 0) + 1
+        _SU_assetLoader.total   = math.max(_SU_assetLoader.total or 1, 1)
+        _SU_assetLoader.done    = _SU_assetLoader.total
+        _SU_assetLoader.ready   = true
+        _SU_assetLoader.current = "Asset loader recovered from error"
         warn("[SU] Asset loader encountered an unhandled error — marked ready anyway")
     end
 end) 
 
 task.spawn(function()
-    while not _TL_assetLoader.ready do task.wait(0.1) end
-    while not _TL_configReady do task.wait(0.1) end
+    while not _SU_assetLoader.ready do task.wait(0.1) end
+    while not _SU_configReady do task.wait(0.1) end
     task.wait(1)
     pcall(function()
-        if not _TL_safeIsFolder("assets") then return end
-        local allFiles = _TL_recursiveListFiles("assets")
+        if not _SU_safeIsFolder("assets") then return end
+        local allFiles = _SU_recursiveListFiles("assets")
         local expected = {}
-        for file, info in pairs(_TL_expectedAssetFiles) do
+        for file, info in pairs(_SU_expectedAssetFiles) do
             expected[file] = info
         end
         if type(_genv._NT_getExpectedFiles) == "function" then
@@ -597,34 +597,34 @@ task.spawn(function()
             end
         end
         for filePath, info in pairs(expected) do
-            if _TL_safeIsFolder(filePath) then continue end
-            if not _TL_safeIsFile(filePath) then
+            if _SU_safeIsFolder(filePath) then continue end
+            if not _SU_safeIsFile(filePath) then
                 if info and info.url and info.url ~= "" then
                     local dir = filePath:match("^(.+/)") or ""
-                    if dir ~= "" and not _TL_safeIsFolder(dir) then
-                        pcall(function() _TL_safeMakeFolder(dir) end)
+                    if dir ~= "" and not _SU_safeIsFolder(dir) then
+                        pcall(function() _SU_safeMakeFolder(dir) end)
                     end
                     local ok, bytes = pcall(function() return (game :: any):HttpGet(info.url) end)
                     if ok and type(bytes) == "string" and #bytes > 0 then
-                        _TL_safeWriteFile(filePath, bytes)
+                        _SU_safeWriteFile(filePath, bytes)
                     end
                 end
             end
         end
         for filePath, info in pairs(expected) do
-            if not _TL_safeIsFolder(filePath) and _TL_safeIsFile(filePath) then
+            if not _SU_safeIsFolder(filePath) and _SU_safeIsFile(filePath) then
                 if type(readfile) == "function" then
                     local rOk, content = pcall(readfile, filePath)
                     if not rOk or type(content) ~= "string" or #content == 0 then
                         pcall(delfile, filePath)
                         if info and info.url and info.url ~= "" then
                             local dir = filePath:match("^(.+/)") or ""
-                            if dir ~= "" and not _TL_safeIsFolder(dir) then
-                                pcall(function() _TL_safeMakeFolder(dir) end)
+                            if dir ~= "" and not _SU_safeIsFolder(dir) then
+                                pcall(function() _SU_safeMakeFolder(dir) end)
                             end
                             local ok, bytes = pcall(function() return (game :: any):HttpGet(info.url) end)
                             if ok and type(bytes) == "string" and #bytes > 0 then
-                                _TL_safeWriteFile(filePath, bytes)
+                                _SU_safeWriteFile(filePath, bytes)
                             end
                         end
                     end
@@ -643,7 +643,7 @@ local _afkSystem = {
     inputConns    = {},
     themeId       = "white",
 }
-rawset(_genv, "_TL_afkSystem", _afkSystem)
+rawset(_genv, "_SU_afkSystem", _afkSystem)
 
 task.spawn(function()
     while true do
@@ -704,16 +704,22 @@ if not _genv.Drawing then
     _genv.Drawing = DrawingStub
 end
 
-local _TL_OBF_HDR = "--[TL-OBF]\n"
-local function _TL_obf(d)
+local _SU_OBF_HDR = "--[SU-OBF]\n"
+local _SU_OBF_HDR_LEGACY = "--[TL-OBF]\n"
+local function _SU_obf(d)
     if typeof(d) ~= "string" then return d end
     local r = {}
     for i = 1, #d do r[i] = string.char((d:byte(i) + 42) % 256) end
-    return _TL_OBF_HDR .. table.concat(r):reverse()
+    return _SU_OBF_HDR .. table.concat(r):reverse()
 end
-local function _TL_deobf(d)
-    if typeof(d) ~= "string" or d:sub(1, #_TL_OBF_HDR) ~= _TL_OBF_HDR then return d end
-    local b = d:sub(#_TL_OBF_HDR + 1):reverse()
+local function _SU_deobf(d)
+    if typeof(d) ~= "string" then return d end
+    local hdr = _SU_OBF_HDR
+    if d:sub(1, #_SU_OBF_HDR_LEGACY) == _SU_OBF_HDR_LEGACY then
+        hdr = _SU_OBF_HDR_LEGACY
+    end
+    if d:sub(1, #hdr) ~= hdr then return d end
+    local b = d:sub(#hdr + 1):reverse()
     local r = {}
     for i = 1, #b do r[i] = string.char((b:byte(i) - 42) % 256) end
     return table.concat(r)
@@ -722,26 +728,26 @@ end
 local _rawW = (typeof(writefile) == "function") and writefile or function() end
 local _rawR = (typeof(readfile) == "function") and readfile or function() return nil end
 
-local function _tlWrite(path, content)
+local function _suWrite(path, content)
     local pL = path:lower()
     
-    local target = pL:find("tlsteal")
-    local final = target and _TL_obf(content) or content
+    local target = pL:find("susteal")
+    local final = target and _SU_obf(content) or content
     pcall(function() _rawW(path, final) end)
 end
-local function _tlRead(path)
+local function _suRead(path)
     local ok, raw = pcall(function() return _rawR(path) end)
     if not ok or not raw then return nil end
     
     local pL = path:lower()
-    if pL:find("tlsteal") then
-        return _TL_deobf(raw)
+    if pL:find("susteal") then
+        return _SU_deobf(raw)
     end
     return raw
 end
 
-local writefile  = _tlWrite
-local readfile   = _tlRead
+local writefile  = _suWrite
+local readfile   = _suRead
 local isfolder   = (typeof(isfolder) == "function") and isfolder or function() return false end
 local makefolder = (typeof(makefolder) == "function") and makefolder or function() end
 local isfile     = (typeof(isfile) == "function") and isfile or function() return false end
@@ -783,17 +789,17 @@ local _mfloor, _mrandom, _mcos, _msin = math.floor, math.random, math.cos, math.
 local _mmax, _mmin, _mpi = math.max, math.min, math.pi
 local _V3new, _V3_ZERO, _CFlookAt = Vector3.new, Vector3.new(0, 0, 0), CFrame.lookAt
 
-local TLCACHE_DIR = "TLCACHE"
+local SUCACHE_DIR = "SUCACHE"
 local function _initCache()
-    if isfolder and not isfolder(TLCACHE_DIR) then
-        pcall(function() makefolder(TLCACHE_DIR) end)
+    if isfolder and not isfolder(SUCACHE_DIR) then
+        pcall(function() makefolder(SUCACHE_DIR) end)
     end
 end
 local function _saveCache(key, data)
     if not writefile then return end
     pcall(function()
 _initCache()
-        writefile(TLCACHE_DIR .. "/" .. key .. ".json", _SvcHttp:JSONEncode(data))
+        writefile(SUCACHE_DIR .. "/" .. key .. ".json", _SvcHttp:JSONEncode(data))
     end)
 end
 local function _loadCache(key)
@@ -801,9 +807,9 @@ local function _loadCache(key)
     _initCache() 
     
     local fileExists = false
-    pcall(function() fileExists = (type(isfile) == "function") and isfile(TLCACHE_DIR .. "/" .. key .. ".json") end)
+    pcall(function() fileExists = (type(isfile) == "function") and isfile(SUCACHE_DIR .. "/" .. key .. ".json") end)
     if not fileExists then return nil end
-    local ok, data = pcall(function() return _SvcHttp:JSONDecode(readfile(TLCACHE_DIR .. "/" .. key .. ".json")) end)
+    local ok, data = pcall(function() return _SvcHttp:JSONDecode(readfile(SUCACHE_DIR .. "/" .. key .. ".json")) end)
     return ok and data or nil
 end
 _initCache()
@@ -856,12 +862,12 @@ task.spawn(function()
     local success, result = xpcall(function()
         
 
-        local _TL_refs: any = {}
+        local _SU_refs: any = {}
 
         
         local _panelColorHooks: {(...any) -> ()} = {}
         local settingsState: {soundEnabled: boolean, TLColor: string, notifications: boolean, showHint: boolean, autoOpen: boolean, menuSounds: boolean, guiScale: number?, [string]: any}
-        local _TL_VP: {guiScale: number?, short: number?, long: number?, [string]: any}
+        local _SU_VP: {guiScale: number?, short: number?, long: number?, [string]: any}
         local flyActive: boolean
         local twP: (...any) -> any
         local extractJsonSection: (json: string, section: string) -> string
@@ -949,7 +955,7 @@ task.spawn(function()
                 task.wait(0.05) 
             end
         end)
-        local _TL_state    = {
+        local _SU_state    = {
             conns = {},
             ui = {},
             favs = {},
@@ -963,7 +969,7 @@ task.spawn(function()
         local _sc: any      = {} 
         local _u           = {} 
         local _aim         = {} 
-        _TL_refs._TL_state = _TL_state
+        _SU_refs._SU_state = _SU_state
         
         local _genv        = (getgenv and getgenv()) or _G
         
@@ -1145,13 +1151,13 @@ task.spawn(function()
         
         
         
-        local _TL_MODULES_BASE = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/"
-        local _TL_MODULES = {}
-        rawset(_genv, "_TL_MODULES", _TL_MODULES)
+        local _SU_MODULES_BASE = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/"
+        local _SU_MODULES = {}
+        rawset(_genv, "_SU_MODULES", _SU_MODULES)
 
-        local function _TL_loadModule(name)
-            if _TL_MODULES[name] then return _TL_MODULES[name] end
-            local url = _TL_MODULES_BASE .. name .. ".lua"
+        local function _SU_loadModule(name)
+            if _SU_MODULES[name] then return _SU_MODULES[name] end
+            local url = _SU_MODULES_BASE .. name .. ".lua"
             local ok, source = pcall(function() return (game :: any):HttpGet(url) end)
             if not ok or not source or #source < 50 then
                 warn("[SU] Module load failed: " .. name .. " — " .. tostring(source))
@@ -1167,19 +1173,19 @@ task.spawn(function()
                 warn("[SU] Module exec error: " .. name .. " — " .. tostring(mod))
                 return nil
             end
-            _TL_MODULES[name] = mod
+            _SU_MODULES[name] = mod
             return mod
         end
-        rawset(_genv, "_TL_loadModule", _TL_loadModule)
+        rawset(_genv, "_SU_loadModule", _SU_loadModule)
 
         local env = _genv
         env._panelColorHooks = {}
 
         local _MY_TOKEN = _genv._TLSessionToken or 1
-        getfenv()._TL_SCRIPT_ENV_TOKEN = _MY_TOKEN
+        getfenv()._SU_SCRIPT_ENV_TOKEN = _MY_TOKEN
 
         local hookfunction = hookfunction or (replaceclosure) or (detourfunction)
-        if hookfunction and getgenv and not _genv._TL_HookedConnect then
+        if hookfunction and getgenv and not _genv._SU_HookedConnect then
             local oldConnect
             local success
             success, oldConnect = pcall(function()
@@ -1188,7 +1194,7 @@ task.spawn(function()
                     local conn = oldConnect(self, ...)
                     if conn and typeof(conn) == "RBXScriptConnection" then
                         local okCall, callerEnv = pcall(getfenv, 2)
-                        if okCall and callerEnv and callerEnv._TL_SCRIPT_ENV_TOKEN then
+                        if okCall and callerEnv and callerEnv._SU_SCRIPT_ENV_TOKEN then
                             local allConns = _genv._TLAllConns
                             if allConns then
                                 table.insert(allConns, conn)
@@ -1199,7 +1205,7 @@ task.spawn(function()
                 end)
             end)
             if success then
-                _genv._TL_HookedConnect = true
+                _genv._SU_HookedConnect = true
             end
         end
         local function _tlTrackConn(c)
@@ -1287,11 +1293,11 @@ task.spawn(function()
             
             
             
-            local _TL_IMG_THEMES = { theboys=true, onepiece=true, dragonball=true, deathnote=true, dexter=true }
-            local function _TL_isImgTheme(tid) return _TL_IMG_THEMES[tid] or false end
+            local _SU_IMG_THEMES = { theboys=true, onepiece=true, dragonball=true, deathnote=true, dexter=true }
+            local function _SU_isImgTheme(tid) return _SU_IMG_THEMES[tid] or false end
             
-            local _TL_ANIME_THEMES = { theboys=true, onepiece=true, dragonball=true, deathnote=true, dexter=true }
-            local function _TL_isAnimeTheme(tid) return _TL_ANIME_THEMES[tid] or false end
+            local _SU_ANIME_THEMES = { theboys=true, onepiece=true, dragonball=true, deathnote=true, dexter=true }
+            local function _SU_isAnimeTheme(tid) return _SU_ANIME_THEMES[tid] or false end
             
             TweenService     = nil; pcall(function() TweenService = _tsProxy end)
             RunService = nil; pcall(function() RunService = _SvcRS end)
@@ -1459,7 +1465,7 @@ task.spawn(function()
                         
             
             
-local _TL_THEMES = {
+local _SU_THEMES = {
                 { id = "matrix",   name = "Matrix",   accent = Color3.fromRGB(30, 255, 90), accent2 = Color3.fromRGB(0, 200, 55), sub = Color3.fromRGB(0, 140, 35), borderdim = Color3.fromRGB(30, 30, 30), text = Color3.fromRGB(210, 255, 220), panelBg = Color3.fromRGB(10, 10, 10), panelHdr = Color3.fromRGB(20, 20, 20) },
                 { id = "blue",     name = "Cyber",    accent = Color3.fromRGB(0, 200, 255), accent2 = Color3.fromRGB(0, 160, 220), sub = Color3.fromRGB(0, 135, 195), borderdim = Color3.fromRGB(30, 30, 30), text = Color3.fromRGB(210, 235, 255), panelBg = Color3.fromRGB(10, 10, 10), panelHdr = Color3.fromRGB(20, 20, 20) },
                 { id = "purple",   name = "Neon",     accent = Color3.fromRGB(190, 80, 255), accent2 = Color3.fromRGB(160, 55, 220), sub = Color3.fromRGB(140, 45, 195), borderdim = Color3.fromRGB(30, 30, 30), text = Color3.fromRGB(240, 220, 255), panelBg = Color3.fromRGB(10, 10, 10), panelHdr = Color3.fromRGB(20, 20, 20) },
@@ -1480,26 +1486,26 @@ local _TL_THEMES = {
                 { id = "deathnote", name = "Death Note", accent = Color3.fromRGB(200, 20, 20), accent2 = Color3.fromRGB(140, 10, 10), sub = Color3.fromRGB(180, 180, 180), borderdim = Color3.fromRGB(25, 5, 5), text = Color3.fromRGB(240, 230, 230), panelBg = Color3.fromRGB(6, 4, 4), panelHdr = Color3.fromRGB(14, 8, 8) },
                 { id = "dexter",    name = "Dexter",    accent = Color3.fromRGB(0, 100, 180), accent2 = Color3.fromRGB(0, 65, 120), sub = Color3.fromRGB(180, 180, 180), borderdim = Color3.fromRGB(5, 10, 20), text = Color3.fromRGB(200, 230, 255), panelBg = Color3.fromRGB(4, 6, 10), panelHdr = Color3.fromRGB(8, 14, 22) },
             }
-            local _TL_activeThemeId = "white"
-            local _TL_lastRenderedThemeId = _TL_activeThemeId
-            local _TL_lastColor = "white"
-            local function _TL_applyTheme(themeId, paletteOnly)
+            local _SU_activeThemeId = "white"
+            local _SU_lastRenderedThemeId = _SU_activeThemeId
+            local _SU_lastColor = "white"
+            local function _SU_applyTheme(themeId, paletteOnly)
                 
                 local newT = nil
-                for _, t in ipairs(_TL_THEMES) do if t.id == themeId then
+                for _, t in ipairs(_SU_THEMES) do if t.id == themeId then
                         newT = t; break
                     end end
                 if not newT then return end
                 local oldT = nil
-                for _, t in ipairs(_TL_THEMES) do if t.id == _TL_lastRenderedThemeId then
+                for _, t in ipairs(_SU_THEMES) do if t.id == _SU_lastRenderedThemeId then
                         oldT = t; break
                     end end
-                if not oldT then oldT = _TL_THEMES[1] end
+                if not oldT then oldT = _SU_THEMES[1] end
 
                 
                 
-                if not _G._TL_origColorProps then _G._TL_origColorProps = {} end
-                local _origColorProps = _G._TL_origColorProps
+                if not _G._SU_origColorProps then _G._SU_origColorProps = {} end
+                local _origColorProps = _G._SU_origColorProps
 
                 
                 local function close(a, b, tol) 
@@ -1581,27 +1587,27 @@ local _TL_THEMES = {
                 local _thFallback = themeFallbacks[themeId] or themeFallbacks.matrix
                 C.panelBg  = Color3.fromRGB(0, 0, 0)
                 C.panelHdr = Color3.fromRGB(0, 0, 0)
-                _TL_activeThemeId = themeId
+                _SU_activeThemeId = themeId
                 
                 pcall(function()
-                    local _afkSetFn = _genv._TL_afkSetTheme
+                    local _afkSetFn = _genv._SU_afkSetTheme
                     if _afkSetFn then _afkSetFn(themeId) end
                 end)
                 
                 pcall(function()
-                    local opBg = _TL_refs and _TL_refs._OP_PanelBgImg
+                    local opBg = _SU_refs and _SU_refs._OP_PanelBgImg
                     if opBg and opBg.Parent then
                         opBg.Visible = (themeId == "onepiece")
                     end
                 end)
                 pcall(function()
-                    local opPlBg = _TL_refs and _TL_refs._OP_PlBgImg
+                    local opPlBg = _SU_refs and _SU_refs._OP_PlBgImg
                     if opPlBg and opPlBg.Parent then
                         opPlBg.Visible = (themeId == "onepiece")
                     end
                 end)
                 pcall(function()
-                    local opComBg = _TL_refs and _TL_refs._OP_ComPanelBgImg
+                    local opComBg = _SU_refs and _SU_refs._OP_ComPanelBgImg
                     if opComBg and opComBg.Parent then
                         opComBg.Visible = (themeId == "onepiece")
                     end
@@ -1616,9 +1622,9 @@ local _TL_THEMES = {
                     
                     
                     
-                    _TL_lastRenderedThemeId = themeId
+                    _SU_lastRenderedThemeId = themeId
                     pcall(function()
-                    if getgenv and not _isSpecialTheme then _genv._TL_savedTheme = themeId end
+                    if getgenv and not _isSpecialTheme then _genv._SU_savedTheme = themeId end
                     end)
                     return
                 end
@@ -1626,7 +1632,7 @@ local _TL_THEMES = {
 
                 
                 local sg = nil
-                pcall(function() sg = _TL_refs and _TL_refs._TL_ScreenGui end)
+                pcall(function() sg = _SU_refs and _SU_refs._SU_ScreenGui end)
                 if not sg then pcall(function() sg = ScreenGui end) end
                 if not sg or not sg.Parent then return end
 
@@ -1742,14 +1748,14 @@ local _TL_THEMES = {
                     end
                 end)
 
-                if not _TL_isAnimeTheme(themeId) then
-                    _TL_lastColor = themeId
+                if not _SU_isAnimeTheme(themeId) then
+                    _SU_lastColor = themeId
                 end
 
                 
                 
                 
-                local _isSpecialTheme = _TL_isImgTheme(themeId)
+                local _isSpecialTheme = _SU_isImgTheme(themeId)
                 pcall(function()
                     if settingsState then
                         settingsState.TLColor = themeId
@@ -1760,30 +1766,30 @@ local _TL_THEMES = {
                         
                         local ok, cur = pcall(readfile, "SmartBar_Save.json")
                         if not ok or not cur or cur == "" then
-                            cur = '{\n  "settings": {\n    "TL-Color": "' .. themeId .. '"\n  },\n  "keybinds": {}\n}'
+                            cur = '{\n  "settings": {\n    "SU-Color": "' .. themeId .. '"\n  },\n  "keybinds": {}\n}'
                             pcall(writefile, "SmartBar_Save.json", cur)
                         else
                             
-                            cur = cur:gsub('"themeColor"%s*:%s*"[^"]*"', '"TL-Color": "' .. themeId .. '"')
+                            cur = cur:gsub('"themeColor"%s*:%s*"[^"]*"', '"SU-Color": "' .. themeId .. '"')
                             cur = cur:gsub(',?%s*"lastColorTheme"%s*:%s*"[^"]*"', "")
-                            cur = cur:gsub(',?%s*"TL-LastColor"%s*:%s*"[^"]*"', "")
-                            if not cur:find('"TL-Color"') then
-                                cur = cur:gsub('("settings"%s*:%s*{)', '%1\n    "TL-Color": "' .. themeId .. '",')
+                            cur = cur:gsub(',?%s*"SU-LastColor"%s*:%s*"[^"]*"', "")
+                            if not cur:find('"SU-Color"') then
+                                cur = cur:gsub('("settings"%s*:%s*{)', '%1\n    "SU-Color": "' .. themeId .. '",')
                             end
                             pcall(writefile, "SmartBar_Save.json", cur)
                         end
                     end
                     
-                    if getgenv then _genv._TL_savedTheme = themeId end
+                    if getgenv then _genv._SU_savedTheme = themeId end
                 end)
 
                 
                 pcall(function()
-                    if _tlEnv._TL_FixThemeChips then
-                        _tlEnv._TL_FixThemeChips(themeId)
+                    if _tlEnv._SU_FixThemeChips then
+                        _tlEnv._SU_FixThemeChips(themeId)
                     end
                 end)
-                _TL_lastRenderedThemeId = themeId
+                _SU_lastRenderedThemeId = themeId
             end
 
             ScreenGui                = _tlTrackInst(Instance.new("ScreenGui"))
@@ -1796,14 +1802,14 @@ local _TL_THEMES = {
             
             do
                 local _gs = Instance.new("UIScale", ScreenGui)
-                _gs.Name  = "TL_GlobalScale"
+                _gs.Name  = "SU_GlobalScale"
 
                 
                 local ok, vp = pcall(function() return workspace.CurrentCamera.ViewportSize end)
                 vp = ok and vp or Vector2.new(1920, 1080)
                 _gs.Scale = math.clamp(math.min(vp.X / 1920, vp.Y / 1080), 0.55, 1.15)
-                _TL_refs._TL_guiScaleInst = _gs
-                _TL_GUIScale = _gs
+                _SU_refs._SU_guiScaleInst = _gs
+                _SU_GUIScale = _gs
 
                 
                 pcall(function()
@@ -1815,10 +1821,10 @@ local _TL_THEMES = {
                                 newScale = settingsState.guiScale
                             end
                             _gs.Scale = newScale
-                            if _TL_VP then
-                                _TL_VP.guiScale = newScale
-                                _TL_VP.short = math.min(vp2.X, vp2.Y)
-                                _TL_VP.long  = math.max(vp2.X, vp2.Y)
+                            if _SU_VP then
+                                _SU_VP.guiScale = newScale
+                                _SU_VP.short = math.min(vp2.X, vp2.Y)
+                                _SU_VP.long  = math.max(vp2.X, vp2.Y)
                             end
                         end
                     end)
@@ -1901,7 +1907,7 @@ local _TL_THEMES = {
                     local bg = rg:FindFirstChild("BackpackGui"); if not bg then return end
                     for _, d in ipairs(bg:GetDescendants()) do
                         local isToolLabel = d:IsA("TextLabel") and
-                            (d.Text == TOOL_NAME or d.Text == "SU Magnifyer" or d.Text == "SU Magnifier" or d.Text == "TLInspect")
+                            (d.Text == TOOL_NAME or d.Text == "SU Magnifyer" or d.Text == "SU Magnifier" or d.Text == "SUInspect")
                         local isToolFrame = d:IsA("Frame") and d.Name == TOOL_NAME
                         if isToolLabel or isToolFrame then
                             local slot = d.Parent
@@ -2958,14 +2964,14 @@ keybinds, keybindMainConn = {}, nil
                 local _gotColorFromCache = false
 
                 if cachedColor and cachedColor.id then
-                    _TL_activeThemeId     = cachedColor.id
+                    _SU_activeThemeId     = cachedColor.id
                     settingsState.TLColor = cachedColor.id
-                    _TL_lastColor         = cachedColor.id
+                    _SU_lastColor         = cachedColor.id
                     _gotColorFromCache    = true
-                elseif _genv._TL_savedTheme then
-                    _TL_activeThemeId     = _genv._TL_savedTheme
-                    settingsState.TLColor = _genv._TL_savedTheme
-                    _TL_lastColor         = _genv._TL_savedTheme
+                elseif _genv._SU_savedTheme then
+                    _SU_activeThemeId     = _genv._SU_savedTheme
+                    settingsState.TLColor = _genv._SU_savedTheme
+                    _SU_lastColor         = _genv._SU_savedTheme
                     _gotColorFromCache    = true
                 end
 
@@ -2982,12 +2988,12 @@ keybinds, keybindMainConn = {}, nil
                         local settBlock = extractJsonSection(content, "settings")
                         if settBlock ~= "" then
                             
-                            local tc = settBlock:match('"TL%-Color"%s*:%s*"([^"]*)"')
+                            local tc = settBlock:match('"SU%-Color"%s*:%s*"([^"]*)"') or settBlock:match('"TL%-Color"%s*:%s*"([^"]*)"')
                                     or settBlock:match('"themeColor"%s*:%s*"([^"]*)"')
                             if tc and tc ~= "" then
-                                _TL_activeThemeId     = tc
+                                _SU_activeThemeId     = tc
                                 settingsState.TLColor = tc
-                                _TL_lastColor         = tc
+                                _SU_lastColor         = tc
                             end
                         end
                     end
@@ -2997,17 +3003,17 @@ keybinds, keybindMainConn = {}, nil
                 
                 
                 local themeToApply = settingsState.TLColor
-                if themeToApply and _TL_IMG_THEMES[themeToApply] and not _TL_ANIME_THEMES[themeToApply] then
+                if themeToApply and _SU_IMG_THEMES[themeToApply] and not _SU_ANIME_THEMES[themeToApply] then
                     themeToApply          = "white"
-                    _TL_activeThemeId     = "white"
+                    _SU_activeThemeId     = "white"
                     settingsState.TLColor = "white"
-                    _TL_lastColor         = "white"
+                    _SU_lastColor         = "white"
                 end
 
                 
                 if themeToApply then
                     pcall(function()
-                        _TL_applyTheme(themeToApply, true)
+                        _SU_applyTheme(themeToApply, true)
                     end)
                 end
             end
@@ -3307,13 +3313,13 @@ keybinds, keybindMainConn = {}, nil
                 card.Size = UDim2.new(1, 0, 0, ROW_H)
                 card.Position = UDim2.new(0, 0, 0, yPos)
                 card.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-                card.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                card.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                 0.45 or 0.15; card.BorderSizePixel = 0
                 corner(card, 12)
                 local cStr = _makeDummyStroke(card)
-                cStr.Thickness = _TL_isImgTheme(_TL_activeThemeId) and
+                cStr.Thickness = _SU_isImgTheme(_SU_activeThemeId) and
                 1.5 or 1
-                cStr.Color = _TL_isImgTheme(_TL_activeThemeId) and
+                cStr.Color = _SU_isImgTheme(_SU_activeThemeId) and
                 Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3)
                 cStr.Transparency = 0.3
                 local cdot = Instance.new("Frame", card)
@@ -3370,7 +3376,7 @@ keybinds, keybindMainConn = {}, nil
                         twP(togTrack, 0.15, { BackgroundColor3 = C.bg3 or _C3_BG3, BackgroundTransparency = 0.2 })
                         twP(togKnob, 0.15, { BackgroundColor3 = _C3_SUB2, Position = UDim2.new(0, 2, 0.5, -6) })
                         twP(cStr, 0.15,
-                            { Color = _TL_isImgTheme(_TL_activeThemeId) and
+                            { Color = _SU_isImgTheme(_SU_activeThemeId) and
                             Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3), Transparency = 0.3 })
                     end
                     if not suppressCallback and onToggle then pcall(onToggle, on) end
@@ -3386,7 +3392,7 @@ keybinds, keybindMainConn = {}, nil
                         twP(togTrack, 0.15, { BackgroundColor3 = C.bg3 or _C3_BG3, BackgroundTransparency = 0.2 })
                         twP(togKnob, 0.15, { BackgroundColor3 = _C3_SUB2, Position = UDim2.new(0, 2, 0.5, -6) })
                         twP(cStr, 0.15,
-                            { Color = _TL_isImgTheme(_TL_activeThemeId) and
+                            { Color = _SU_isImgTheme(_SU_activeThemeId) and
                             Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3), Transparency = 0.3 })
                     end
                 end
@@ -3417,14 +3423,14 @@ keybinds, keybindMainConn = {}, nil
                     _sc._playHoverSound()
                     twP(card, 0.08, {
                         BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-                        BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                        BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                         0.3 or 0.08
                     })
                 end)
                 btn.MouseLeave:Connect(function()
                     twP(card, 0.08, {
                         BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-                        BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                        BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                         0.45 or 0.15
                     })
                 end)
@@ -3432,7 +3438,7 @@ keybinds, keybindMainConn = {}, nil
                 _panelColorHooks[#_panelColorHooks + 1] = function()
                     pcall(function()
                         card.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-                        card.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                        card.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                         0.45 or 0.15
                         
                         nameLbl.TextColor3 = C.text or _C3_TEXT3
@@ -3442,17 +3448,17 @@ keybinds, keybindMainConn = {}, nil
                             end
                         end) end
                         if not togState then
-                            cStr.Color = _TL_isImgTheme(_TL_activeThemeId) and
+                            cStr.Color = _SU_isImgTheme(_SU_activeThemeId) and
                             Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3)
-                            cStr.Thickness = _TL_isImgTheme(_TL_activeThemeId) and
+                            cStr.Thickness = _SU_isImgTheme(_SU_activeThemeId) and
                             1.5 or 1
                             cStr.Transparency = 0.3
                             togTrack.BackgroundColor3 = C.bg3 or _C3_BG3
                             togKnob.BackgroundColor3 = _C3_SUB2
                         else
-                            cStr.Color = _TL_isImgTheme(_TL_activeThemeId) and
+                            cStr.Color = _SU_isImgTheme(_SU_activeThemeId) and
                             Color3.fromRGB(255, 255, 255) or C.accent
-                            cStr.Thickness = _TL_isImgTheme(_TL_activeThemeId) and
+                            cStr.Thickness = _SU_isImgTheme(_SU_activeThemeId) and
                             1.5 or 1
                             cStr.Transparency = 0.5
                         end
@@ -3542,7 +3548,7 @@ keybinds, keybindMainConn = {}, nil
                 return track, setState, function() return state end
             end
             
-            local _TL_VP = {}
+            local _SU_VP = {}
             do
                 local _ok, _vp = pcall(function() return workspace.CurrentCamera.ViewportSize end)
                 _vp            = _ok and _vp or Vector2.new(1920, 1080)
@@ -3585,20 +3591,20 @@ keybinds, keybindMainConn = {}, nil
                 local _refW, _refH = 1920, 1080
                 local _guiScale = math.clamp(math.min(_vp.X / _refW, _vp.Y / _refH), 0.55, 1.15)
 
-                _TL_VP.isMob     = _isMob
-                _TL_VP.isTab     = _isTab
-                _TL_VP.isTouch   = _isTch
-                _TL_VP.short     = _short
-                _TL_VP.long      = _long
-                _TL_VP.pnlW      = _pnlW
-                _TL_VP.fwW       = 288
-                _TL_VP.fwH       = 34
-                _TL_VP.mobScl    = 1.0  
-                _TL_VP.guiScale  = _guiScale
+                _SU_VP.isMob     = _isMob
+                _SU_VP.isTab     = _isTab
+                _SU_VP.isTouch   = _isTch
+                _SU_VP.short     = _short
+                _SU_VP.long      = _long
+                _SU_VP.pnlW      = _pnlW
+                _SU_VP.fwW       = 288
+                _SU_VP.fwH       = 34
+                _SU_VP.mobScl    = 1.0  
+                _SU_VP.guiScale  = _guiScale
             end
 
             
-            local PANEL_W               = _TL_VP.pnlW
+            local PANEL_W               = _SU_VP.pnlW
             local HOME_PANEL_W_OVERRIDE = nil
             panels, panelCreditGrads    = {}, {}
             local _panelTweens          = {} 
@@ -3606,13 +3612,13 @@ keybinds, keybindMainConn = {}, nil
             local P_MG                  = C.accent 
             local P_MGA                 = C.accent2 
             local P_MGDIM               = C.sub 
-            local function _TL_shadeRGB(c, m)
+            local function _SU_shadeRGB(c, m)
                 return Color3.fromRGB(
                     math.clamp(math.floor(c.R * 255 * m), 0, 255),
                     math.clamp(math.floor(c.G * 255 * m), 0, 255),
                     math.clamp(math.floor(c.B * 255 * m), 0, 255))
             end
-            local function _TL_computePanelSurfaceGradients(themeId)
+            local function _SU_computePanelSurfaceGradients(themeId)
                 if themeId == "matrix" then
                     return {
                         hdr = ColorSequence.new {
@@ -3636,15 +3642,15 @@ keybinds, keybindMainConn = {}, nil
                 local ph = C.panelHdr or C.bg2
                 return {
                     hdr = ColorSequence.new {
-                        ColorSequenceKeypoint.new(0, _TL_shadeRGB(ph, 1.12)),
+                        ColorSequenceKeypoint.new(0, _SU_shadeRGB(ph, 1.12)),
                         ColorSequenceKeypoint.new(0.5, ph),
-                        ColorSequenceKeypoint.new(1, _TL_shadeRGB(ph, 0.82)),
+                        ColorSequenceKeypoint.new(1, _SU_shadeRGB(ph, 0.82)),
                     },
                     body = ColorSequence.new {
-                        ColorSequenceKeypoint.new(0, _TL_shadeRGB(pb, 1.08)),
-                        ColorSequenceKeypoint.new(0.18, _TL_shadeRGB(pb, 1.0)),
-                        ColorSequenceKeypoint.new(0.55, _TL_shadeRGB(pb, 0.9)),
-                        ColorSequenceKeypoint.new(1, _TL_shadeRGB(pb, 0.78)),
+                        ColorSequenceKeypoint.new(0, _SU_shadeRGB(pb, 1.08)),
+                        ColorSequenceKeypoint.new(0.18, _SU_shadeRGB(pb, 1.0)),
+                        ColorSequenceKeypoint.new(0.55, _SU_shadeRGB(pb, 0.9)),
+                        ColorSequenceKeypoint.new(1, _SU_shadeRGB(pb, 0.78)),
                     },
                     cg = ColorSequence.new {
                         ColorSequenceKeypoint.new(0, C.accent),
@@ -3658,7 +3664,7 @@ keybinds, keybindMainConn = {}, nil
                 P_MG       = newT.accent
                 P_MGA      = newT.accent2
                 P_MGDIM    = newT.sub
-                local surf = _TL_computePanelSurfaceGradients(newT.id)
+                local surf = _SU_computePanelSurfaceGradients(newT.id)
                 
                 for _, r in ipairs(_panelAccentObjs) do
                     pcall(function()
@@ -3749,7 +3755,7 @@ keybinds, keybindMainConn = {}, nil
                 credit.Size                   = UDim2.new(0, 100, 1, 0)
                 credit.Position               = UDim2.new(1, -135, 0, 0)
                 credit.BackgroundTransparency = 1
-                credit.Text                   = "telelumi"
+                credit.Text                   = "Syndicate"
                 credit.Font                   = Enum.Font.GothamBold
                 credit.TextSize               = 11
                 credit.TextColor3             = C.sub
@@ -3771,7 +3777,7 @@ keybinds, keybindMainConn = {}, nil
                 scroll.ElasticBehavior        = Enum.ElasticBehavior.Never
                 scroll.Active                 = true
                 scroll.ScrollingEnabled       = true
-                if _TL_VP.isTouch then
+                if _SU_VP.isTouch then
                     scroll.ScrollBarThickness = 3; scroll.ScrollBarImageColor3 = C.accent
                     scroll.ScrollBarImageColor3 = C.accent
                 end
@@ -3960,14 +3966,14 @@ keybinds, keybindMainConn = {}, nil
             local _flyPanelSetFn = nil
 
             flyScreenGui = _tlTrackInst(Instance.new("ScreenGui"))
-            flyScreenGui.Name = "TL_FlyGui"
+            flyScreenGui.Name = "SU_FlyGui"
             flyScreenGui.ResetOnSpawn = false
             flyScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
             flyScreenGui.DisplayOrder = 100
             _tryParentGui(flyScreenGui)
 
             
-            local _invisMod = _TL_loadModule("SU-Invisible")
+            local _invisMod = _SU_loadModule("SU-Invisible")
             if _invisMod then
                 if type(_invisMod.start) == "function" then
                     setInvis = function(on)
@@ -3988,7 +3994,7 @@ keybinds, keybindMainConn = {}, nil
             end
 
             
-            local _flyMod = _TL_loadModule("SU-Fly")
+            local _flyMod = _SU_loadModule("SU-Fly")
             if _flyMod then
                 if type(_flyMod.start) == "function" then
                     setFly = function(on)
@@ -4010,7 +4016,7 @@ keybinds, keybindMainConn = {}, nil
             local cutActive = false
             local function setCut(on)
                 cutActive = on
-                _TL_state.movement.cfActive = on
+                _SU_state.movement.cfActive = on
                 if not on then
                     pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
                     return
@@ -4065,7 +4071,7 @@ keybinds, keybindMainConn = {}, nil
             
             
             noclipActive = false
-            local espMod = _TL_loadModule("SU-ESP")
+            local espMod = _SU_loadModule("SU-ESP")
             espEnabled = false
             espHighlights = {}
             espBillboards = {}
@@ -4106,7 +4112,7 @@ sendNotif = function(title, text, dur, accentOverride)
 
                 if not notifArea then
                     notifArea = Instance.new("Frame", flyScreenGui)
-                    notifArea.Name = "TL_NotifArea"
+                    notifArea.Name = "SU_NotifArea"
                     notifArea.Size = UDim2.new(0, 300, 1, -60)
                     notifArea.Position = UDim2.new(1, -15, 1, -35)
                     notifArea.AnchorPoint = Vector2.new(1, 1)
@@ -4228,7 +4234,7 @@ sendNotif = function(title, text, dur, accentOverride)
 
             _genv.TLSendNotif = sendNotif
             do
-                _genv._TL_staffDetectorEnv = {
+                _genv._SU_staffDetectorEnv = {
                     sendNotif = sendNotif,
                     sendStaffDetectorNotification = function(title, text)
                         if settingsState and settingsState.notifications == false then return end
@@ -4236,16 +4242,16 @@ sendNotif = function(title, text, dur, accentOverride)
                     end,
                     refreshStaffDetectorUI = function()
                         pcall(function()
-                            local fn = _TL_refs and _TL_refs._TL_rebuildPlayerList
+                            local fn = _SU_refs and _SU_refs._SU_rebuildPlayerList
                             if type(fn) == "function" then fn() end
                         end)
                     end,
                     adminAudioFileName = adminAudioFileName,
-                    _TL_safeIsFile = _TL_safeIsFile,
-                    _TL_safeGetCustomAsset = _TL_safeGetCustomAsset,
+                    _SU_safeIsFile = _SU_safeIsFile,
+                    _SU_safeGetCustomAsset = _SU_safeGetCustomAsset,
                     Players = Players,
                     LocalPlayer = LocalPlayer,
-                    _TL_refs = _TL_refs,
+                    _SU_refs = _SU_refs,
                     settingsState = settingsState,
                 }
                 task.spawn(function()
@@ -4257,10 +4263,10 @@ sendNotif = function(title, text, dur, accentOverride)
                         src = src:gsub('DEVELOPER_FRIENDS%s*=%s*true', 'DEVELOPER_FRIENDS = false')
                         src = src:gsub(
                             'game:GetService%("StarterGui"%):SetCore%("SendNotification"%s*,%s*{[^}]*}%)',
-                            'local _tlsdNotif = _G._TL_staffDetectorEnv and _G._TL_staffDetectorEnv.sendStaffDetectorNotification; if _tlsdNotif then _tlsdNotif(title, p.Name .. "\\n" .. details) end'
+                            'local _tlsdNotif = _G._SU_staffDetectorEnv and _G._SU_staffDetectorEnv.sendStaffDetectorNotification; if _tlsdNotif then _tlsdNotif(title, p.Name .. "\\n" .. details) end'
                         )
                         local extraCheck = [[
--- TL FULL GROUP SCAN: checks ALL groups each player is in
+-- SU FULL GROUP SCAN: checks ALL groups each player is in
 local _origAnalyze = analyzePlayer
 analyzePlayer = function(player)
     local cached = STAFF_CACHE[player.UserId]
@@ -4394,7 +4400,7 @@ makePanel("Home", C.accent)
                     
                     local s = _makeRealStroke(frame, 1.0, Color3.fromRGB(255, 255, 255), 0.6)
                     s.Name = "OnePiece_Stroke"
-                    s.Enabled = _TL_isImgTheme(_TL_activeThemeId)
+                    s.Enabled = _SU_isImgTheme(_SU_activeThemeId)
 
                     return cCrn, grad
                 end
@@ -4812,7 +4818,7 @@ makePanel("Home", C.accent)
                     local dStroke                                    = _makeRealStroke(_discDrop, 1.0,
                         Color3.fromRGB(255, 255, 255), 0.6)
                     dStroke.Name                                     = "OnePieceStroke"
-                    dStroke.Enabled                                  = _TL_isImgTheme(_TL_activeThemeId)
+                    dStroke.Enabled                                  = _SU_isImgTheme(_SU_activeThemeId)
 
                     local _DISC_SERVERS                              = {
                         { label = "🇩🇪  German Server", link = "https://discord.gg/6RK7yANN7F" },
@@ -4835,7 +4841,7 @@ makePanel("Home", C.accent)
                         local rStroke                              = _makeRealStroke(row, 1.0,
                             Color3.fromRGB(255, 255, 255), 0.6)
                         rStroke.Name                               = "OnePieceStroke"
-                        rStroke.Enabled                            = _TL_isImgTheme(_TL_activeThemeId)
+                        rStroke.Enabled                            = _SU_isImgTheme(_SU_activeThemeId)
 
                         row.MouseEnter:Connect(function() twP(row, 0.15, { BackgroundTransparency = 0.88 }) end)
                         row.MouseLeave:Connect(function() twP(row, 0.15, { BackgroundTransparency = 0.94 }) end)
@@ -4934,7 +4940,7 @@ makePanel("Home", C.accent)
 
                     
                     pcall(function()
-                        local isOP = _TL_isAnimeTheme(newT.id)
+                        local isOP = _SU_isAnimeTheme(newT.id)
                         for _, child in ipairs(c:GetDescendants()) do
                             if child:IsA("UIStroke") and child.Name == "OnePiece_Stroke" then
                                 child.Enabled = isOP
@@ -4977,7 +4983,7 @@ makePanel("Home", C.accent)
                     row.card.Size = UDim2.new(1, -PAD * 2, 0, CARD_H)
                     row.card.Position = UDim2.new(0, PAD, 0, yPos)
                     row.card.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-                    row.card.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                    row.card.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                     0.45 or 0.15
                     row.card.BorderSizePixel = 0
                     corner(row.card, 12)
@@ -4985,7 +4991,7 @@ makePanel("Home", C.accent)
 
                     local s = _makeRealStroke(row.card, 1.0, Color3.fromRGB(255, 255, 255), 0.6)
                     s.Name = "OnePiece_Stroke"
-                    s.Enabled = _TL_isImgTheme(_TL_activeThemeId)
+                    s.Enabled = _SU_isImgTheme(_SU_activeThemeId)
 
                     row.cdot = Instance.new("Frame", row.card)
                     row.cdot.Size = UDim2.new(0, 3, 0, CARD_H - 20)
@@ -5197,14 +5203,14 @@ makePanel("Home", C.accent)
                     end)
                     row.card.MouseEnter:Connect(function()
                         _sc._playHoverSound()
-                        if _TL_isImgTheme(_TL_activeThemeId) then
+                        if _SU_isImgTheme(_SU_activeThemeId) then
                             twP(row.card, 0.2, { BackgroundTransparency = 0.3 })
                         else
                             twP(row.card, 0.2, { BackgroundTransparency = 0.08 })
                         end
                     end)
                     row.card.MouseLeave:Connect(function()
-                        if _TL_isImgTheme(_TL_activeThemeId) then
+                        if _SU_isImgTheme(_SU_activeThemeId) then
                             twP(row.card, 0.2, { BackgroundTransparency = 0.45 })
                         else
                             twP(row.card, 0.2, { BackgroundTransparency = 0.15 })
@@ -5230,7 +5236,7 @@ makePanel("Home", C.accent)
 
                             pcall(function()
                                 if newT then
-                                    local isOP = _TL_isAnimeTheme(newT.id)
+                                    local isOP = _SU_isAnimeTheme(newT.id)
                                     row.card.BackgroundTransparency = isOP and 0.45 or 0.15
                                     if s then s.Enabled = isOP end
                                 end
@@ -5248,14 +5254,14 @@ makePanel("Home", C.accent)
                     card.Size = UDim2.new(1, -PAD * 2, 0, TOG_H)
                     card.Position = UDim2.new(0, PAD, 0, yPos)
                     card.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-                    card.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                    card.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                     0.45 or 0.15
                     card.BorderSizePixel = 0
                     corner(card, 12)
 
                     local s = _makeRealStroke(card, 1.0, Color3.fromRGB(255, 255, 255), 0.6)
                     s.Name = "OnePiece_Stroke"
-                    s.Enabled = _TL_isImgTheme(_TL_activeThemeId)
+                    s.Enabled = _SU_isImgTheme(_SU_activeThemeId)
 
                     
                     local cStr = stroke(card, 1, C.bg3, 0.3)
@@ -5309,14 +5315,14 @@ makePanel("Home", C.accent)
                     btn.Size = UDim2.new(1, 0, 1, 0); btn.BackgroundTransparency = 1; btn.Text = ""; btn.ZIndex = 10
                     btn.MouseEnter:Connect(function()
                         _sc._playHoverSound()
-                        if _TL_isImgTheme(_TL_activeThemeId) then
+                        if _SU_isImgTheme(_SU_activeThemeId) then
                             twP(card, 0.2, { BackgroundTransparency = 0.3 })
                         else
                             twP(card, 0.2, { BackgroundTransparency = 0.08 })
                         end
                     end)
                     btn.MouseLeave:Connect(function()
-                        if _TL_isImgTheme(_TL_activeThemeId) then
+                        if _SU_isImgTheme(_SU_activeThemeId) then
                             twP(card, 0.2, { BackgroundTransparency = 0.45 })
                         else
                             twP(card, 0.2, { BackgroundTransparency = 0.15 })
@@ -5341,7 +5347,7 @@ makePanel("Home", C.accent)
 
                             pcall(function()
                                 if newT then
-                                    local isOP = _TL_isAnimeTheme(newT.id)
+                                    local isOP = _SU_isAnimeTheme(newT.id)
                                     card.BackgroundTransparency = isOP and 0.45 or 0.15
                                     if s then s.Enabled = isOP end
                                 end
@@ -5381,13 +5387,13 @@ makePanel("Home", C.accent)
                         chip.Size                   = UDim2.new(0, QA_W, 0, QA_H)
                         chip.Position               = UDim2.new(0, xOff, 0, 22)
                         chip.BackgroundColor3       = Color3.fromRGB(0, 0, 0)
-                        chip.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                        chip.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                         0.45 or 0.2
                         chip.BorderSizePixel        = 0; corner(chip, 10)
 
                         local s                       = _makeRealStroke(chip, 1.0, Color3.fromRGB(255, 255, 255), 0.6)
                         s.Name                        = "OnePiece_Stroke"
-                        s.Enabled                     = _TL_isImgTheme(_TL_activeThemeId)
+                        s.Enabled                     = _SU_isImgTheme(_SU_activeThemeId)
 
                         local lbl                     = Instance.new("TextLabel", chip)
                         lbl.Size                      = UDim2.new(1, -4, 0, 16)
@@ -5413,12 +5419,12 @@ makePanel("Home", C.accent)
 
                         btn.MouseEnter:Connect(function()
                             _sc._playHoverSound()
-                            if _TL_isImgTheme(_TL_activeThemeId) then
+                            if _SU_isImgTheme(_SU_activeThemeId) then
                                 twP(chip, 0.2, { BackgroundTransparency = 0.3 })
                             end
                         end)
                         btn.MouseLeave:Connect(function()
-                            if _TL_isImgTheme(_TL_activeThemeId) then
+                            if _SU_isImgTheme(_SU_activeThemeId) then
                                 twP(chip, 0.2, { BackgroundTransparency = 0.45 })
                             end
                         end)
@@ -5427,7 +5433,7 @@ makePanel("Home", C.accent)
                             _panelColorHooks[#_panelColorHooks + 1] = function(newT)
                                 pcall(function()
                                     if newT then
-                                        local isOP = _TL_isAnimeTheme(newT.id)
+                                        local isOP = _SU_isAnimeTheme(newT.id)
                                         chip.BackgroundTransparency = isOP and 0.45 or 0.2
                                         if s then s.Enabled = isOP end
                                     end
@@ -5481,7 +5487,7 @@ makePanel("Home", C.accent)
                                         end
                                     end)
                                     pcall(function() if type(godStop) == "function" then godStop() end end)
-                                    pcall(function() if _TL_refs._TL_isGodOn and _TL_refs._TL_isGodOn() then godStop() end end)
+                                    pcall(function() if _SU_refs._SU_isGodOn and _SU_refs._SU_isGodOn() then godStop() end end)
 
                                     -- 3) Positionswiederherstellung VOR dem Tod registrieren
                                     local _respawnDone = false
@@ -6147,7 +6153,7 @@ local function RunCustomAnimation(Char)
                 
                 
                 do
-                    local _vcModule = _TL_loadModule("SU-ANTIVCBAN")
+                    local _vcModule = _SU_loadModule("SU-ANTIVCBAN")
                     sectionLbl(CY, "VOICE CHAT"); CY = CY + 18
                     local _vcSetToggle = nil
                     if _vcModule then
@@ -6160,7 +6166,7 @@ local function RunCustomAnimation(Char)
                         makeToggleRow(CY, "Anti-VC Ban", "mic protection (offline)", C.sub, function() end)
                     end
                     if _vcSetToggle then
-                        _G._TL_vcSetToggle = _vcSetToggle
+                        _G._SU_vcSetToggle = _vcSetToggle
                     end
                     CY = CY + TOG_H + GAP
                 end
@@ -6174,7 +6180,7 @@ local function RunCustomAnimation(Char)
                     local moveDropGap = 6
                     local moveDropExpandedH = 184
                     pcall(function()
-                        local prev = _genv.__TL_CharacterAnimRuntime
+                        local prev = _genv.__SU_CharacterAnimRuntime
                         if type(prev) == "table" and type(prev.cleanup) == "function" then
                             prev.cleanup()
                         end
@@ -6199,8 +6205,8 @@ local function RunCustomAnimation(Char)
                             pcall(function() hum.WalkSpeed = runtime.normalSpeed or 16 end)
                             pcall(function() hum.JumpPower = 50 end)
                         end
-                        if _genv.__TL_CharacterAnimRuntime == runtime then
-                            _genv.__TL_CharacterAnimRuntime = nil
+                        if _genv.__SU_CharacterAnimRuntime == runtime then
+                            _genv.__SU_CharacterAnimRuntime = nil
                         end
                     end
 
@@ -6321,7 +6327,7 @@ local function RunCustomAnimation(Char)
                         }
                         runtime.cleanup = cleanupMoveAnimRuntime
                         moveAnimRuntime = runtime
-                        _genv.__TL_CharacterAnimRuntime = runtime
+                        _genv.__SU_CharacterAnimRuntime = runtime
                         runtime.normalSpeed = pack.normalSpeed or runtime.normalSpeed
                         runtime.sprintSpeed = pack.sprintSpeed or runtime.sprintSpeed
 
@@ -7344,9 +7350,9 @@ local function RunCustomAnimation(Char)
                                 godStart(); pcall(function() sendNotif("Godmode", "Godmode Enabled!", 2) end)
                             else godStop(); pcall(function() sendNotif("Godmode", "Godmode Disabled!", 2) end) end end)
                     CY                    = CY + TOG_H + GAP
-                    _TL_refs._TL_godStart = godStart
-                    _TL_refs._TL_godStop  = godStop
-                    _TL_refs._TL_isGodOn  = function() return godActive end
+                    _SU_refs._SU_godStart = godStart
+                    _SU_refs._SU_godStop  = godStop
+                    _SU_refs._SU_isGodOn  = function() return godActive end
                 end
                 p.Size = UDim2.new(0, PANEL_W, 0, CY)
                 LocalPlayer.CharacterAdded:Connect(function(newChar)
@@ -7453,15 +7459,15 @@ local function RunCustomAnimation(Char)
                 sSubArea.BackgroundTransparency = 1
                 sSubArea.BorderSizePixel        = 0
                 sSubArea.ClipsDescendants       = false
-                local _TL_WIDGET_CLOSE_ICON     = "rbxassetid://111119570195816"
-                local _scriptWidgetMod = _TL_loadModule("SCRIPTS-TAB/SU-ScriptWidget")
+                local _SU_WIDGET_CLOSE_ICON     = "rbxassetid://111119570195816"
+                local _scriptWidgetMod = _SU_loadModule("SCRIPTS-TAB/SU-ScriptWidget")
                 if _scriptWidgetMod then
                     _scriptWidgetMod.init({
                         ScreenGui = ScreenGui,
                         _sc = _sc,
                         MDARK = MDARK, MHDR = MHDR, MGLOW = MGLOW,
                         _C3_WHITE = _C3_WHITE,
-                        _TL_WIDGET_CLOSE_ICON = _TL_WIDGET_CLOSE_ICON,
+                        _SU_WIDGET_CLOSE_ICON = _SU_WIDGET_CLOSE_ICON,
                         getNearestPlayer = getNearestPlayer,
                     })
                 end
@@ -7733,7 +7739,7 @@ local function RunCustomAnimation(Char)
                         end
                         
                     end
-                    local flingMod = _TL_loadModule("SU-BALL-FLING")
+                    local flingMod = _SU_loadModule("SU-BALL-FLING")
                     local flingSelectedPlayer = nil
 
                     local FLING_SUB_H = 12
@@ -7977,7 +7983,7 @@ local function RunCustomAnimation(Char)
                     
                     
                     do
-                        local _opMod = _TL_loadModule("SU-OutfitPanel")
+                        local _opMod = _SU_loadModule("SU-OutfitPanel")
                         if _opMod then
                             _opMod.init({ _tsProxy = _tsProxy, _genv = _genv or GLOBAL_ENV })
                             _G._TLInitAvatarOutfit = function()
@@ -8035,7 +8041,7 @@ local function RunCustomAnimation(Char)
                     
                     
                     do
-                        local _oeUrl = _TL_MODULES_BASE .. "SU-OUTFIT-EXPAND.lua"
+                        local _oeUrl = _SU_MODULES_BASE .. "SU-OUTFIT-EXPAND.lua"
                         outfitExpandBtn.MouseButton1Click:Connect(function()
                             local ok, source = pcall(function() return (game :: any):HttpGet(_oeUrl) end)
                             if not ok or not source or #source < 50 then
@@ -8067,7 +8073,7 @@ movePage = Instance.new("Frame", sSubArea)
                 movePage.Visible = false
                 
                 do
-                    local avMod = _TL_loadModule("SCRIPTS-TAB/SU-AntiVoid")
+                    local avMod = _SU_loadModule("SCRIPTS-TAB/SU-AntiVoid")
                     if avMod then
                         avMod.init({ RunService = RunService, LocalPlayer = LocalPlayer, sendNotif = sendNotif })
                         sRow(movePage, 0, "Anti-Void", "Im not letting you die in the Void!!", C.accent2, false,
@@ -8086,7 +8092,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local arMod = _TL_loadModule("SCRIPTS-TAB/SU-AntiRagdoll")
+                    local arMod = _SU_loadModule("SCRIPTS-TAB/SU-AntiRagdoll")
                     if arMod then
                         arMod.init({ RunService = RunService, LocalPlayer = LocalPlayer, flyActiveFn = function() return flyActive end })
                         sRow(movePage, 56, "Anti-Ragdoll", "Movement", C.red, false, function(on)
@@ -8097,7 +8103,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local pfMod = _TL_loadModule("SCRIPTS-TAB/SU-PunchFling")
+                    local pfMod = _SU_loadModule("SCRIPTS-TAB/SU-PunchFling")
                     if pfMod then
                         pfMod.init({ RunService = RunService, Players = Players, LocalPlayer = LocalPlayer, sendNotif = sendNotif })
                         sRow(movePage, 112, "Punch-Fling", "Combat", C.orange, false, function(on)
@@ -8118,7 +8124,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local tfMod = _TL_loadModule("SCRIPTS-TAB/SU-TouchFling")
+                    local tfMod = _SU_loadModule("SCRIPTS-TAB/SU-TouchFling")
                     if tfMod then
                         tfMod.init({ RunService = RunService, Players = Players, LocalPlayer = LocalPlayer, sendNotif = sendNotif, _AF_loadAndPlayAnimation = _AF_loadAndPlayAnimation, flyMuteSoundsFn = _flyMuteSounds })
                         local tfModeList = tfMod.getModes()
@@ -8243,7 +8249,7 @@ movePage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local ctMod = _TL_loadModule("SCRIPTS-TAB/SU-ClickTeleport")
+                    local ctMod = _SU_loadModule("SCRIPTS-TAB/SU-ClickTeleport")
                     if ctMod then
                         ctMod.init({ RunService = RunService, UserInputService = UserInputService or _SvcUIS, LocalPlayer = LocalPlayer, sendNotif = sendNotif })
                         sRow(movePage, 224, "Click Teleport", "Movement", C.accent2, false, function(on)
@@ -8475,7 +8481,7 @@ visualPage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local _shdMod = _TL_loadModule("SU-Shader")
+                    local _shdMod = _SU_loadModule("SU-Shader")
                     local shRow = Instance.new("Frame", visualPage)
                     shRow.Size = UDim2.new(1, 0, 0, 54)
                     shRow.Position = UDim2.new(0, 0, 0, 52)
@@ -8973,7 +8979,7 @@ visualPage = Instance.new("Frame", sSubArea)
                     end
                 end)
 
-                combatContainer, combatContent, combatAddRow, _combatFolderApi = _sc.makeMiscFolder("Combat Tools", "TL",
+                combatContainer, combatContent, combatAddRow, _combatFolderApi = _sc.makeMiscFolder("Combat Tools", "SU",
                     C.red, 1, combatPage)
                 task.defer(function()
                     if _combatFolderApi then
@@ -8985,7 +8991,7 @@ visualPage = Instance.new("Frame", sSubArea)
 
                 
                 do
-                    local aimMod = _TL_loadModule("SCRIPTS-TAB/SU-Aimbot")
+                    local aimMod = _SU_loadModule("SCRIPTS-TAB/SU-Aimbot")
                     if aimMod then
                         aimMod.init({ Players = Players, RunService = RunService, UserInputService = UserInputService, Workspace = Workspace, LocalPlayer = LocalPlayer })
                         local cfg = aimMod.getConfig()
@@ -9147,7 +9153,7 @@ visualPage = Instance.new("Frame", sSubArea)
                     _sc.sonstigePage)
                 cfRow, cfSetFn = miscToolsAddRow("Cutszene breaker", "Break Cutszene and Walk around", C.accent, false,
                     function(on) setCut(on) end)
-                _TL_refs._TL_setCut = setCut
+                _SU_refs._SU_setCut = setCut
 
                 _sc.miscLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
                     _sc.updateMiscSize()
@@ -9393,7 +9399,7 @@ visualPage = Instance.new("Frame", sSubArea)
                         
             
             
-_TL_state.actions = {}
+_SU_state.actions = {}
             
             _SOH = {
                 active = false,
@@ -9407,10 +9413,10 @@ _TL_state.actions = {}
                 charConn = nil,
                 ANIM_ID = "119898270336796",
             }
-            _TL_state.ppActive = false
-            _TL_state.setFreeze = nil
+            _SU_state.ppActive = false
+            _SU_state.setFreeze = nil
             do
-                _TL_state.actions.stopSitOnHead = function()
+                _SU_state.actions.stopSitOnHead = function()
                     _SOH.active = false
                     if _SOH.hoverVel then
                         pcall(function() _SOH.hoverVel:Destroy() end); _SOH.hoverVel = nil
@@ -9430,7 +9436,7 @@ _TL_state.actions = {}
                     local hum = myChar and myChar:FindFirstChildOfClass("Humanoid")
                     if hum then
                         hum.PlatformStand = false
-                        if _TL_state.setFreeze then _TL_state.setFreeze(false) end
+                        if _SU_state.setFreeze then _SU_state.setFreeze(false) end
                     end
                 end
                 local function sohStopAnim()
@@ -9587,9 +9593,9 @@ _TL_state.actions = {}
             }
             local bbMode_ = nil 
             local function _AF_onStartAction()
-                _AF.origGodState = _TL_refs._TL_isGodOn and _TL_refs._TL_isGodOn() or false
+                _AF.origGodState = _SU_refs._SU_isGodOn and _SU_refs._SU_isGodOn() or false
                 _AF.origInvisState = invisActive
-                if _TL_refs._TL_godStart then pcall(_TL_refs._TL_godStart) end
+                if _SU_refs._SU_godStart then pcall(_SU_refs._SU_godStart) end
                 if invisActive then pcall(function() setInvis(false) end) end
                 local hum = getHumanoid()
                 if hum then
@@ -9598,7 +9604,7 @@ _TL_state.actions = {}
                 end
             end
             local function _AF_onStopAction()
-                if not _AF.origGodState and _TL_refs._TL_godStop then pcall(_TL_refs._TL_godStop) end
+                if not _AF.origGodState and _SU_refs._SU_godStop then pcall(_SU_refs._SU_godStop) end
                 local hum = getHumanoid()
                 if hum then pcall(function() hum:SetStateEnabled(Enum.HumanoidStateType.Seated, true) end) end
                 if _AF.origInvisState then
@@ -9863,7 +9869,7 @@ _TL_state.actions = {}
                 local actionPill, actionPillLbl, actionPillBtn, actionRow
                 local statusDot, statusTxt
                 do
-                    local _isImgInfo = _TL_isImgTheme(_TL_activeThemeId)
+                    local _isImgInfo = _SU_isImgTheme(_SU_activeThemeId)
                     local infoCard = Instance.new("Frame", c)
                     infoCard.Size = UDim2.new(1, 0, 0, 52); infoCard.Position = UDim2.new(0, 0, 0, 0)
                     infoCard.BackgroundColor3 = _isImgInfo and Color3.fromRGB(255, 255, 255) or (C.bg2 or _C3_BG2)
@@ -9896,17 +9902,17 @@ _TL_state.actions = {}
                     local pickRow = Instance.new("Frame", c)
                     pickRow.Size = UDim2.new(1, 0, 0, 46); pickRow.Position = UDim2.new(0, 0, 0, 62)
                     
-                    local _pickIsImgTheme = _TL_isImgTheme(_TL_activeThemeId)
+                    local _pickIsImgTheme = _SU_isImgTheme(_SU_activeThemeId)
                     pickRow.BackgroundColor3 = _pickIsImgTheme and Color3.fromRGB(255, 255, 255) or (C.bg2 or _C3_BG2)
                     pickRow.BackgroundTransparency = _pickIsImgTheme and 0.94 or 0; pickRow.BorderSizePixel = 0; corner(
                     pickRow, 14)
                     local pickStr = _makeDummyStroke(pickRow)
-                    pickStr.Thickness = _TL_isImgTheme(_TL_activeThemeId) and 1.5 or 1
-                    pickStr.Color = _TL_isImgTheme(_TL_activeThemeId) and Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3)
+                    pickStr.Thickness = _SU_isImgTheme(_SU_activeThemeId) and 1.5 or 1
+                    pickStr.Color = _SU_isImgTheme(_SU_activeThemeId) and Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3)
                     pickStr.Transparency = 0.3
                                         _panelColorHooks[#_panelColorHooks + 1] = function()
                         pcall(function()
-                            local _isImg = _TL_isImgTheme(_TL_activeThemeId)
+                            local _isImg = _SU_isImgTheme(_SU_activeThemeId)
                             pickRow.BackgroundColor3 = _isImg and Color3.fromRGB(255, 255, 255) or (C.bg2 or _C3_BG2)
                             pickRow.BackgroundTransparency = _isImg and 0.94 or 0
                             pickStr.Thickness = _isImg and 1.5 or 1
@@ -9966,7 +9972,7 @@ _TL_state.actions = {}
                     actionPillBtn = Instance.new("TextButton", actionPill)
                     actionPillBtn.Size = UDim2.new(1, 0, 1, 0); actionPillBtn.BackgroundTransparency = 1
                     actionPillBtn.Text = ""; actionPillBtn.ZIndex = 6
-                    local _isImgAct = _TL_isImgTheme(_TL_activeThemeId)
+                    local _isImgAct = _SU_isImgTheme(_SU_activeThemeId)
                     actionRow = Instance.new("Frame", c)
                     actionRow.Size = UDim2.new(1, 0, 0, 46); actionRow.Position = UDim2.new(0, 0, 0, 118)
                     actionRow.BackgroundColor3 = _isImgAct and Color3.fromRGB(255, 255, 255) or (C.bg2 or _C3_BG2)
@@ -9987,7 +9993,7 @@ _TL_state.actions = {}
                     actionRowLbl.BackgroundTransparency = 1; actionRowLbl.Text = T.actions_row_lbl
                     actionRowLbl.Font = Enum.Font.GothamBold; actionRowLbl.TextSize = 13
                     actionRowLbl.TextColor3 = C.text; actionRowLbl.TextXAlignment = Enum.TextXAlignment.Left
-                    local _isImgStat = _TL_isImgTheme(_TL_activeThemeId)
+                    local _isImgStat = _SU_isImgTheme(_SU_activeThemeId)
                     local statusCard = Instance.new("Frame", c)
                     statusCard.Size = UDim2.new(1, 0, 0, 36); statusCard.Position = UDim2.new(0, 0, 0, 174)
                     statusCard.BackgroundColor3 = _isImgStat and Color3.fromRGB(255, 255, 255) or (C.bg2 or _C3_BG2)
@@ -10009,7 +10015,7 @@ _TL_state.actions = {}
                     
                                         _panelColorHooks[#_panelColorHooks + 1] = function()
                         pcall(function()
-                            local _isImg = _TL_isImgTheme(_TL_activeThemeId)
+                            local _isImg = _SU_isImgTheme(_SU_activeThemeId)
                             if infoCard and infoCard.Parent then
                                 infoCard.BackgroundColor3 = _isImg and Color3.fromRGB(255, 255, 255) or (C.bg2 or _C3_BG2)
                                 infoCard.BackgroundTransparency = _isImg and 0.94 or 0
@@ -13551,40 +13557,40 @@ _TL_state.actions = {}
                 do
                     local _genv = getgenv and getgenv()
                     if _genv then
-                        rawset(_genv, "_TL_AF", _AF)
-                        rawset(_genv, "_TL_SOH", _SOH)
-                        rawset(_genv, "_TL_act_stopFollow", _act_stopFollow)
-                        rawset(_genv, "_TL_stopGhost", stopGhost)
-                        rawset(_genv, "_TL_startGhost", startGhost)
-                        rawset(_genv, "_TL_stopSitOnHead", stopSitOnHead)
-                        rawset(_genv, "_TL_stopPiggyback", stopPiggyback)
-                        rawset(_genv, "_TL_stopPiggyback2", stopPiggyback2)
-                        rawset(_genv, "_TL_stopKiss", stopKiss)
-                        rawset(_genv, "_TL_stopBackpack", stopBackpack)
-                        rawset(_genv, "_TL_stopOrbit", stopOrbit)
-                        rawset(_genv, "_TL_stopUpsideDown", stopUpsideDown)
-                        rawset(_genv, "_TL_stopCrossUD", stopCrossUD)
-                        rawset(_genv, "_TL_stopFriend", stopFriend)
-                        rawset(_genv, "_TL_stopSpinning", stopSpinning)
-                        rawset(_genv, "_TL_stopLicking", stopLicking)
-                        rawset(_genv, "_TL_stopSucking", stopSucking)
-                        rawset(_genv, "_TL_stopSuckIt", stopSuckIt)
-                        rawset(_genv, "_TL_stopBackshots", stopBackshots)
-                        rawset(_genv, "_TL_stopDoggy", stopDoggy)
-                        rawset(_genv, "_TL_stopLayFuck", stopLayFuck)
-                        rawset(_genv, "_TL_stopFacefuck", stopFacefuck)
-                        rawset(_genv, "_TL_stopPussySpread", stopPussySpread)
-                        rawset(_genv, "_TL_stopHug", stopHug)
-                        rawset(_genv, "_TL_stopHug2", stopHug2)
-                        rawset(_genv, "_TL_stopCarry", stopCarry)
-                        rawset(_genv, "_TL_stopShoulderSit", stopShoulderSit)
+                        rawset(_genv, "_SU_AF", _AF)
+                        rawset(_genv, "_SU_SOH", _SOH)
+                        rawset(_genv, "_SU_act_stopFollow", _act_stopFollow)
+                        rawset(_genv, "_SU_stopGhost", stopGhost)
+                        rawset(_genv, "_SU_startGhost", startGhost)
+                        rawset(_genv, "_SU_stopSitOnHead", stopSitOnHead)
+                        rawset(_genv, "_SU_stopPiggyback", stopPiggyback)
+                        rawset(_genv, "_SU_stopPiggyback2", stopPiggyback2)
+                        rawset(_genv, "_SU_stopKiss", stopKiss)
+                        rawset(_genv, "_SU_stopBackpack", stopBackpack)
+                        rawset(_genv, "_SU_stopOrbit", stopOrbit)
+                        rawset(_genv, "_SU_stopUpsideDown", stopUpsideDown)
+                        rawset(_genv, "_SU_stopCrossUD", stopCrossUD)
+                        rawset(_genv, "_SU_stopFriend", stopFriend)
+                        rawset(_genv, "_SU_stopSpinning", stopSpinning)
+                        rawset(_genv, "_SU_stopLicking", stopLicking)
+                        rawset(_genv, "_SU_stopSucking", stopSucking)
+                        rawset(_genv, "_SU_stopSuckIt", stopSuckIt)
+                        rawset(_genv, "_SU_stopBackshots", stopBackshots)
+                        rawset(_genv, "_SU_stopDoggy", stopDoggy)
+                        rawset(_genv, "_SU_stopLayFuck", stopLayFuck)
+                        rawset(_genv, "_SU_stopFacefuck", stopFacefuck)
+                        rawset(_genv, "_SU_stopPussySpread", stopPussySpread)
+                        rawset(_genv, "_SU_stopHug", stopHug)
+                        rawset(_genv, "_SU_stopHug2", stopHug2)
+                        rawset(_genv, "_SU_stopCarry", stopCarry)
+                        rawset(_genv, "_SU_stopShoulderSit", stopShoulderSit)
                     end
                 end
             end)()
             end 
             
             do
-                local _bbMod = _TL_loadModule("SCRIPTS-TAB/SU-ByteBreaker")
+                local _bbMod = _SU_loadModule("SCRIPTS-TAB/SU-ByteBreaker")
                 if _bbMod then
                     _bbMod.initBB({
                         _AF = _AF,
@@ -13598,7 +13604,7 @@ _TL_state.actions = {}
                         getHumanoid = getHumanoid,
                         sendNotif = sendNotif,
                         T = T,
-                        _TL_refs = _TL_refs,
+                        _SU_refs = _SU_refs,
                         _tlTrackConn = _tlTrackConn,
                         safeStand = safeStand,
                         standStartAnim = function(...) if type(_G.standStartAnim) == "function" then _G.standStartAnim(...) end end,
@@ -13632,10 +13638,10 @@ _TL_state.actions = {}
                 _OP_PlBgImg.ScaleType              = Enum.ScaleType.Crop
                 _OP_PlBgImg.ImageTransparency      = 0.35
                 _OP_PlBgImg.ZIndex                 = 1
-                _OP_PlBgImg.Visible                = (_TL_activeThemeId == "onepiece")
+                _OP_PlBgImg.Visible                = (_SU_activeThemeId == "onepiece")
                 _OP_PlBgImg.Parent                 = p
                 corner(_OP_PlBgImg, 12)
-                _TL_refs._OP_PlBgImg              = _OP_PlBgImg
+                _SU_refs._OP_PlBgImg              = _OP_PlBgImg
 
                 local PAD                         = 16
                 local PW                          = PANEL_W - PAD * 2
@@ -13916,7 +13922,7 @@ _TL_state.actions = {}
                     ownerTxt.TextXAlignment         = Enum.TextXAlignment.Center
 
                     local function refreshThreatBadge()
-                        local role = (_TL_refs and _TL_refs._TL_getThreatRole and _TL_refs._TL_getThreatRole(pl)) or nil
+                        local role = (_SU_refs and _SU_refs._SU_getThreatRole and _SU_refs._SU_getThreatRole(pl)) or nil
                         if role then
                             local lowRole     = role:lower()
 
@@ -13967,8 +13973,8 @@ _TL_state.actions = {}
                         end
                     end
                     refreshThreatBadge()
-                    if not isMe and _TL_refs and _TL_refs._TL_checkThreatPlayer then
-                        _TL_refs._TL_checkThreatPlayer(pl, function()
+                    if not isMe and _SU_refs and _SU_refs._SU_checkThreatPlayer then
+                        _SU_refs._SU_checkThreatPlayer(pl, function()
                             if card and card.Parent then
                                 refreshThreatBadge()
                             end
@@ -13991,7 +13997,7 @@ _TL_state.actions = {}
                             local char = pl.Character
                             if char and not espHighlights[pl] then
                                 local h               = _tlTrackInst(Instance.new("Highlight", PlayerGui))
-                                h.Name                = "TL_ESP_Highlight"
+                                h.Name                = "SU_ESP_Highlight"
                                 h.Adornee             = char
                                 h.FillTransparency    = 1
                                 h.OutlineColor        = Color3.new(1, 1, 1)
@@ -14150,8 +14156,8 @@ _TL_state.actions = {}
 
                     
                     table.sort(plrs, function(a, b)
-                        local aMod = _TL_refs and _TL_refs._TL_isThreatPlayer and _TL_refs._TL_isThreatPlayer(a) or false
-                        local bMod = _TL_refs and _TL_refs._TL_isThreatPlayer and _TL_refs._TL_isThreatPlayer(b) or false
+                        local aMod = _SU_refs and _SU_refs._SU_isThreatPlayer and _SU_refs._SU_isThreatPlayer(a) or false
+                        local bMod = _SU_refs and _SU_refs._SU_isThreatPlayer and _SU_refs._SU_isThreatPlayer(b) or false
                         if aMod ~= bMod then return aMod end
                         return a.Name < b.Name
                     end)
@@ -14270,7 +14276,7 @@ _TL_state.actions = {}
                     end
                 end
 
-                _TL_refs._TL_rebuildPlayerList = rebuildList
+                _SU_refs._SU_rebuildPlayerList = rebuildList
 
                 rebuildList()
                 Players.PlayerAdded:Connect(function()
@@ -14291,24 +14297,24 @@ _TL_state.actions = {}
                 row.Size                   = UDim2.new(1, 0, 0, 52)
                 row.Position               = UDim2.new(0, 0, 0, yPos)
                 row.BackgroundColor3       = C.bg2 or _C3_BG2
-                row.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                row.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                 1 or 0
                 row.BorderSizePixel        = 0
                 corner(row, 14)
                 local rowS = _makeDummyStroke(row)
-                rowS.Thickness = _TL_isImgTheme(_TL_activeThemeId) and
+                rowS.Thickness = _SU_isImgTheme(_SU_activeThemeId) and
                 1.5 or 1
-                rowS.Color = _TL_isImgTheme(_TL_activeThemeId) and
+                rowS.Color = _SU_isImgTheme(_SU_activeThemeId) and
                 Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3)
                 rowS.Transparency = 0.3
                 if _panelColorHooks then
                     _panelColorHooks[#_panelColorHooks + 1] = function()
                         pcall(function()
-                            row.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                            row.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                             1 or 0
-                            rowS.Thickness = _TL_isImgTheme(_TL_activeThemeId) and
+                            rowS.Thickness = _SU_isImgTheme(_SU_activeThemeId) and
                             1.5 or 1
-                            rowS.Color = _TL_isImgTheme(_TL_activeThemeId) and
+                            rowS.Color = _SU_isImgTheme(_SU_activeThemeId) and
                             Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3)
                             rowS.Transparency = 0.3
                         end)
@@ -14629,8 +14635,8 @@ local _ok_Settings, _err_Settings = pcall(function()
                             end
                             
                             task.defer(function()
-                                if _TL_refs._TL_applyGuiPosition then
-                                    pcall(function() _TL_refs._TL_applyGuiPosition(pos) end)
+                                if _SU_refs._SU_applyGuiPosition then
+                                    pcall(function() _SU_refs._SU_applyGuiPosition(pos) end)
                                 end
                             end)
                         end
@@ -14778,12 +14784,12 @@ local _ok_Settings, _err_Settings = pcall(function()
                                 _gsValLbl.Text = string.format("%d%%", math.floor(v * 100 + 0.5))
                             end
                             
-                            if _TL_GUIScale then
+                            if _SU_GUIScale then
                                 if v == 0 then
                                     local vp = workspace.CurrentCamera.ViewportSize
-                                    _TL_GUIScale.Scale = math.clamp(math.min(vp.X / 1920, vp.Y / 1080), 0.55, 1.15)
+                                    _SU_GUIScale.Scale = math.clamp(math.min(vp.X / 1920, vp.Y / 1080), 0.55, 1.15)
                                 else
-                                    _TL_GUIScale.Scale = v
+                                    _SU_GUIScale.Scale = v
                                 end
                             end
                         end
@@ -14820,12 +14826,12 @@ local _ok_Settings, _err_Settings = pcall(function()
                                 _gsResetBtn.Visible = false
                                 
                                 _gsCurrentScale = _gsSavedScale
-                                if _TL_GUIScale then
+                                if _SU_GUIScale then
                                     if _gsSavedScale == 0 then
                                         local vp = workspace.CurrentCamera.ViewportSize
-                                        _TL_GUIScale.Scale = math.clamp(math.min(vp.X / 1920, vp.Y / 1080), 0.55, 1.15)
+                                        _SU_GUIScale.Scale = math.clamp(math.min(vp.X / 1920, vp.Y / 1080), 0.55, 1.15)
                                     else
-                                        _TL_GUIScale.Scale = _gsSavedScale
+                                        _SU_GUIScale.Scale = _gsSavedScale
                                     end
                                 end
                                 
@@ -14866,12 +14872,12 @@ local _ok_Settings, _err_Settings = pcall(function()
 
                         _gsResetBtn.MouseButton1Click:Connect(function()
                             _gsCurrentScale = _gsSavedScale
-                            if _TL_GUIScale then
+                            if _SU_GUIScale then
                                 if _gsSavedScale == 0 then
                                     local vp = workspace.CurrentCamera.ViewportSize
-                                    _TL_GUIScale.Scale = math.clamp(math.min(vp.X / 1920, vp.Y / 1080), 0.55, 1.15)
+                                    _SU_GUIScale.Scale = math.clamp(math.min(vp.X / 1920, vp.Y / 1080), 0.55, 1.15)
                                 else
-                                    _TL_GUIScale.Scale = _gsSavedScale
+                                    _SU_GUIScale.Scale = _gsSavedScale
                                 end
                             end
                             gsApplyRatio(gsInitRatio())
@@ -14898,8 +14904,8 @@ local _ok_Settings, _err_Settings = pcall(function()
                     end
 
                     settingToggleSetters["antiVcBan"] = function(val)
-                        if val and _G._TL_vcSetToggle then
-                            _G._TL_vcSetToggle(true)
+                        if val and _G._SU_vcSetToggle then
+                            _G._SU_vcSetToggle(true)
                             settingsState.antiVcBan = true
                         end
                     end
@@ -14970,23 +14976,23 @@ local _ok_Settings, _err_Settings = pcall(function()
                             row.Size = UDim2.new(1, 0, 0, 52)
                             row.Position = UDim2.new(0, 0, 0, yPos)
                             row.BackgroundColor3 = C.bg2 or _C3_BG2
-                            row.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                            row.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                             1 or 0; row.BorderSizePixel = 0
                             corner(row, 14)
                             local rowStr = _makeDummyStroke(row)
-                            rowStr.Thickness = _TL_isImgTheme(_TL_activeThemeId) and
+                            rowStr.Thickness = _SU_isImgTheme(_SU_activeThemeId) and
                             1.5 or 1
-                            rowStr.Color = _TL_isImgTheme(_TL_activeThemeId) and
+                            rowStr.Color = _SU_isImgTheme(_SU_activeThemeId) and
                             Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3)
                             rowStr.Transparency = 0.3
                             if _panelColorHooks then
                                 _panelColorHooks[#_panelColorHooks + 1] = function()
                                     pcall(function()
-                                        row.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                                        row.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                                         1 or 0
-                                        rowStr.Thickness = _TL_isImgTheme(_TL_activeThemeId) and
+                                        rowStr.Thickness = _SU_isImgTheme(_SU_activeThemeId) and
                                         1.5 or 1
-                                        rowStr.Color = _TL_isImgTheme(_TL_activeThemeId) and
+                                        rowStr.Color = _SU_isImgTheme(_SU_activeThemeId) and
                                         Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3)
                                         rowStr.Transparency = 0.3
                                     end)
@@ -15081,7 +15087,7 @@ local _ok_Settings, _err_Settings = pcall(function()
                         local CHIP_BG_INACTIVE       = Color3.fromRGB(0, 0, 0) 
                         local CHIP_BG_ACTIVE         = Color3.fromRGB(5, 5, 5)
                         local function updateThemeChips(activeId)
-                            local isCustomThemeActive = _TL_isAnimeTheme(activeId)
+                            local isCustomThemeActive = _SU_isAnimeTheme(activeId)
                             for _, ch in ipairs(_themeChipBtns) do
                                 local isActive = (ch.id == activeId) and not isCustomThemeActive
                                 ch.card.BackgroundColor3 = isActive and CHIP_BG_ACTIVE or CHIP_BG_INACTIVE
@@ -15105,8 +15111,8 @@ local _ok_Settings, _err_Settings = pcall(function()
                             end
                         end
                         local colIdx = 0
-                        for _, theme in ipairs(_TL_THEMES) do
-                            if not _TL_isAnimeTheme(theme.id) then
+                        for _, theme in ipairs(_SU_THEMES) do
+                            if not _SU_isAnimeTheme(theme.id) then
                                 local row                   = math.floor(colIdx / 3)
                                 local c2                    = colIdx % 3
                                 local cx                    = 16 + c2 * (CHIP_W + CHIP_GAP)
@@ -15134,20 +15140,20 @@ local _ok_Settings, _err_Settings = pcall(function()
                                 themeBtn.Text = ""; themeBtn.ZIndex = 8
                                 local captId = theme.id
                                 themeBtn.MouseButton1Click:Connect(function()
-                                    if _TL_isImgTheme(_TL_activeThemeId) then return end
-                                    _TL_applyTheme(captId)
+                                    if _SU_isImgTheme(_SU_activeThemeId) then return end
+                                    _SU_applyTheme(captId)
                                     task.defer(function()
                                         updateThemeChips(captId)
                                     end)
                                 end)
                                 themeBtn.MouseEnter:Connect(function()
-                                    if _TL_isImgTheme(_TL_activeThemeId) then return end
+                                    if _SU_isImgTheme(_SU_activeThemeId) then return end
                                     _sc._playHoverSound()
                                     twP(card, 0.1, { BackgroundColor3 = CHIP_BG_ACTIVE })
                                 end)
                                 themeBtn.MouseLeave:Connect(function()
-                                    if _TL_isImgTheme(_TL_activeThemeId) then return end
-                                    if _TL_activeThemeId ~= captId then
+                                    if _SU_isImgTheme(_SU_activeThemeId) then return end
+                                    if _SU_activeThemeId ~= captId then
                                         twP(card, 0.1, { BackgroundColor3 = CHIP_BG_INACTIVE })
                                     end
                                 end)
@@ -15160,18 +15166,18 @@ local _ok_Settings, _err_Settings = pcall(function()
                         local rows = math.ceil(colIdx / 3)
                         cpY = cpY + rows * (CHIP_H + CHIP_GAP) + 8
                         colorsPage.Size = UDim2.new(1, 0, 0, cpY)
-                        updateThemeChips(_TL_activeThemeId)
+                        updateThemeChips(_SU_activeThemeId)
                         
                         task.defer(function()
-                            pcall(function() updateThemeChips(_TL_activeThemeId) end)
+                            pcall(function() updateThemeChips(_SU_activeThemeId) end)
                         end)
 
                         
                         local env = _genv
                         pcall(function()
-                            env._TL_FixThemeChips = function(themeId)
+                            env._SU_FixThemeChips = function(themeId)
                                 task.defer(function()
-                                    pcall(function() updateThemeChips(themeId or _TL_activeThemeId) end)
+                                    pcall(function() updateThemeChips(themeId or _SU_activeThemeId) end)
                                 end)
                             end
                         end)
@@ -15196,7 +15202,7 @@ local _ok_Settings, _err_Settings = pcall(function()
                     visualSettingsPage.BackgroundTransparency = 1; visualSettingsPage.BorderSizePixel = 0
                     visualSettingsPage.Visible                = false
 
-                    local _curMod = _TL_loadModule("C-CURSOR")
+                    local _curMod = _SU_loadModule("C-CURSOR")
                     if _curMod then
                         _curMod.init({
                             _SvcUIS = _SvcUIS,
@@ -15443,7 +15449,7 @@ local themePage = Instance.new("Frame", subArea)
 
                 local animeCard = cards["Anime"]
                 if animeCard then
-                    local initOn = (_TL_activeThemeId == "onepiece")
+                    local initOn = (_SU_activeThemeId == "onepiece")
                     local row, setFn, _, setVisualFn = cleanRow(animeCard.Content, 4, "One Piece", "Straw Hat Theme",
                         C.accent, initOn, function(on)
                         pcall(function()
@@ -15461,10 +15467,10 @@ local themePage = Instance.new("Frame", subArea)
                                 if dexterToggleSet then dexterToggleSet(false) end
                                 if dexterToggleVisual then dexterToggleVisual(false) end
                                 isLoadingDexter = false
-                                if _TL_activeThemeId ~= "onepiece" and not isLoadingOnePiece then
+                                if _SU_activeThemeId ~= "onepiece" and not isLoadingOnePiece then
                                     isLoadingOnePiece = true
                                     
-                                    local sg = _TL_refs and _TL_refs._TL_ScreenGui
+                                    local sg = _SU_refs and _SU_refs._SU_ScreenGui
                                     local playerGui = sg and sg.Parent or nil
                                     if not playerGui then
                                         pcall(function() playerGui = game:GetService("Players").LocalPlayer:WaitForChild(
@@ -15601,7 +15607,7 @@ local themePage = Instance.new("Frame", subArea)
 
                                     task.delay(1.5, function()
                                         pcall(function()
-                                            _TL_applyTheme("onepiece")
+                                            _SU_applyTheme("onepiece")
                                             
                                             for _, _pn in ipairs({ "Character", "Home", "Settings", "Actions" }) do
                                                 local _pp = panels[_pn]
@@ -15615,10 +15621,10 @@ local themePage = Instance.new("Frame", subArea)
                                                 end
                                             end
                                             
-                                            local tabBtns = _TL_refs._TL_tabBtns
+                                            local tabBtns = _SU_refs._SU_tabBtns
                                             if tabBtns then
                                                 for _, tb in ipairs(tabBtns) do
-                                                    local opIcon = _TL_refs._TL_tabOnePieceIcons[tb.name]
+                                                    local opIcon = _SU_refs._SU_tabOnePieceIcons[tb.name]
                                                     if opIcon and tb.iconImg then
                                                         tb.iconImg.Image = opIcon
                                                         tb.iconImg.ImageColor3 = MGDIM()
@@ -15706,7 +15712,7 @@ local themePage = Instance.new("Frame", subArea)
                                                     abg.Size = UDim2.new(1, 0, 1, 0)
                                                     abg.Position = UDim2.new(0, 0, 0, 0)
                                                     abg.BackgroundTransparency = 1
-                                                    abg.Image = _TL_safeGetCustomAsset("assets/THEMES/ONEPIECE/OP-ACT-BG.png") or "rbxassetid://132090006833323"
+                                                    abg.Image = _SU_safeGetCustomAsset("assets/THEMES/ONEPIECE/OP-ACT-BG.png") or "rbxassetid://132090006833323"
                                                     abg.ScaleType = Enum.ScaleType.Crop
                                                     abg.ImageTransparency = 1
                                                     abg.ZIndex = 0
@@ -15745,16 +15751,16 @@ local themePage = Instance.new("Frame", subArea)
                                     end)
                                 end
                             else
-                                local targetTheme = (not _TL_isImgTheme(_TL_lastColor) and _TL_lastColor) or
+                                local targetTheme = (not _SU_isImgTheme(_SU_lastColor) and _SU_lastColor) or
                                 "white"
-                                if _TL_isImgTheme(_TL_activeThemeId) then
-                                    _TL_applyTheme(targetTheme)
+                                if _SU_isImgTheme(_SU_activeThemeId) then
+                                    _SU_applyTheme(targetTheme)
                                 end
                                 
-                                local tabBtns = _TL_refs._TL_tabBtns
+                                local tabBtns = _SU_refs._SU_tabBtns
                                 if tabBtns then
                                     for _, tb in ipairs(tabBtns) do
-                                        local origIcon = _TL_refs._TL_tabOrigIcons and _TL_refs._TL_tabOrigIcons
+                                        local origIcon = _SU_refs._SU_tabOrigIcons and _SU_refs._SU_tabOrigIcons
                                         [tb.name]
                                         if origIcon and tb.iconImg then
                                             tb.iconImg.Image = origIcon
@@ -15782,8 +15788,8 @@ local themePage = Instance.new("Frame", subArea)
                                 task.defer(function()
                                     pcall(function()
                                         local env = _genv
-                                        if env._TL_FixThemeChips then
-                                            env._TL_FixThemeChips(targetTheme)
+                                        if env._SU_FixThemeChips then
+                                            env._SU_FixThemeChips(targetTheme)
                                         end
                                     end)
                                 end)
@@ -15798,12 +15804,12 @@ local themePage = Instance.new("Frame", subArea)
                 dragonballToggleVisual = nil
                 isLoadingDragonball = false
                 if animeCard then
-                    local initOn = (_TL_activeThemeId == "dragonball")
+                    local initOn = (_SU_activeThemeId == "dragonball")
                     local row, setFn, _, setVisualFn = cleanRow(animeCard.Content, 56, "Dragonball", "Saiyan Theme",
                         C.accent, initOn, function(on)
                         pcall(function()
                             if on then
-                                if _TL_activeThemeId ~= "dragonball" and not isLoadingDragonball then
+                                if _SU_activeThemeId ~= "dragonball" and not isLoadingDragonball then
                                     isLoadingDragonball = true
                                     
                                     isLoadingOnePiece = false
@@ -15822,7 +15828,7 @@ local themePage = Instance.new("Frame", subArea)
                                     if dexterToggleSet then dexterToggleSet(false) end
                                     if dexterToggleVisual then dexterToggleVisual(false) end
                                     
-                                    local sg = _TL_refs and _TL_refs._TL_ScreenGui
+                                    local sg = _SU_refs and _SU_refs._SU_ScreenGui
                                     local playerGui = sg and sg.Parent or nil
                                     if not playerGui then
                                         pcall(function() playerGui = game:GetService("Players").LocalPlayer:WaitForChild(
@@ -15959,7 +15965,7 @@ local themePage = Instance.new("Frame", subArea)
 
                                     task.delay(1.5, function()
                                         pcall(function()
-                                            _TL_applyTheme("dragonball")
+                                            _SU_applyTheme("dragonball")
                                             
                                             for _, _pn in ipairs({ "Character", "Home", "Settings", "Actions" }) do
                                                 local _pp = panels[_pn]
@@ -15975,18 +15981,18 @@ local themePage = Instance.new("Frame", subArea)
                                             
                                             
                                             pcall(function()
-                                                if _TL_refs._TL_tabDragonballIcons and dragonballSettingsIconFileName then
-                                                    local _asset = _TL_safeGetCustomAsset(dragonballSettingsIconFileName)
+                                                if _SU_refs._SU_tabDragonballIcons and dragonballSettingsIconFileName then
+                                                    local _asset = _SU_safeGetCustomAsset(dragonballSettingsIconFileName)
                                                     if _asset then
-                                                        _TL_refs._TL_tabDragonballIcons.Settings = _asset
+                                                        _SU_refs._SU_tabDragonballIcons.Settings = _asset
                                                     end
                                                 end
                                             end)
-                                            local tabBtns = _TL_refs._TL_tabBtns
+                                            local tabBtns = _SU_refs._SU_tabBtns
                                             if tabBtns then
                                                 for _, tb in ipairs(tabBtns) do
-                                                    local dbIcon = _TL_refs._TL_tabDragonballIcons and
-                                                    _TL_refs._TL_tabDragonballIcons[tb.name]
+                                                    local dbIcon = _SU_refs._SU_tabDragonballIcons and
+                                                    _SU_refs._SU_tabDragonballIcons[tb.name]
                                                     if dbIcon and tb.iconImg then
                                                         tb.iconImg.Image = dbIcon
                                                     end
@@ -16025,7 +16031,7 @@ local themePage = Instance.new("Frame", subArea)
                                                     hbg.Size = UDim2.new(1, 0, 1, 0)
                                                     hbg.Position = UDim2.new(0, 0, 0, 0)
                                                     hbg.BackgroundTransparency = 1
-                                                    hbg.Image = _TL_safeGetCustomAsset(dragonballBgFileName) or "rbxassetid://85278059623649"
+                                                    hbg.Image = _SU_safeGetCustomAsset(dragonballBgFileName) or "rbxassetid://85278059623649"
                                                     hbg.ScaleType = Enum.ScaleType.Crop
                                                     hbg.ImageTransparency = 1
                                                     hbg.ZIndex = 0
@@ -16087,16 +16093,16 @@ local themePage = Instance.new("Frame", subArea)
                                     end)
                                 end
                             else
-                                local targetTheme = (not _TL_isImgTheme(_TL_lastColor) and _TL_lastColor) or
+                                local targetTheme = (not _SU_isImgTheme(_SU_lastColor) and _SU_lastColor) or
                                 "white"
-                                if _TL_isImgTheme(_TL_activeThemeId) then
-                                    _TL_applyTheme(targetTheme)
+                                if _SU_isImgTheme(_SU_activeThemeId) then
+                                    _SU_applyTheme(targetTheme)
                                 end
                                 
-                                local tabBtns = _TL_refs._TL_tabBtns
+                                local tabBtns = _SU_refs._SU_tabBtns
                                 if tabBtns then
                                     for _, tb in ipairs(tabBtns) do
-                                        local origIcon = _TL_refs._TL_tabOrigIcons and _TL_refs._TL_tabOrigIcons
+                                        local origIcon = _SU_refs._SU_tabOrigIcons and _SU_refs._SU_tabOrigIcons
                                         [tb.name]
                                         if origIcon and tb.iconImg then
                                             tb.iconImg.Image = origIcon
@@ -16124,8 +16130,8 @@ local themePage = Instance.new("Frame", subArea)
                                 task.defer(function()
                                     pcall(function()
                                         local env = _genv
-                                        if env._TL_FixThemeChips then
-                                            env._TL_FixThemeChips(targetTheme)
+                                        if env._SU_FixThemeChips then
+                                            env._SU_FixThemeChips(targetTheme)
                                         end
                                     end)
                                 end)
@@ -16142,7 +16148,7 @@ local themePage = Instance.new("Frame", subArea)
                 isLoadingTheBoys = false
                 local seriesCard = cards["Series"]
                 if seriesCard then
-                    local initOn = (_TL_activeThemeId == "theboys")
+                    local initOn = (_SU_activeThemeId == "theboys")
 
                     
                     if initOn then
@@ -16158,7 +16164,7 @@ local themePage = Instance.new("Frame", subArea)
                                         bg.Size = UDim2.new(1, 0, 1, 0)
                                         bg.Position = UDim2.new(0, 0, 0, 0)
                                         bg.BackgroundTransparency = 1
-                                        bg.Image = _TL_safeGetCustomAsset(theBoysBgFileName) or "rbxassetid://84736824738121"
+                                        bg.Image = _SU_safeGetCustomAsset(theBoysBgFileName) or "rbxassetid://84736824738121"
                                         bg.ScaleType = Enum.ScaleType.Crop
                                         bg.ImageTransparency = 1
                                         bg.ZIndex = 0
@@ -16191,11 +16197,11 @@ local themePage = Instance.new("Frame", subArea)
                                 if dexterToggleSet then dexterToggleSet(false) end
                                 if dexterToggleVisual then dexterToggleVisual(false) end
                                 isLoadingDexter = false
-                                if _TL_activeThemeId ~= "theboys" and not isLoadingTheBoys then
+                                if _SU_activeThemeId ~= "theboys" and not isLoadingTheBoys then
                                     isLoadingTheBoys = true
 
                                     
-                                    local sg = _TL_refs and _TL_refs._TL_ScreenGui
+                                    local sg = _SU_refs and _SU_refs._SU_ScreenGui
                                     local playerGui = sg and sg.Parent or nil
                                     if not playerGui then
                                         pcall(function() playerGui = game:GetService("Players").LocalPlayer:WaitForChild(
@@ -16332,7 +16338,7 @@ local themePage = Instance.new("Frame", subArea)
 
                                     task.delay(1.5, function()
                                         pcall(function()
-                                            _TL_applyTheme("theboys")
+                                            _SU_applyTheme("theboys")
                                             
                                             for _, _pn in ipairs({ "Character", "Home", "Settings", "Actions" }) do
                                                 local _pp = panels[_pn]
@@ -16348,8 +16354,8 @@ local themePage = Instance.new("Frame", subArea)
                                             
                                             
                                             pcall(function()
-                                                local _getIcon = _TL_refs._TL_getCustomIcon
-                                                local _tb = _TL_refs._TL_tabTheBoys_Icons
+                                                local _getIcon = _SU_refs._SU_getCustomIcon
+                                                local _tb = _SU_refs._SU_tabTheBoys_Icons
                                                 if _tb and _getIcon then
                                                     _tb.Settings = _getIcon(theBoysSettingsIconFileName, "rbxassetid://83091867260863")
                                                     _tb.Home     = _getIcon(theBoysHomeIconFileName,     "rbxassetid://79298842483031")
@@ -16357,10 +16363,10 @@ local themePage = Instance.new("Frame", subArea)
                                                     _tb.Actions  = _getIcon(theBoysActionsIconFileName,  "rbxassetid://110933969812438")
                                                 end
                                             end)
-                                            local tabBtns = _TL_refs._TL_tabBtns
+                                            local tabBtns = _SU_refs._SU_tabBtns
                                             if tabBtns then
                                                 for _, tb in ipairs(tabBtns) do
-                                                    local tbIcon = _TL_refs._TL_tabTheBoys_Icons[tb.name]
+                                                    local tbIcon = _SU_refs._SU_tabTheBoys_Icons[tb.name]
                                                     if tbIcon and tb.iconImg then
                                                         tb.iconImg.Image = tbIcon
                                                     end
@@ -16369,7 +16375,7 @@ local themePage = Instance.new("Frame", subArea)
                                             
                                             local _panelBgs = {
                                                 Character = "rbxassetid://77174664585520",
-                                                Home      = _TL_safeGetCustomAsset(theBoysBgFileName) or "rbxassetid://84736824738121",
+                                                Home      = _SU_safeGetCustomAsset(theBoysBgFileName) or "rbxassetid://84736824738121",
                                                 Settings  = "rbxassetid://84736824738121",
                                             }
                                             for _pname, _imgId in pairs(_panelBgs) do
@@ -16400,8 +16406,8 @@ local themePage = Instance.new("Frame", subArea)
                                             task.defer(function()
                                                 pcall(function()
                                                     local env = _genv
-                                                    if env._TL_FixThemeChips then
-                                                        env._TL_FixThemeChips("theboys")
+                                                    if env._SU_FixThemeChips then
+                                                        env._SU_FixThemeChips("theboys")
                                                     end
                                                 end)
                                             end)
@@ -16432,18 +16438,18 @@ local themePage = Instance.new("Frame", subArea)
                                 end
                             else
                                 isLoadingTheBoys = false
-                                local targetTheme = (not _TL_isImgTheme(_TL_lastColor) and _TL_lastColor) or
+                                local targetTheme = (not _SU_isImgTheme(_SU_lastColor) and _SU_lastColor) or
                                 "white"
-                                if _TL_isImgTheme(_TL_activeThemeId) then
-                                    _TL_applyTheme(targetTheme)
+                                if _SU_isImgTheme(_SU_activeThemeId) then
+                                    _SU_applyTheme(targetTheme)
                                 end
                                 
                                 pcall(function()
-                                    local _tabBtns = _TL_refs._TL_tabBtns
+                                    local _tabBtns = _SU_refs._SU_tabBtns
                                     if _tabBtns then
                                         for _, tb in ipairs(_tabBtns) do
-                                            local origIcon = _TL_refs._TL_tabOrigIcons and
-                                            _TL_refs._TL_tabOrigIcons[tb.name]
+                                            local origIcon = _SU_refs._SU_tabOrigIcons and
+                                            _SU_refs._SU_tabOrigIcons[tb.name]
                                             if origIcon and tb.iconImg then
                                                 tb.iconImg.Image = origIcon
                                             end
@@ -16470,8 +16476,8 @@ local themePage = Instance.new("Frame", subArea)
                                 task.defer(function()
                                     pcall(function()
                                         local env = _genv
-                                        if env._TL_FixThemeChips then
-                                            env._TL_FixThemeChips(targetTheme)
+                                        if env._SU_FixThemeChips then
+                                            env._SU_FixThemeChips(targetTheme)
                                         end
                                     end)
                                 end)
@@ -16487,7 +16493,7 @@ local themePage = Instance.new("Frame", subArea)
                     dexterToggleSet = nil
                     dexterToggleVisual = nil
                     isLoadingDexter = false
-                    local initOn = (_TL_activeThemeId == "dexter")
+                    local initOn = (_SU_activeThemeId == "dexter")
                     local row, setFn, _, setVisualFn = cleanRow(seriesCard.Content, 56, "Dexter", "Dark Passenger Theme",
                         Color3.fromRGB(0, 100, 180), initOn, function(on)
                         pcall(function()
@@ -16504,9 +16510,9 @@ local themePage = Instance.new("Frame", subArea)
                                 if deathNoteToggleSet then deathNoteToggleSet(false) end
                                 if deathNoteToggleVisual then deathNoteToggleVisual(false) end
                                 isLoadingDeathNote = false
-                                if _TL_activeThemeId ~= "dexter" and not isLoadingDexter then
+                                if _SU_activeThemeId ~= "dexter" and not isLoadingDexter then
                                     isLoadingDexter = true
-                                    local sg = _TL_refs and _TL_refs._TL_ScreenGui
+                                    local sg = _SU_refs and _SU_refs._SU_ScreenGui
                                     local playerGui = sg and sg.Parent or nil
                                     if not playerGui then
                                         pcall(function() playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui") end)
@@ -16546,7 +16552,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = _TL_safeGetCustomAsset(dexterLoadingScreenFileName) or dexterLoadingScreenUrl
+                                    logo.Image = _SU_safeGetCustomAsset(dexterLoadingScreenFileName) or dexterLoadingScreenUrl
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -16616,7 +16622,7 @@ local themePage = Instance.new("Frame", subArea)
 
                                     task.delay(1.5, function()
                                         pcall(function()
-                                            _TL_applyTheme("dexter")
+                                            _SU_applyTheme("dexter")
                                             for _, _pn in ipairs({ "Character", "Home", "Settings", "Actions", "Scripts", "Communication" }) do
                                                 local _pp = panels[_pn]
                                                 if _pp then
@@ -16629,8 +16635,8 @@ local themePage = Instance.new("Frame", subArea)
                                                 end
                                             end
                                             pcall(function()
-                                                local _getIcon = _TL_refs._TL_getCustomIcon
-                                                local _dx = _TL_refs._TL_tabDexterIcons
+                                                local _getIcon = _SU_refs._SU_getCustomIcon
+                                                local _dx = _SU_refs._SU_tabDexterIcons
                                                 if _dx and _getIcon then
                                                     _dx.Character     = _getIcon(dexterCharIconFileName,     _dx.Character)
                                                     _dx.Playerlist    = _getIcon(dexterPlayerlistIconFileName, _dx.Playerlist)
@@ -16638,10 +16644,10 @@ local themePage = Instance.new("Frame", subArea)
                                                     _dx.Scripts       = _getIcon(dexterScriptsIconFileName,  _dx.Scripts)
                                                 end
                                             end)
-                                            local tabBtns = _TL_refs._TL_tabBtns
+                                            local tabBtns = _SU_refs._SU_tabBtns
                                             if tabBtns then
                                                 for _, tb in ipairs(tabBtns) do
-                                                    local dxIcon = _TL_refs._TL_tabDexterIcons and _TL_refs._TL_tabDexterIcons[tb.name]
+                                                    local dxIcon = _SU_refs._SU_tabDexterIcons and _SU_refs._SU_tabDexterIcons[tb.name]
                                                     if dxIcon and tb.iconImg then
                                                         tb.iconImg.Image = dxIcon
                                                     end
@@ -16662,7 +16668,7 @@ local themePage = Instance.new("Frame", subArea)
                                                             _bg.Size = UDim2.new(1, 0, 1, 0)
                                                             _bg.Position = UDim2.new(0, 0, 0, 0)
                                                             _bg.BackgroundTransparency = 1
-                                                            _bg.Image = _TL_safeGetCustomAsset(_src.file) or _src.url
+                                                            _bg.Image = _SU_safeGetCustomAsset(_src.file) or _src.url
                                                             _bg.ScaleType = Enum.ScaleType.Crop
                                                             _bg.ImageTransparency = 1
                                                             _bg.ZIndex = 0
@@ -16693,15 +16699,15 @@ local themePage = Instance.new("Frame", subArea)
                                 end
                             else
                                 isLoadingDexter = false
-                                local targetTheme = (not _TL_isImgTheme(_TL_lastColor) and _TL_lastColor) or "white"
-                                if _TL_activeThemeId == "dexter" then
-                                    _TL_applyTheme(targetTheme)
+                                local targetTheme = (not _SU_isImgTheme(_SU_lastColor) and _SU_lastColor) or "white"
+                                if _SU_activeThemeId == "dexter" then
+                                    _SU_applyTheme(targetTheme)
                                 end
                                 pcall(function()
-                                    local _tabBtns = _TL_refs._TL_tabBtns
+                                    local _tabBtns = _SU_refs._SU_tabBtns
                                     if _tabBtns then
                                         for _, tb in ipairs(_tabBtns) do
-                                            local origIcon = _TL_refs._TL_tabOrigIcons and _TL_refs._TL_tabOrigIcons[tb.name]
+                                            local origIcon = _SU_refs._SU_tabOrigIcons and _SU_refs._SU_tabOrigIcons[tb.name]
                                             if origIcon and tb.iconImg then
                                                 tb.iconImg.Image = origIcon
                                             end
@@ -16725,8 +16731,8 @@ local themePage = Instance.new("Frame", subArea)
                                 task.defer(function()
                                     pcall(function()
                                         local env = _genv
-                                        if env._TL_FixThemeChips then
-                                            env._TL_FixThemeChips(targetTheme)
+                                        if env._SU_FixThemeChips then
+                                            env._SU_FixThemeChips(targetTheme)
                                         end
                                     end)
                                 end)
@@ -16742,7 +16748,7 @@ local themePage = Instance.new("Frame", subArea)
                 deathNoteToggleVisual = nil
                 isLoadingDeathNote = false
                 if animeCard then
-                    local initOn = (_TL_activeThemeId == "deathnote")
+                    local initOn = (_SU_activeThemeId == "deathnote")
                     local row, setFn, _, setVisualFn = cleanRow(animeCard.Content, 108, "Death Note", "Shinigami Theme",
                         Color3.fromRGB(200, 20, 20), initOn, function(on)
                         pcall(function()
@@ -16760,10 +16766,10 @@ local themePage = Instance.new("Frame", subArea)
                                 if dexterToggleSet then dexterToggleSet(false) end
                                 if dexterToggleVisual then dexterToggleVisual(false) end
                                 isLoadingDexter = false
-                                if _TL_activeThemeId ~= "deathnote" and not isLoadingDeathNote then
+                                if _SU_activeThemeId ~= "deathnote" and not isLoadingDeathNote then
                                     isLoadingDeathNote = true
                                     
-                                    local sg = _TL_refs and _TL_refs._TL_ScreenGui
+                                    local sg = _SU_refs and _SU_refs._SU_ScreenGui
                                     local playerGui = sg and sg.Parent or nil
                                     if not playerGui then
                                         pcall(function() playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui") end)
@@ -16805,7 +16811,7 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = _TL_safeGetCustomAsset(deathNoteLoadingScreenFileName) or deathNoteLoadingScreenUrl
+                                    logo.Image = _SU_safeGetCustomAsset(deathNoteLoadingScreenFileName) or deathNoteLoadingScreenUrl
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -16875,7 +16881,7 @@ local themePage = Instance.new("Frame", subArea)
 
                                     task.delay(1.5, function()
                                         pcall(function()
-                                            _TL_applyTheme("deathnote")
+                                            _SU_applyTheme("deathnote")
                                             
                                             for _, _pn in ipairs({ "Character", "Home", "Settings", "Actions", "Scripts", "Communication" }) do
                                                 local _pp = panels[_pn]
@@ -16890,8 +16896,8 @@ local themePage = Instance.new("Frame", subArea)
                                             end
                                             
                                             pcall(function()
-                                                local _getIcon = _TL_refs._TL_getCustomIcon
-                                                local _dn = _TL_refs._TL_tabDeathNote_Icons
+                                                local _getIcon = _SU_refs._SU_getCustomIcon
+                                                local _dn = _SU_refs._SU_tabDeathNote_Icons
                                                 if _dn and _getIcon then
                                                     _dn.Home          = _getIcon(deathNoteHomeIconFileName,     _dn.Home)
                                                     _dn.Character     = _getIcon(deathNoteCharIconFileName,     _dn.Character)
@@ -16900,10 +16906,10 @@ local themePage = Instance.new("Frame", subArea)
                                                     _dn.Communication = _getIcon(deathNoteComIconFileName,      _dn.Communication)
                                                 end
                                             end)
-                                            local tabBtns = _TL_refs._TL_tabBtns
+                                            local tabBtns = _SU_refs._SU_tabBtns
                                             if tabBtns then
                                                 for _, tb in ipairs(tabBtns) do
-                                                    local dnIcon = _TL_refs._TL_tabDeathNote_Icons and _TL_refs._TL_tabDeathNote_Icons[tb.name]
+                                                    local dnIcon = _SU_refs._SU_tabDeathNote_Icons and _SU_refs._SU_tabDeathNote_Icons[tb.name]
                                                     if dnIcon and tb.iconImg then
                                                         tb.iconImg.Image = dnIcon
                                                     end
@@ -16928,7 +16934,7 @@ local themePage = Instance.new("Frame", subArea)
                                                             _bg.Size = UDim2.new(1, 0, 1, 0)
                                                             _bg.Position = UDim2.new(0, 0, 0, 0)
                                                             _bg.BackgroundTransparency = 1
-                                                            _bg.Image = _TL_safeGetCustomAsset(_src.file) or _src.url
+                                                            _bg.Image = _SU_safeGetCustomAsset(_src.file) or _src.url
                                                             _bg.ScaleType = Enum.ScaleType.Crop
                                                             _bg.ImageTransparency = 1
                                                             _bg.ZIndex = 0
@@ -16963,16 +16969,16 @@ local themePage = Instance.new("Frame", subArea)
                                 end
                             else
                                 isLoadingDeathNote = false
-                                local targetTheme = (not _TL_isImgTheme(_TL_lastColor) and _TL_lastColor) or "white"
-                                if _TL_activeThemeId == "deathnote" then
-                                    _TL_applyTheme(targetTheme)
+                                local targetTheme = (not _SU_isImgTheme(_SU_lastColor) and _SU_lastColor) or "white"
+                                if _SU_activeThemeId == "deathnote" then
+                                    _SU_applyTheme(targetTheme)
                                 end
                                 
                                 pcall(function()
-                                    local _tabBtns = _TL_refs._TL_tabBtns
+                                    local _tabBtns = _SU_refs._SU_tabBtns
                                     if _tabBtns then
                                         for _, tb in ipairs(_tabBtns) do
-                                            local origIcon = _TL_refs._TL_tabOrigIcons and _TL_refs._TL_tabOrigIcons[tb.name]
+                                            local origIcon = _SU_refs._SU_tabOrigIcons and _SU_refs._SU_tabOrigIcons[tb.name]
                                             if origIcon and tb.iconImg then
                                                 tb.iconImg.Image = origIcon
                                             end
@@ -16997,8 +17003,8 @@ local themePage = Instance.new("Frame", subArea)
                                 task.defer(function()
                                     pcall(function()
                                         local env = _genv
-                                        if env._TL_FixThemeChips then
-                                            env._TL_FixThemeChips(targetTheme)
+                                        if env._SU_FixThemeChips then
+                                            env._SU_FixThemeChips(targetTheme)
                                         end
                                     end)
                                 end)
@@ -17013,19 +17019,19 @@ local themePage = Instance.new("Frame", subArea)
                 function syncThemeTogglesAfterUI()
                     pcall(function()
                         if onePieceToggleVisual then
-                            onePieceToggleVisual(_TL_activeThemeId == "onepiece")
+                            onePieceToggleVisual(_SU_activeThemeId == "onepiece")
                         end
                         if dragonballToggleVisual then
-                            dragonballToggleVisual(_TL_activeThemeId == "dragonball")
+                            dragonballToggleVisual(_SU_activeThemeId == "dragonball")
                         end
                         if theBoysToggleVisual then
-                            theBoysToggleVisual(_TL_activeThemeId == "theboys")
+                            theBoysToggleVisual(_SU_activeThemeId == "theboys")
                         end
                         if deathNoteToggleVisual then
-                            deathNoteToggleVisual(_TL_activeThemeId == "deathnote")
+                            deathNoteToggleVisual(_SU_activeThemeId == "deathnote")
                         end
                         if dexterToggleVisual then
-                            dexterToggleVisual(_TL_activeThemeId == "dexter")
+                            dexterToggleVisual(_SU_activeThemeId == "dexter")
                         end
                     end)
                 end
@@ -17035,80 +17041,80 @@ local themePage = Instance.new("Frame", subArea)
                         
                         
                         if onePieceToggleVisual then
-                            onePieceToggleVisual(_TL_activeThemeId == "onepiece" or isLoadingOnePiece)
+                            onePieceToggleVisual(_SU_activeThemeId == "onepiece" or isLoadingOnePiece)
                         end
                         if dragonballToggleVisual then
-                            dragonballToggleVisual(_TL_activeThemeId == "dragonball" or isLoadingDragonball)
+                            dragonballToggleVisual(_SU_activeThemeId == "dragonball" or isLoadingDragonball)
                         end
                         if theBoysToggleVisual then
-                            theBoysToggleVisual(_TL_activeThemeId == "theboys" or isLoadingTheBoys)
+                            theBoysToggleVisual(_SU_activeThemeId == "theboys" or isLoadingTheBoys)
                         end
                         if deathNoteToggleVisual then
-                            deathNoteToggleVisual(_TL_activeThemeId == "deathnote" or isLoadingDeathNote)
+                            deathNoteToggleVisual(_SU_activeThemeId == "deathnote" or isLoadingDeathNote)
                         end
                         if dexterToggleVisual then
-                            dexterToggleVisual(_TL_activeThemeId == "dexter" or isLoadingDexter)
+                            dexterToggleVisual(_SU_activeThemeId == "dexter" or isLoadingDexter)
                         end
                         
-                        if (_TL_activeThemeId == "onepiece" or isLoadingOnePiece) and dragonballToggleVisual then
+                        if (_SU_activeThemeId == "onepiece" or isLoadingOnePiece) and dragonballToggleVisual then
                             dragonballToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "onepiece" or isLoadingOnePiece) and theBoysToggleVisual then
+                        if (_SU_activeThemeId == "onepiece" or isLoadingOnePiece) and theBoysToggleVisual then
                             theBoysToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "onepiece" or isLoadingOnePiece) and deathNoteToggleVisual then
+                        if (_SU_activeThemeId == "onepiece" or isLoadingOnePiece) and deathNoteToggleVisual then
                             deathNoteToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "onepiece" or isLoadingOnePiece) and dexterToggleVisual then
+                        if (_SU_activeThemeId == "onepiece" or isLoadingOnePiece) and dexterToggleVisual then
                             dexterToggleVisual(false)
                         end
                         
-                        if (_TL_activeThemeId == "dragonball" or isLoadingDragonball) and onePieceToggleVisual then
+                        if (_SU_activeThemeId == "dragonball" or isLoadingDragonball) and onePieceToggleVisual then
                             onePieceToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "dragonball" or isLoadingDragonball) and theBoysToggleVisual then
+                        if (_SU_activeThemeId == "dragonball" or isLoadingDragonball) and theBoysToggleVisual then
                             theBoysToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "dragonball" or isLoadingDragonball) and deathNoteToggleVisual then
+                        if (_SU_activeThemeId == "dragonball" or isLoadingDragonball) and deathNoteToggleVisual then
                             deathNoteToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "dragonball" or isLoadingDragonball) and dexterToggleVisual then
+                        if (_SU_activeThemeId == "dragonball" or isLoadingDragonball) and dexterToggleVisual then
                             dexterToggleVisual(false)
                         end
                         
-                        if (_TL_activeThemeId == "theboys" or isLoadingTheBoys) and onePieceToggleVisual then
+                        if (_SU_activeThemeId == "theboys" or isLoadingTheBoys) and onePieceToggleVisual then
                             onePieceToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "theboys" or isLoadingTheBoys) and dragonballToggleVisual then
+                        if (_SU_activeThemeId == "theboys" or isLoadingTheBoys) and dragonballToggleVisual then
                             dragonballToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "theboys" or isLoadingTheBoys) and deathNoteToggleVisual then
+                        if (_SU_activeThemeId == "theboys" or isLoadingTheBoys) and deathNoteToggleVisual then
                             deathNoteToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "theboys" or isLoadingTheBoys) and dexterToggleVisual then
+                        if (_SU_activeThemeId == "theboys" or isLoadingTheBoys) and dexterToggleVisual then
                             dexterToggleVisual(false)
                         end
                         
-                        if (_TL_activeThemeId == "deathnote" or isLoadingDeathNote) and onePieceToggleVisual then
+                        if (_SU_activeThemeId == "deathnote" or isLoadingDeathNote) and onePieceToggleVisual then
                             onePieceToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "deathnote" or isLoadingDeathNote) and dragonballToggleVisual then
+                        if (_SU_activeThemeId == "deathnote" or isLoadingDeathNote) and dragonballToggleVisual then
                             dragonballToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "deathnote" or isLoadingDeathNote) and theBoysToggleVisual then
+                        if (_SU_activeThemeId == "deathnote" or isLoadingDeathNote) and theBoysToggleVisual then
                             theBoysToggleVisual(false)
                         end
                         
-                        if (_TL_activeThemeId == "dexter" or isLoadingDexter) and onePieceToggleVisual then
+                        if (_SU_activeThemeId == "dexter" or isLoadingDexter) and onePieceToggleVisual then
                             onePieceToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "dexter" or isLoadingDexter) and dragonballToggleVisual then
+                        if (_SU_activeThemeId == "dexter" or isLoadingDexter) and dragonballToggleVisual then
                             dragonballToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "dexter" or isLoadingDexter) and theBoysToggleVisual then
+                        if (_SU_activeThemeId == "dexter" or isLoadingDexter) and theBoysToggleVisual then
                             theBoysToggleVisual(false)
                         end
-                        if (_TL_activeThemeId == "dexter" or isLoadingDexter) and deathNoteToggleVisual then
+                        if (_SU_activeThemeId == "dexter" or isLoadingDexter) and deathNoteToggleVisual then
                             deathNoteToggleVisual(false)
                         end
                     end)
@@ -17452,7 +17458,7 @@ local themePage = Instance.new("Frame", subArea)
                     local _cp, _cs = makePanel("Communication", C.accent)
                     commPage = _cp
                     if _cs then _cs:Destroy() end
-                    commPage.Size = UDim2.new(0, PANEL_W, 0, math.min(520, math.floor(_TL_VP.long * 0.65)))
+                    commPage.Size = UDim2.new(0, PANEL_W, 0, math.min(520, math.floor(_SU_VP.long * 0.65)))
                     commPage.ClipsDescendants = true
                     pcall(function()
                         for _, child in ipairs(commPage:GetDescendants()) do
@@ -17470,16 +17476,16 @@ local themePage = Instance.new("Frame", subArea)
                         _OP_ComPanelBgImg.Position = UDim2.new(0, 0, 0, 0)
                         _OP_ComPanelBgImg.BackgroundTransparency = 1
                         local _opComBgFile = "assets/THEMES/ONEPIECE/OP-COM-BG.png"
-                        _OP_ComPanelBgImg.Image = _TL_safeGetCustomAsset(_opComBgFile) or "rbxassetid://132090006833323"
+                        _OP_ComPanelBgImg.Image = _SU_safeGetCustomAsset(_opComBgFile) or "rbxassetid://132090006833323"
                         _OP_ComPanelBgImg.ScaleType = Enum.ScaleType.Crop
                         _OP_ComPanelBgImg.ImageTransparency = 0.35
                         _OP_ComPanelBgImg.ZIndex = 0
-                        _OP_ComPanelBgImg.Visible = (_TL_activeThemeId == "onepiece")
+                        _OP_ComPanelBgImg.Visible = (_SU_activeThemeId == "onepiece")
                         _OP_ComPanelBgImg.Parent = commPage
                         local corner = Instance.new("UICorner")
                         corner.CornerRadius = UDim.new(0, 10)
                         corner.Parent = _OP_ComPanelBgImg
-                        _TL_refs._OP_ComPanelBgImg = _OP_ComPanelBgImg
+                        _SU_refs._OP_ComPanelBgImg = _OP_ComPanelBgImg
                     end)
                 end
 
@@ -18605,36 +18611,36 @@ local themePage = Instance.new("Frame", subArea)
 
                     
                     task.spawn(function()
-                        if not _TL_safeIsFolder("assets") then
-                            _TL_safeMakeFolder("assets")
+                        if not _SU_safeIsFolder("assets") then
+                            _SU_safeMakeFolder("assets")
                         end
-                        if not _TL_safeIsFolder("assets/SU-ROLE-PICS") then pcall(function() _TL_safeMakeFolder("assets/SU-ROLE-PICS") end) end
+                        if not _SU_safeIsFolder("assets/SU-ROLE-PICS") then pcall(function() _SU_safeMakeFolder("assets/SU-ROLE-PICS") end) end
                         for role, img in pairs(_NT_CONFIG.tagImages) do
                             if img.url and img.url ~= "" and img.file and img.file ~= "" then
-                                _TL_expectedAssetFiles[img.file] = { url = img.url, kind = "image" }
-                                if not _TL_safeIsFile(img.file) then
+                                _SU_expectedAssetFiles[img.file] = { url = img.url, kind = "image" }
+                                if not _SU_safeIsFile(img.file) then
                                     local dir = img.file:match("^(.+/)") or ""
-                                    if dir ~= "" and not _TL_safeIsFolder(dir) then pcall(function() _TL_safeMakeFolder(dir) end) end
+                                    if dir ~= "" and not _SU_safeIsFolder(dir) then pcall(function() _SU_safeMakeFolder(dir) end) end
                                     local ok, bytes = pcall(function()
                                         return (game :: any):HttpGet(img.url)
                                     end)
                                     if ok and bytes and bytes ~= "" then
-                                        _TL_safeWriteFile(img.file, bytes)
+                                        _SU_safeWriteFile(img.file, bytes)
                                     end
                                 end
                             end
                         end
                         for role, pic in pairs(_NT_CONFIG.profilePictures) do
                             if pic.url and pic.url ~= "" and pic.file and pic.file ~= "" then
-                                _TL_expectedAssetFiles[pic.file] = { url = pic.url, kind = "image" }
-                                if not _TL_safeIsFile(pic.file) then
+                                _SU_expectedAssetFiles[pic.file] = { url = pic.url, kind = "image" }
+                                if not _SU_safeIsFile(pic.file) then
                                     local dir = pic.file:match("^(.+/)") or ""
-                                    if dir ~= "" and not _TL_safeIsFolder(dir) then pcall(function() _TL_safeMakeFolder(dir) end) end
+                                    if dir ~= "" and not _SU_safeIsFolder(dir) then pcall(function() _SU_safeMakeFolder(dir) end) end
                                     local ok, bytes = pcall(function()
                                         return (game :: any):HttpGet(pic.url)
                                     end)
                                     if ok and bytes and bytes ~= "" then
-                                        _TL_safeWriteFile(pic.file, bytes)
+                                        _SU_safeWriteFile(pic.file, bytes)
                                     end
                                 end
                             end
@@ -18807,8 +18813,8 @@ local themePage = Instance.new("Frame", subArea)
                     if _parsed then _NT_CONFIG.themes[_defName] = _parsed end
                 end
                 _NT_loadConfig()
-                _TL_configReady = true
-                rawset(_genv, "_TL_configReady", true)
+                _SU_configReady = true
+                rawset(_genv, "_SU_configReady", true)
 
                 
                 
@@ -19517,7 +19523,7 @@ local themePage = Instance.new("Frame", subArea)
                     local function _NT_resolveProfilePic(roleKey)
                         local pic = _NT_CONFIG.profilePictures[roleKey]
                         if pic and pic.file and pic.file ~= "" then
-                            local loaded = _TL_safeGetCustomAsset(pic.file)
+                            local loaded = _SU_safeGetCustomAsset(pic.file)
                             if loaded then return loaded, pic.url end
                         end
                         if pic and pic.url then return pic.url, nil end
@@ -19533,7 +19539,7 @@ local themePage = Instance.new("Frame", subArea)
                         imgLabel.Size                    = UDim2.new(1, -avInset, 1, -avInset)
                         imgLabel.Position                = UDim2.new(0, avPad, 0, avPad)
                         imgLabel.BackgroundTransparency  = 1
-                        local loadedFile = customAvatar.file and customAvatar.file ~= "" and _TL_safeGetCustomAsset(customAvatar.file) or nil
+                        local loadedFile = customAvatar.file and customAvatar.file ~= "" and _SU_safeGetCustomAsset(customAvatar.file) or nil
                         imgLabel.Image = loadedFile or customAvatar.url
                         imgLabel.ScaleType               = Enum.ScaleType.Crop
                         imgLabel.ZIndex                  = 3
@@ -19573,11 +19579,11 @@ local themePage = Instance.new("Frame", subArea)
                         local profPic = _NT_CONFIG.profilePictures and _NT_CONFIG.profilePictures[themeKey]
                         local resolvedFile, resolvedUrl
                         if tagImg and ((tagImg.file and tagImg.file ~= "") or (tagImg.url and tagImg.url ~= "")) then
-                            local loadedFile = tagImg.file and tagImg.file ~= "" and _TL_safeGetCustomAsset(tagImg.file) or nil
+                            local loadedFile = tagImg.file and tagImg.file ~= "" and _SU_safeGetCustomAsset(tagImg.file) or nil
                             resolvedFile = loadedFile
                             resolvedUrl = loadedFile or tagImg.url
                         elseif profPic then
-                            resolvedFile = profPic.file and profPic.file ~= "" and _TL_safeGetCustomAsset(profPic.file) or nil
+                            resolvedFile = profPic.file and profPic.file ~= "" and _SU_safeGetCustomAsset(profPic.file) or nil
                             resolvedUrl = resolvedFile or (profPic.url and profPic.url ~= "" and profPic.url) or nil
                         end
                         if resolvedUrl then
@@ -20100,13 +20106,13 @@ local function parseFieldMessage(fullText, prefixLen)
 
                 local commSubNav         = _MkFrame(
                 { Size = UDim2.new(1, -8, 0, COMM_SUBNAV_H), Position = UDim2.new(0, 4, 0, COMM_SUBNAV_Y), BackgroundColor3 =
-                _C.BG2, BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0 }, commPage)
+                _C.BG2, BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0 }, commPage)
                 _Corner(commSubNav, 12); _Stroke(commSubNav, _C.Border, 1)
                 commSubChatBtn = _MkBtn({
                     Size = UDim2.new(0.48, -3, 1, -6),
                     Position = UDim2.new(0, 4, 0, 3),
                     BackgroundColor3 = _C.BG2,
-                    BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0,
+                    BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0,
                     Text = "CHAT",
                     TextSize = 12,
                     TextColor3 = _C.Silver,
@@ -20117,7 +20123,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     Size = UDim2.new(0.48, -3, 1, -6),
                     Position = UDim2.new(0.52, 0, 0, 3),
                     BackgroundColor3 = _C.BG4,
-                    BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0,
+                    BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0,
                     Text = "PEERS",
                     TextSize = 12,
                     TextColor3 = _C.TxtSub,
@@ -20163,7 +20169,7 @@ local function parseFieldMessage(fullText, prefixLen)
                             local isOnline = (os.clock() - data.LastSeen) < 30
                             local allowed  = data.IsAllowed and isOnline
                             local isAdm    = IsAdminPlayer(player)
-                            local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                            local isOP = _SU_isImgTheme(_SU_activeThemeId)
 
                             local row = _MkFrame({
                                 Name = "PeerRow",
@@ -20245,7 +20251,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     BackgroundTransparency = 1,
                 }, commPage)
 
-                local chatStatus = _MkFrame({ Size = UDim2.new(1, 0, 0, 36), BackgroundColor3 = _C.BG2, BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0 }, commChatView)
+                local chatStatus = _MkFrame({ Size = UDim2.new(1, 0, 0, 36), BackgroundColor3 = _C.BG2, BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0 }, commChatView)
                 _Corner(chatStatus, 8); _Stroke(chatStatus, _C.Border, 1)
                 _MkLabel(
                 { Size = UDim2.new(1, -12, 0, 16), Position = UDim2.new(0, 10, 0, 4), Text = "Covert Network", TextSize = 11, Font =
@@ -20255,13 +20261,13 @@ local function parseFieldMessage(fullText, prefixLen)
                 _C.TxtSub, TextXAlignment = Enum.TextXAlignment.Left }, chatStatus)
 
                 local bringsRow = _MkFrame(
-                { Size = UDim2.new(1, 0, 0, 28), Position = UDim2.new(0, 0, 0, 42), BackgroundColor3 = _C.BG3, BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0 },
+                { Size = UDim2.new(1, 0, 0, 28), Position = UDim2.new(0, 0, 0, 42), BackgroundColor3 = _C.BG3, BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0 },
                     commChatView)
                 _Corner(bringsRow, 12); _Stroke(bringsRow, _C.Border, 1)
                 _MkLabel(
                 { Size = UDim2.new(0.65, 0, 1, 0), Position = UDim2.new(0, 10, 0, 0), Text = "Allow bring requests", TextSize = 11, TextColor3 =
                 _C.TxtMain, TextXAlignment = Enum.TextXAlignment.Left }, bringsRow)
-                local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                local isOP = _SU_isImgTheme(_SU_activeThemeId)
                 local bringsBtn = _MkBtn(
                 { Size = UDim2.new(0, 52, 0, 20), Position = UDim2.new(1, -60, 0.5, -10), BackgroundColor3 = State
                 .AllowBrings and _C.Success or _C.BG4, BackgroundTransparency = (not State.AllowBrings and isOP) and 0.45 or 0, Text = State.AllowBrings and "ON" or "OFF", TextSize = 10 },
@@ -20270,14 +20276,14 @@ local function parseFieldMessage(fullText, prefixLen)
                     State.AllowBrings = not State.AllowBrings
                     bringsBtn.Text = State.AllowBrings and "ON" or "OFF"
                     bringsBtn.BackgroundColor3 = State.AllowBrings and _C.Success or _C.BG4
-                    local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                    local isOP = _SU_isImgTheme(_SU_activeThemeId)
                     bringsBtn.BackgroundTransparency = (not State.AllowBrings and isOP) and 0.45 or 0
                     bringsBtn:SetAttribute("BaseColor", bringsBtn.BackgroundColor3)
                     BroadcastPresence()
                 end)
 
                 local chatCard = _MkFrame(
-                { Size = UDim2.new(1, 0, 1, -118), Position = UDim2.new(0, 0, 0, 76), BackgroundColor3 = _C.BG2, BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0, ClipsDescendants = true },
+                { Size = UDim2.new(1, 0, 1, -118), Position = UDim2.new(0, 0, 0, 76), BackgroundColor3 = _C.BG2, BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0, ClipsDescendants = true },
                     commChatView)
                 _Corner(chatCard, 12); _Stroke(chatCard, _C.Border, 1)
                 local chatScroll = Instance.new("ScrollingFrame")
@@ -20321,7 +20327,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     end
                 end))
 
-                local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                local isOP = _SU_isImgTheme(_SU_activeThemeId)
 
                 
                 local chatInputWrap = _MkFrame({
@@ -20433,7 +20439,7 @@ local function parseFieldMessage(fullText, prefixLen)
                 
                                 _panelColorHooks[#_panelColorHooks + 1] = function(newT)
                     pcall(function()
-                        local isOP = newT and _TL_isAnimeTheme(newT.id)
+                        local isOP = newT and _SU_isAnimeTheme(newT.id)
                         _C.BG      = C.panelBg
                         _C.BG2     = C.bg2
                         _C.BG3     = C.bg3
@@ -20539,17 +20545,17 @@ local function parseFieldMessage(fullText, prefixLen)
                         Size = UDim2.new(1, -2, 1, 0),
                         Position = UDim2.new(0, 1, 0, 0),
                         BackgroundColor3 = isSelf and _C.Accent or _C.BG3,
-                        BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 1,
+                        BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 1,
                     }, wrapper)
                     _Corner(mainFrame, 12)
 
                     
                     mainFrame.MouseEnter:Connect(function()
-                        local baseTrans = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 1
+                        local baseTrans = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 1
                         TweenService:Create(mainFrame, TweenInfo.new(0.2), { BackgroundTransparency = isSelf and (baseTrans - 0.05) or (baseTrans - 0.02) }):Play()
                     end)
                     mainFrame.MouseLeave:Connect(function()
-                        local baseTrans = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 1
+                        local baseTrans = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 1
                         TweenService:Create(mainFrame, TweenInfo.new(0.2), { BackgroundTransparency = baseTrans }):Play()
                     end)
 
@@ -20602,7 +20608,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         mainFrame)
 
                     local tweenInfo = TweenInfo.new(0.35, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-                    local baseTrans = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 1
+                    local baseTrans = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 1
                     TweenService:Create(wrapper, tweenInfo, { Size = UDim2.new(1, -4, 0, 42) }):Play()
                     TweenService:Create(mainFrame, tweenInfo, { BackgroundTransparency = baseTrans }):Play()
                     TweenService:Create(indicator, tweenInfo, { BackgroundTransparency = 0 }):Play()
@@ -20638,7 +20644,7 @@ local function parseFieldMessage(fullText, prefixLen)
                 end)
 
                 if _hasAdminAccess() then
-                    local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                    local isOP = _SU_isImgTheme(_SU_activeThemeId)
                     if commSubChatBtn then
                         commSubChatBtn.Size = UDim2.new(0.32, 0, 1, -6)
                         commSubChatBtn.Position = UDim2.new(0.01, 0, 0, 3)
@@ -20680,9 +20686,9 @@ local function parseFieldMessage(fullText, prefixLen)
 
                     local adminLeft = _MkFrame(
                     { Size = UDim2.new(0.30, 0, 1, 0), Position = UDim2.new(0, _adminPad, 0, CONTENT_Y), BackgroundColor3 =
-                    _C.BG2, BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0 }, adminPage); _Corner(adminLeft, 8); _Stroke(adminLeft, _C.Border, 1)
+                    _C.BG2, BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0 }, adminPage); _Corner(adminLeft, 8); _Stroke(adminLeft, _C.Border, 1)
                     local adminHeader = _MkLabel(
-                    { Size = UDim2.new(1, 0, 0, 28), BackgroundColor3 = _C.BG3, BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0, Text =
+                    { Size = UDim2.new(1, 0, 0, 28), BackgroundColor3 = _C.BG3, BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0, Text =
                     "TARGETS", TextSize = 10, Font = Enum.Font.GothamBold, TextColor3 = _C.Accent, TextXAlignment =
                     Enum.TextXAlignment.Left }, adminLeft)
                     adminPlayerScroll = Instance.new("ScrollingFrame")
@@ -20710,10 +20716,10 @@ local function parseFieldMessage(fullText, prefixLen)
 
                     local adminRight = _MkFrame(
                     { Size = UDim2.new(0.68, -(_adminPad + _adminGap), 1, 0), Position = UDim2.new(0.30, _adminPad + _adminGap, 0, CONTENT_Y), BackgroundColor3 =
-                    _C.BG2, BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0 }, adminPage); _Corner(adminRight, 8); _Stroke(adminRight, _C.Border, 1)
-                    local targetBar = _MkFrame({ Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = _C.BG3, BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0 }, adminRight); _Corner(
+                    _C.BG2, BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0 }, adminPage); _Corner(adminRight, 8); _Stroke(adminRight, _C.Border, 1)
+                    local targetBar = _MkFrame({ Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = _C.BG3, BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0 }, adminRight); _Corner(
                     targetBar, 8); _Stroke(targetBar, _C.Border, 1); _MkFrame(
-                    { Size = UDim2.new(1, 0, 0, 10), Position = UDim2.new(0, 0, 1, -10), BackgroundColor3 = _C.BG3, BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and 0.45 or 0 },
+                    { Size = UDim2.new(1, 0, 0, 10), Position = UDim2.new(0, 0, 1, -10), BackgroundColor3 = _C.BG3, BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and 0.45 or 0 },
                         targetBar)
                     adminSelectedLabel = _MkLabel(
                     { Size = UDim2.new(1, -16, 1, 0), Position = UDim2.new(0, 12, 0, 0), Text =
@@ -20755,7 +20761,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     for i, cat in ipairs(cats) do
                         local _xOff = _catPad + (i - 1) * (_catBtnW + _catGap)
                         local isActive = (i == 1)
-                        local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                        local isOP = _SU_isImgTheme(_SU_activeThemeId)
                         catBtnList[i] = _MkBtn({
                             Size = UDim2.new(0, _catBtnW, 0, _catBtnH),
                             Position = UDim2.new(0, _xOff, 0, 38),
@@ -20804,7 +20810,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     end)() 
 
                     local function HighlightSelectedPlayerBtn()
-                        local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                        local isOP = _SU_isImgTheme(_SU_activeThemeId)
                         for player, btn in pairs(adminPlayerButtons) do
                             if btn and btn.Parent then
                                 local isSelected = adminSelectedPlayer == player
@@ -20848,7 +20854,7 @@ local function parseFieldMessage(fullText, prefixLen)
                             return
                         end
                         for _, cmd in ipairs(catCmds[catIdx]) do
-                            local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                            local isOP = _SU_isImgTheme(_SU_activeThemeId)
                             if cmd.type == "slider" then
                                 local defVal = cmd.default
                                 if adminSelectedPlayer == LocalPlayer and State.AdminTargetStates[LocalPlayer] and State.AdminTargetStates[LocalPlayer][cmd.key] ~= nil then 
@@ -21464,7 +21470,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     end
 
                     for i in ipairs(cats) do catBtnList[i].MouseButton1Click:Connect(function()
-                            local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                            local isOP = _SU_isImgTheme(_SU_activeThemeId)
                             for j, cb in ipairs(catBtnList) do
                                 local isNowActive = (j == i)
                                 cb.BackgroundColor3 = isNowActive and _C.BG2 or _C.BG4
@@ -21490,7 +21496,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         local any = false
                         local function MakePlayerBtn(player, labelExtra, statusText, statusCol)
                             any = true; local isAdm = IsAdminPlayer(player)
-                            local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                            local isOP = _SU_isImgTheme(_SU_activeThemeId)
                             local pBtn = Instance.new("TextButton"); pBtn.Size = UDim2.new(1, 0, 0, 36); pBtn.BackgroundColor3 =
                             _C.BG3; pBtn.BackgroundTransparency = isOP and 0.45 or 0; pBtn.Text = ""; pBtn.AutoButtonColor = false; pBtn.BorderSizePixel = 0; pBtn.Parent =
                             adminPlayerScroll; _Corner(pBtn, 8); _Stroke(pBtn, _C.Border, 1); pBtn:SetAttribute(
@@ -21576,7 +21582,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     State.PendingIncomingFrom = requesterPlayer
                     local _popupParent = ScreenGui or (game:GetService("CoreGui"):FindFirstChild("RobloxGui")) or
                     game:GetService("CoreGui")
-                    local isOP = _TL_isImgTheme(_TL_activeThemeId)
+                    local isOP = _SU_isImgTheme(_SU_activeThemeId)
                     local popup = _MkFrame(
                     { Name = "BringReqPopup", Size = UDim2.new(0, 300, 0, 115), Position = UDim2.new(0.5, -150, 0, -130), BackgroundColor3 =
                     _C.BG, BackgroundTransparency = isOP and 0.45 or 0, ZIndex = 20 }, _popupParent); _Corner(popup, 10); _Stroke(popup, _C.Border, 1.5)
@@ -21628,7 +21634,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     
                     if input.KeyCode == Enum.KeyCode.F4 then
                         pcall(function()
-                            local _selTab = _TL_refs._TL_selectTab
+                            local _selTab = _SU_refs._SU_selectTab
                             if not _selTab then return end
                             _selTab("Communication")
                         end)
@@ -21789,8 +21795,8 @@ local function parseFieldMessage(fullText, prefixLen)
                     elseif type(id) == "string" and type(isfile) == "function" and type(getcustomasset) == "function" and isfile(id) then
                         local ok, _asset = pcall(function() return getcustomasset(id) end)
                         snd.SoundId = (ok and _asset) or id
-                    elseif type(id) == "string" and type(_TL_safeGetCustomAsset) == "function" and id:sub(1, 7) == "assets/" and isfile(id) then
-                        local _asset = _TL_safeGetCustomAsset(id)
+                    elseif type(id) == "string" and type(_SU_safeGetCustomAsset) == "function" and id:sub(1, 7) == "assets/" and isfile(id) then
+                        local _asset = _SU_safeGetCustomAsset(id)
                         snd.SoundId = _asset or id
                     else
                         snd.SoundId            = "rbxassetid://" .. tostring(id)
@@ -22316,7 +22322,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         end
                     end
                     
-                    _setOPRow(_TL_activeThemeId ~= nil, _TL_activeThemeId)
+                    _setOPRow(_SU_activeThemeId ~= nil, _SU_activeThemeId)
                     
                                         _panelColorHooks[#_panelColorHooks + 1] = function(newT)
                         pcall(function()
@@ -22646,23 +22652,23 @@ local function parseFieldMessage(fullText, prefixLen)
                     local card = Instance.new("Frame", grid)
                     card.Size = UDim2.new(0, CARD_W_S, 0, CARD_H_S)
                     card.Position = UDim2.new(0, xOff, 0, 0)
-                    card.BackgroundColor3 = C.bg2; card.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                    card.BackgroundColor3 = C.bg2; card.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                     1 or 0
                     card.BorderSizePixel = 0; corner(card, 12)
                     local cStr = _makeDummyStroke(card)
-                    cStr.Thickness = _TL_isImgTheme(_TL_activeThemeId) and
+                    cStr.Thickness = _SU_isImgTheme(_SU_activeThemeId) and
                     1.5 or 1
-                    cStr.Color = _TL_isImgTheme(_TL_activeThemeId) and
+                    cStr.Color = _SU_isImgTheme(_SU_activeThemeId) and
                     Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3)
                     cStr.Transparency = 0.3
                     if _panelColorHooks then
                         _panelColorHooks[#_panelColorHooks + 1] = function()
                             pcall(function()
-                                card.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                                card.BackgroundTransparency = _SU_isImgTheme(_SU_activeThemeId) and
                                 1 or 0
-                                cStr.Thickness = _TL_isImgTheme(_TL_activeThemeId) and
+                                cStr.Thickness = _SU_isImgTheme(_SU_activeThemeId) and
                                 1.5 or 1
-                                cStr.Color = _TL_isImgTheme(_TL_activeThemeId) and
+                                cStr.Color = _SU_isImgTheme(_SU_activeThemeId) and
                                 Color3.fromRGB(255, 255, 255) or (C.bg3 or _C3_BG3)
                                 cStr.Transparency = 0.3
                             end)
@@ -22821,24 +22827,24 @@ local function parseFieldMessage(fullText, prefixLen)
                     end
 
                     
-                    local function _TL_getComTabIcon()
-                        local asset = _TL_safeIsFile(comTabIconFileName) and
-                        _TL_safeGetCustomAsset(comTabIconFileName) or nil
+                    local function _SU_getComTabIcon()
+                        local asset = _SU_safeIsFile(comTabIconFileName) and
+                        _SU_safeGetCustomAsset(comTabIconFileName) or nil
                         return asset or "rbxassetid://117318347375651"
                     end
-                    local function _TL_getDefaultTabIcon(fname, fallback)
-                        local asset = _TL_safeIsFile(fname) and
-                        _TL_safeGetCustomAsset(fname) or nil
+                    local function _SU_getDefaultTabIcon(fname, fallback)
+                        local asset = _SU_safeIsFile(fname) and
+                        _SU_safeGetCustomAsset(fname) or nil
                         return asset or fallback
                     end
                     local tabDefs = {
-                        { name = "Home",        img = _TL_getDefaultTabIcon(homeTabIconFileName,       "rbxassetid://95315124947838") },
-                        { name = "Character",   img = _TL_getDefaultTabIcon(characterTabIconFileName,   "rbxassetid://130511578744559") },
-                        { name = "Scripts",     img = _TL_getDefaultTabIcon(scriptsTabIconFileName,     "rbxassetid://99174931681951") },
-                        { name = "Actions",     img = _TL_getDefaultTabIcon(actionsTabIconFileName,     "rbxassetid://110933969812438") },
-                        { name = "Playerlist",  img = _TL_getDefaultTabIcon(playerlistTabIconFileName,  "rbxassetid://133167021592598") },
+                        { name = "Home",        img = _SU_getDefaultTabIcon(homeTabIconFileName,       "rbxassetid://95315124947838") },
+                        { name = "Character",   img = _SU_getDefaultTabIcon(characterTabIconFileName,   "rbxassetid://130511578744559") },
+                        { name = "Scripts",     img = _SU_getDefaultTabIcon(scriptsTabIconFileName,     "rbxassetid://99174931681951") },
+                        { name = "Actions",     img = _SU_getDefaultTabIcon(actionsTabIconFileName,     "rbxassetid://110933969812438") },
+                        { name = "Playerlist",  img = _SU_getDefaultTabIcon(playerlistTabIconFileName,  "rbxassetid://133167021592598") },
                         { name = "Settings",    img = "rbxassetid://117318347375651" },
-                        { name = "Communication", img = _TL_getComTabIcon() },
+                        { name = "Communication", img = _SU_getComTabIcon() },
                     }
                     local _TAB_CARD_W  = 62
                     local _TAB_CARD_H  = 60
@@ -22893,7 +22899,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     
                     
                     local tabCardsHolder                  = Instance.new("Frame", ScreenGui)
-                    tabCardsHolder.Name                   = "TLTabCards"
+                    tabCardsHolder.Name                   = "SUTabCards"
                     local _tabBarInitAX, _tabBarInitXSc, _tabBarInitXOff = getPanelXAnchor()
                     tabCardsHolder.AnchorPoint            = Vector2.new(_tabBarInitAX, 1)
                     tabCardsHolder.Size                   = UDim2.new(0, _TAB_BAR_W, 0, 0)
@@ -22912,7 +22918,7 @@ local function parseFieldMessage(fullText, prefixLen)
 
                     
                     
-                    _TL_refs._TL_applyGuiPosition = function(pos)
+                    _SU_refs._SU_applyGuiPosition = function(pos)
                         settingsState.guiPosition = pos
                         task.spawn(saveData)
                         local ax, xsc, xoff = getPanelXAnchor()
@@ -23054,69 +23060,69 @@ local function parseFieldMessage(fullText, prefixLen)
                         end)
                     end
                     
-                    _TL_refs._TL_tabBtns = tabBtns
+                    _SU_refs._SU_tabBtns = tabBtns
                     
-                    _TL_refs._TL_tabOrigIcons = {
-                        Home       = _TL_getDefaultTabIcon(homeTabIconFileName,      "rbxassetid://95315124947838"),
-                        Character  = _TL_getDefaultTabIcon(characterTabIconFileName, "rbxassetid://130511578744559"),
-                        Playerlist = _TL_getDefaultTabIcon(playerlistTabIconFileName,"rbxassetid://133167021592598"),
+                    _SU_refs._SU_tabOrigIcons = {
+                        Home       = _SU_getDefaultTabIcon(homeTabIconFileName,      "rbxassetid://95315124947838"),
+                        Character  = _SU_getDefaultTabIcon(characterTabIconFileName, "rbxassetid://130511578744559"),
+                        Playerlist = _SU_getDefaultTabIcon(playerlistTabIconFileName,"rbxassetid://133167021592598"),
                         Settings   = "rbxassetid://117318347375651",
-                        Actions    = _TL_getDefaultTabIcon(actionsTabIconFileName,   "rbxassetid://110933969812438"),
+                        Actions    = _SU_getDefaultTabIcon(actionsTabIconFileName,   "rbxassetid://110933969812438"),
                         Admin      = "rbxassetid://117318347375651",
-                        Scripts    = _TL_getDefaultTabIcon(scriptsTabIconFileName,   "rbxassetid://99174931681951"),
-                        Communication = _TL_getComTabIcon(),
+                        Scripts    = _SU_getDefaultTabIcon(scriptsTabIconFileName,   "rbxassetid://99174931681951"),
+                        Communication = _SU_getComTabIcon(),
                     }
                     
-                    _TL_refs._TL_tabOnePieceIcons = {
+                    _SU_refs._SU_tabOnePieceIcons = {
                         Home       = "rbxassetid://98331541002580",
                         Character  = "rbxassetid://89458904008601",
                         Playerlist = "rbxassetid://99305081178541",
                         Settings   = "rbxassetid://104468772328182",
                         Actions    = "rbxassetid://84685771974677",
                     }
-                    _TL_refs._TL_tabDragonballIcons = {
+                    _SU_refs._SU_tabDragonballIcons = {
                         Home       = "rbxassetid://73282723782417",
                         Character  = "rbxassetid://75090359908318",
                         Playerlist = "rbxassetid://98892794324034",
                         
                         
                         Settings   = (function()
-                            if dragonballSettingsIconFileName and _TL_safeIsFile(dragonballSettingsIconFileName) then
-                                local r = _TL_safeGetCustomAsset(dragonballSettingsIconFileName)
+                            if dragonballSettingsIconFileName and _SU_safeIsFile(dragonballSettingsIconFileName) then
+                                local r = _SU_safeGetCustomAsset(dragonballSettingsIconFileName)
                                 if r then return r end
                             end
                             return "rbxassetid://117318347375651"
                         end)(),
                     }
                     
-                    local function _TL_getCustomIcon(fname, fallback)
-                        if fname and _TL_safeIsFile(fname) then
-                            local r = _TL_safeGetCustomAsset(fname)
+                    local function _SU_getCustomIcon(fname, fallback)
+                        if fname and _SU_safeIsFile(fname) then
+                            local r = _SU_safeGetCustomAsset(fname)
                             if r then return r end
                         end
                         return fallback
                     end
-                    _TL_refs._TL_tabTheBoys_Icons = {
-                        Home      = _TL_getCustomIcon(theBoysHomeIconFileName,    "rbxassetid://79298842483031"),
-                        Settings  = _TL_getCustomIcon(theBoysSettingsIconFileName, "rbxassetid://83091867260863"),
+                    _SU_refs._SU_tabTheBoys_Icons = {
+                        Home      = _SU_getCustomIcon(theBoysHomeIconFileName,    "rbxassetid://79298842483031"),
+                        Settings  = _SU_getCustomIcon(theBoysSettingsIconFileName, "rbxassetid://83091867260863"),
                         Character = "rbxassetid://102595422414933",
-                        Actions   = _TL_getCustomIcon(theBoysActionsIconFileName,  "rbxassetid://110933969812438"),
-                        Scripts   = _TL_getCustomIcon(theBoysScriptsIconFileName,  "rbxassetid://99174931681951"),
+                        Actions   = _SU_getCustomIcon(theBoysActionsIconFileName,  "rbxassetid://110933969812438"),
+                        Scripts   = _SU_getCustomIcon(theBoysScriptsIconFileName,  "rbxassetid://99174931681951"),
                     }
-                    _TL_refs._TL_getCustomIcon = _TL_getCustomIcon
+                    _SU_refs._SU_getCustomIcon = _SU_getCustomIcon
                     
-                    _TL_refs._TL_tabDeathNote_Icons = {
-                        Home          = _TL_getCustomIcon(deathNoteHomeIconFileName,     "rbxassetid://95315124947838"),
-                        Character     = _TL_getCustomIcon(deathNoteCharIconFileName,     "rbxassetid://130511578744559"),
-                        Scripts       = _TL_getCustomIcon(deathNoteScriptsIconFileName,  "rbxassetid://99174931681951"),
-                        Settings      = _TL_getCustomIcon(deathNoteSettingsIconFileName, "rbxassetid://117318347375651"),
-                        Communication = _TL_getCustomIcon(deathNoteComIconFileName,      _TL_getComTabIcon()),
+                    _SU_refs._SU_tabDeathNote_Icons = {
+                        Home          = _SU_getCustomIcon(deathNoteHomeIconFileName,     "rbxassetid://95315124947838"),
+                        Character     = _SU_getCustomIcon(deathNoteCharIconFileName,     "rbxassetid://130511578744559"),
+                        Scripts       = _SU_getCustomIcon(deathNoteScriptsIconFileName,  "rbxassetid://99174931681951"),
+                        Settings      = _SU_getCustomIcon(deathNoteSettingsIconFileName, "rbxassetid://117318347375651"),
+                        Communication = _SU_getCustomIcon(deathNoteComIconFileName,      _SU_getComTabIcon()),
                     }
                     
-                    if _TL_activeThemeId == "deathnote" then
+                    if _SU_activeThemeId == "deathnote" then
                         pcall(function()
                             for _, tb in ipairs(tabBtns) do
-                                local dnIcon = _TL_refs._TL_tabDeathNote_Icons[tb.name]
+                                local dnIcon = _SU_refs._SU_tabDeathNote_Icons[tb.name]
                                 if dnIcon and tb.iconImg then
                                     tb.iconImg.Image = dnIcon
                                 end
@@ -23124,17 +23130,17 @@ local function parseFieldMessage(fullText, prefixLen)
                         end)
                     end
                     
-                    _TL_refs._TL_tabDexterIcons = {
-                        Character     = _TL_getCustomIcon(dexterCharIconFileName,     "rbxassetid://130511578744559"),
-                        Playerlist    = _TL_getCustomIcon(dexterPlayerlistIconFileName, "rbxassetid://133167021592598"),
-                        Settings      = _TL_getCustomIcon(dexterSettingsIconFileName, "rbxassetid://117318347375651"),
-                        Scripts       = _TL_getCustomIcon(dexterScriptsIconFileName,  "rbxassetid://99174931681951"),
+                    _SU_refs._SU_tabDexterIcons = {
+                        Character     = _SU_getCustomIcon(dexterCharIconFileName,     "rbxassetid://130511578744559"),
+                        Playerlist    = _SU_getCustomIcon(dexterPlayerlistIconFileName, "rbxassetid://133167021592598"),
+                        Settings      = _SU_getCustomIcon(dexterSettingsIconFileName, "rbxassetid://117318347375651"),
+                        Scripts       = _SU_getCustomIcon(dexterScriptsIconFileName,  "rbxassetid://99174931681951"),
                     }
                     
-                    if _TL_activeThemeId == "dexter" then
+                    if _SU_activeThemeId == "dexter" then
                         pcall(function()
                             for _, tb in ipairs(tabBtns) do
-                                local dxIcon = _TL_refs._TL_tabDexterIcons[tb.name]
+                                local dxIcon = _SU_refs._SU_tabDexterIcons[tb.name]
                                 if dxIcon and tb.iconImg then
                                     tb.iconImg.Image = dxIcon
                                 end
@@ -23156,7 +23162,7 @@ local function parseFieldMessage(fullText, prefixLen)
                                             _bg.Size = UDim2.new(1, 0, 1, 0)
                                             _bg.Position = UDim2.new(0, 0, 0, 0)
                                             _bg.BackgroundTransparency = 1
-                                            _bg.Image = _TL_safeGetCustomAsset(_src.file) or _src.url
+                                            _bg.Image = _SU_safeGetCustomAsset(_src.file) or _src.url
                                             _bg.ScaleType = Enum.ScaleType.Crop
                                             _bg.ImageTransparency = 0.45
                                             _bg.ZIndex = 0
@@ -23171,17 +23177,17 @@ local function parseFieldMessage(fullText, prefixLen)
                         end)
                     end
                     
-                    if _TL_activeThemeId == "dragonball" then
+                    if _SU_activeThemeId == "dragonball" then
                         pcall(function()
                             
                             if dragonballSettingsIconFileName then
-                                local _asset = _TL_safeGetCustomAsset(dragonballSettingsIconFileName)
+                                local _asset = _SU_safeGetCustomAsset(dragonballSettingsIconFileName)
                                 if _asset then
-                                    _TL_refs._TL_tabDragonballIcons.Settings = _asset
+                                    _SU_refs._SU_tabDragonballIcons.Settings = _asset
                                 end
                             end
                             for _, tb in ipairs(tabBtns) do
-                                local dbIcon = _TL_refs._TL_tabDragonballIcons[tb.name]
+                                local dbIcon = _SU_refs._SU_tabDragonballIcons[tb.name]
                                 if dbIcon and tb.iconImg then
                                     tb.iconImg.Image = dbIcon
                                 end
@@ -23219,10 +23225,10 @@ local function parseFieldMessage(fullText, prefixLen)
                         end)
                     end
                     
-                    if _TL_activeThemeId == "onepiece" then
+                    if _SU_activeThemeId == "onepiece" then
                         pcall(function()
                             for _, tb in ipairs(tabBtns) do
-                                local opIcon = _TL_refs._TL_tabOnePieceIcons[tb.name]
+                                local opIcon = _SU_refs._SU_tabOnePieceIcons[tb.name]
                                 if opIcon and tb.iconImg then
                                     tb.iconImg.Image = opIcon
                                 end
@@ -23260,20 +23266,20 @@ local function parseFieldMessage(fullText, prefixLen)
                         end)
                     end
                     
-                    if _TL_activeThemeId == "theboys" then
+                    if _SU_activeThemeId == "theboys" then
                         pcall(function()
                             
-                            local _getIcon = _TL_refs._TL_getCustomIcon
-                            local _tb = _TL_refs._TL_tabTheBoys_Icons
+                            local _getIcon = _SU_refs._SU_getCustomIcon
+                            local _tb = _SU_refs._SU_tabTheBoys_Icons
                             if _tb and _getIcon then
                                 _tb.Settings = _getIcon(theBoysSettingsIconFileName, "rbxassetid://83091867260863")
                                 _tb.Home     = _getIcon(theBoysHomeIconFileName,     "rbxassetid://79298842483031")
                                 _tb.Scripts  = _getIcon(theBoysScriptsIconFileName,  "rbxassetid://99174931681951")
                                 _tb.Actions  = _getIcon(theBoysActionsIconFileName,  "rbxassetid://110933969812438")
                             end
-                            local tabBtns = _TL_refs._TL_tabBtns or tabBtns
+                            local tabBtns = _SU_refs._SU_tabBtns or tabBtns
                             for _, tb in ipairs(tabBtns) do
-                                local tbIcon = _TL_refs._TL_tabTheBoys_Icons[tb.name]
+                                local tbIcon = _SU_refs._SU_tabTheBoys_Icons[tb.name]
                                 if tbIcon and tb.iconImg then
                                     tb.iconImg.Image = tbIcon
                                 end
@@ -23311,11 +23317,11 @@ local function parseFieldMessage(fullText, prefixLen)
                         end)
                     end
                     
-                    if _TL_activeThemeId == "deathnote" then
+                    if _SU_activeThemeId == "deathnote" then
                         pcall(function()
                             
-                            local _getIcon = _TL_refs._TL_getCustomIcon
-                            local _dn = _TL_refs._TL_tabDeathNote_Icons
+                            local _getIcon = _SU_refs._SU_getCustomIcon
+                            local _dn = _SU_refs._SU_tabDeathNote_Icons
                             if _dn and _getIcon then
                                 _dn.Home          = _getIcon(deathNoteHomeIconFileName,     _dn.Home)
                                 _dn.Character     = _getIcon(deathNoteCharIconFileName,     _dn.Character)
@@ -23323,9 +23329,9 @@ local function parseFieldMessage(fullText, prefixLen)
                                 _dn.Settings      = _getIcon(deathNoteSettingsIconFileName, _dn.Settings)
                                 _dn.Communication = _getIcon(deathNoteComIconFileName,      _dn.Communication)
                             end
-                            local tabBtns = _TL_refs._TL_tabBtns or tabBtns
+                            local tabBtns = _SU_refs._SU_tabBtns or tabBtns
                             for _, tb in ipairs(tabBtns) do
-                                local dnIcon = _TL_refs._TL_tabDeathNote_Icons and _TL_refs._TL_tabDeathNote_Icons[tb.name]
+                                local dnIcon = _SU_refs._SU_tabDeathNote_Icons and _SU_refs._SU_tabDeathNote_Icons[tb.name]
                                 if dnIcon and tb.iconImg then
                                     tb.iconImg.Image = dnIcon
                                 end
@@ -23350,7 +23356,7 @@ local function parseFieldMessage(fullText, prefixLen)
                                             _bg.Size = UDim2.new(1, 0, 1, 0)
                                             _bg.Position = UDim2.new(0, 0, 0, 0)
                                             _bg.BackgroundTransparency = 1
-                                            _bg.Image = _TL_safeGetCustomAsset(_src.file) or _src.url
+                                            _bg.Image = _SU_safeGetCustomAsset(_src.file) or _src.url
                                             _bg.ScaleType = Enum.ScaleType.Crop
                                             _bg.ImageTransparency = (_pname == "Home") and 0.65 or 0.45
                                             _bg.ZIndex = 0
@@ -23434,7 +23440,7 @@ local function parseFieldMessage(fullText, prefixLen)
                             _pt:Play()
                         end
                     end
-                    _TL_refs._TL_selectTab = selectTab
+                    _SU_refs._SU_selectTab = selectTab
                     do
                         
                         local rainAcc = 0
@@ -23460,7 +23466,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         end))
                     end
                     function openBar()
-                        if _TL_refs._TL_closeQABar then _TL_refs._TL_closeQABar() end
+                        if _SU_refs._SU_closeQABar then _SU_refs._SU_closeQABar() end
                         _closeTok              = _closeTok + 1
                         isOpen                 = true
                         local _, _tbXsc, _tbXoff = getPanelXAnchor()
@@ -23552,12 +23558,12 @@ local function parseFieldMessage(fullText, prefixLen)
                         rebuildKeybindListener()
                         sendNotif("SmartBar", T.notif_settings_loaded, 2)
                         
-                        if settingsState.guiScale and settingsState.guiScale > 0 and _TL_GUIScale then
-                            _TL_GUIScale.Scale = settingsState.guiScale
+                        if settingsState.guiScale and settingsState.guiScale > 0 and _SU_GUIScale then
+                            _SU_GUIScale.Scale = settingsState.guiScale
                         end
                         
-                        if settingsState.guiPosition and _TL_refs._TL_applyGuiPosition then
-                            pcall(function() _TL_refs._TL_applyGuiPosition(settingsState.guiPosition) end)
+                        if settingsState.guiPosition and _SU_refs._SU_applyGuiPosition then
+                            pcall(function() _SU_refs._SU_applyGuiPosition(settingsState.guiPosition) end)
                         end
                     end)
                     do
@@ -23624,7 +23630,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         local isTab  = touch and not kbd and short >= 500 and short < 900
                         if isMob or isTab then
                             local fwUIScale       = Instance.new("UIScale", fpsWidget)
-                            fwUIScale.Scale       = _TL_VP.mobScl
+                            fwUIScale.Scale       = _SU_VP.mobScl
                             fpsWidget.AnchorPoint = Vector2.new(1, 0)
                             fpsWidget.Position    = UDim2.new(1, -(5 + VL_W + 4), 0, 0)
                         else
@@ -23659,16 +23665,16 @@ local function parseFieldMessage(fullText, prefixLen)
                     scIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
                     scIcon.Visible = false
                     scIcon.ZIndex = 22
-                    local scTlIcon = Instance.new("TextLabel", smartCapsule)
-                    scTlIcon.Size = UDim2.fromScale(1, 1)
-                    scTlIcon.BackgroundTransparency = 1
-                    scTlIcon.Text = "TL"
-                    scTlIcon.Font = Enum.Font.GothamBlack
-                    scTlIcon.TextSize = 12
-                    scTlIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
-                    scTlIcon.TextXAlignment = Enum.TextXAlignment.Center
-                    scTlIcon.TextYAlignment = Enum.TextYAlignment.Center
-                    scTlIcon.ZIndex = 23
+                    local scSuIcon = Instance.new("TextLabel", smartCapsule)
+                    scSuIcon.Size = UDim2.fromScale(1, 1)
+                    scSuIcon.BackgroundTransparency = 1
+                    scSuIcon.Text = "SU"
+                    scSuIcon.Font = Enum.Font.GothamBlack
+                    scSuIcon.TextSize = 12
+                    scSuIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    scSuIcon.TextXAlignment = Enum.TextXAlignment.Center
+                    scSuIcon.TextYAlignment = Enum.TextYAlignment.Center
+                    scSuIcon.ZIndex = 23
 
                     local qaCapsule = Instance.new("Frame", fpsWidget)
                     qaCapsule.Name = "QACapsule"
@@ -23688,16 +23694,16 @@ local function parseFieldMessage(fullText, prefixLen)
                     qaIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
                     qaIcon.Visible = false
                     qaIcon.ZIndex = 22
-                    local qaTlIcon = Instance.new("TextLabel", qaCapsule)
-                    qaTlIcon.Size = UDim2.fromScale(1, 1)
-                    qaTlIcon.BackgroundTransparency = 1
-                    qaTlIcon.Text = "TLQ"
-                    qaTlIcon.Font = Enum.Font.GothamBlack
-                    qaTlIcon.TextSize = 12
-                    qaTlIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
-                    qaTlIcon.TextXAlignment = Enum.TextXAlignment.Center
-                    qaTlIcon.TextYAlignment = Enum.TextYAlignment.Center
-                    qaTlIcon.ZIndex = 23
+                    local qaSuIcon = Instance.new("TextLabel", qaCapsule)
+                    qaSuIcon.Size = UDim2.fromScale(1, 1)
+                    qaSuIcon.BackgroundTransparency = 1
+                    qaSuIcon.Text = "SUQ"
+                    qaSuIcon.Font = Enum.Font.GothamBlack
+                    qaSuIcon.TextSize = 12
+                    qaSuIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    qaSuIcon.TextXAlignment = Enum.TextXAlignment.Center
+                    qaSuIcon.TextYAlignment = Enum.TextYAlignment.Center
+                    qaSuIcon.ZIndex = 23
 
                     
                     
@@ -23737,7 +23743,7 @@ local function parseFieldMessage(fullText, prefixLen)
                             { BackgroundColor3 = C.accent, Size = UDim2.fromOffset(30, 28), Position = UDim2.new(0, 3,
                                 0.5, -14) })
                         quickTween(smartCapsuleCorner, 0.15, { CornerRadius = UDim.new(0, 8) })
-                        quickTween(scTlIcon, 0.15, { TextSize = 13 })
+                        quickTween(scSuIcon, 0.15, { TextSize = 13 })
                         quickTween(scIcon, 0.15, { ImageColor3 = Color3.fromRGB(255, 255, 255) })
                     end)
                     tlSmartHitbox.MouseLeave:Connect(function()
@@ -23745,21 +23751,21 @@ local function parseFieldMessage(fullText, prefixLen)
                             { BackgroundColor3 = Color3.fromRGB(30, 30, 35), Size = UDim2.fromOffset(28, 28), Position =
                             UDim2.new(0, 4, 0.5, -14) })
                         quickTween(smartCapsuleCorner, 0.15, { CornerRadius = UDim.new(1, 0) })
-                        quickTween(scTlIcon, 0.15, { TextSize = 12 })
+                        quickTween(scSuIcon, 0.15, { TextSize = 12 })
                     end)
                     tlHitbox.MouseEnter:Connect(function()
                         quickTween(qaCapsule, 0.15,
                             { BackgroundColor3 = C.accent2 or C.accent, Size = UDim2.fromOffset(30, 28), Position = UDim2
                             .new(0, 35, 0.5, -14) })
                         quickTween(qaCapsuleCorner, 0.15, { CornerRadius = UDim.new(0, 8) })
-                        quickTween(qaTlIcon, 0.15, { TextSize = 13 })
+                        quickTween(qaSuIcon, 0.15, { TextSize = 13 })
                     end)
                     tlHitbox.MouseLeave:Connect(function()
                         quickTween(qaCapsule, 0.15,
                             { BackgroundColor3 = Color3.fromRGB(30, 30, 35), Size = UDim2.fromOffset(28, 28), Position =
                             UDim2.new(0, 36, 0.5, -14) })
                         quickTween(qaCapsuleCorner, 0.15, { CornerRadius = UDim.new(1, 0) })
-                        quickTween(qaTlIcon, 0.15, { TextSize = 12 })
+                        quickTween(qaSuIcon, 0.15, { TextSize = 12 })
                     end)
 
                     local sepLine = Instance.new("Frame", fpsWidget)
@@ -23912,51 +23918,51 @@ local function parseFieldMessage(fullText, prefixLen)
                     do
                         local _genv = getgenv and getgenv()
                         if _genv then
-                            rawset(_genv, "_TL_ScreenGui", ScreenGui)
-                            rawset(_genv, "_TL_fpsWidget", fpsWidget)
-                            rawset(_genv, "_TL_tlHitbox", tlHitbox)
-                            rawset(_genv, "_TL_tlLblBig", tlLblBig)
-                            rawset(_genv, "_TL_tlArrowBig", tlArrowBig)
-                            rawset(_genv, "_TL_tlLbl", tlLbl)
-                            rawset(_genv, "_TL_tlArrow", tlArrow)
-                            rawset(_genv, "_TL_FW_W", FW_W)
-                            rawset(_genv, "_TL_FW_H", FW_H)
-                            rawset(_genv, "_TL_FW_X_OFFSET", FW_X_OFFSET)
-                            rawset(_genv, "_TL_VL_ICON_W", VL_ICON_W)
-                            rawset(_genv, "_TL_VL_ICON_H", VL_ICON_H)
-                            rawset(_genv, "_TL_tw", tw)
-                            rawset(_genv, "_TL_corner", corner)
-                            rawset(_genv, "_TL_sendNotif", sendNotif)
-                            rawset(_genv, "_TL_getNearestPlayer", getNearestPlayer)
-                            rawset(_genv, "_TL_getRootPart", getRootPart)
-                            rawset(_genv, "_TL_getHumanoid", getHumanoid)
-                            rawset(_genv, "_TL_safeStand", safeStand)
-                            rawset(_genv, "_TL_stopBB", stopBB)
-                            rawset(_genv, "_TL_startBB", startBB)
+                            rawset(_genv, "_SU_ScreenGui", ScreenGui)
+                            rawset(_genv, "_SU_fpsWidget", fpsWidget)
+                            rawset(_genv, "_SU_tlHitbox", tlHitbox)
+                            rawset(_genv, "_SU_tlLblBig", tlLblBig)
+                            rawset(_genv, "_SU_tlArrowBig", tlArrowBig)
+                            rawset(_genv, "_SU_tlLbl", tlLbl)
+                            rawset(_genv, "_SU_tlArrow", tlArrow)
+                            rawset(_genv, "_SU_FW_W", FW_W)
+                            rawset(_genv, "_SU_FW_H", FW_H)
+                            rawset(_genv, "_SU_FW_X_OFFSET", FW_X_OFFSET)
+                            rawset(_genv, "_SU_VL_ICON_W", VL_ICON_W)
+                            rawset(_genv, "_SU_VL_ICON_H", VL_ICON_H)
+                            rawset(_genv, "_SU_tw", tw)
+                            rawset(_genv, "_SU_corner", corner)
+                            rawset(_genv, "_SU_sendNotif", sendNotif)
+                            rawset(_genv, "_SU_getNearestPlayer", getNearestPlayer)
+                            rawset(_genv, "_SU_getRootPart", getRootPart)
+                            rawset(_genv, "_SU_getHumanoid", getHumanoid)
+                            rawset(_genv, "_SU_safeStand", safeStand)
+                            rawset(_genv, "_SU_stopBB", stopBB)
+                            rawset(_genv, "_SU_startBB", startBB)
                         end
                     end
                     
-                    _TL_refs._TL_ScreenGui        = ScreenGui
-                    _TL_refs._TL_fpsWidget        = fpsWidget
-                    _TL_refs._TL_tlHitbox         = tlHitbox
-                    _TL_refs._TL_tlLbl            = tlLbl
-                    _TL_refs._TL_tlArrow          = tlArrow
-                    _TL_refs._TL_tlArrowBig       = tlArrowBig
-                    _TL_refs._TL_FW_W             = FW_W
-                    _TL_refs._TL_FW_H             = FW_H
-                    _TL_refs._TL_FW_X_OFFSET      = FW_X_OFFSET
-                    _TL_refs._TL_VL_ICON_W        = VL_ICON_W
-                    _TL_refs._TL_VL_ICON_H        = VL_ICON_H
-                    _TL_refs._TL_tw               = tw
-                    _TL_refs._TL_corner           = corner
-                    _TL_refs._TL_sendNotif        = sendNotif
-                    _TL_refs._TL_getNearestPlayer = getNearestPlayer
-                    _TL_refs._TL_getRootPart      = getRootPart
-                    _TL_refs._TL_getHumanoid      = getHumanoid
-                    _TL_refs._TL_safeStand        = safeStand
-                    _TL_refs._TL_stopBB           = stopBB
-                    _TL_refs._TL_startBB          = startBB
-                    _TL_refs._TL_qaDispatch       = function(key, target)
+                    _SU_refs._SU_ScreenGui        = ScreenGui
+                    _SU_refs._SU_fpsWidget        = fpsWidget
+                    _SU_refs._SU_tlHitbox         = tlHitbox
+                    _SU_refs._SU_tlLbl            = tlLbl
+                    _SU_refs._SU_tlArrow          = tlArrow
+                    _SU_refs._SU_tlArrowBig       = tlArrowBig
+                    _SU_refs._SU_FW_W             = FW_W
+                    _SU_refs._SU_FW_H             = FW_H
+                    _SU_refs._SU_FW_X_OFFSET      = FW_X_OFFSET
+                    _SU_refs._SU_VL_ICON_W        = VL_ICON_W
+                    _SU_refs._SU_VL_ICON_H        = VL_ICON_H
+                    _SU_refs._SU_tw               = tw
+                    _SU_refs._SU_corner           = corner
+                    _SU_refs._SU_sendNotif        = sendNotif
+                    _SU_refs._SU_getNearestPlayer = getNearestPlayer
+                    _SU_refs._SU_getRootPart      = getRootPart
+                    _SU_refs._SU_getHumanoid      = getHumanoid
+                    _SU_refs._SU_safeStand        = safeStand
+                    _SU_refs._SU_stopBB           = stopBB
+                    _SU_refs._SU_startBB          = startBB
+                    _SU_refs._SU_qaDispatch       = function(key, target)
                         if not target or not target.Character then return false end
                         local _tRoot = target.Character:FindFirstChild("HumanoidRootPart")
                         if not _tRoot then return false end
@@ -24020,39 +24026,39 @@ local function parseFieldMessage(fullText, prefixLen)
                         end)
                         return _actionOk
                     end
-                    _TL_refs._TL_AF               = _AF
-                    _TL_refs._TL_SOH              = _SOH
-                    _TL_refs._TL_act_stopFollow   = _act_stopFollow
-                    _TL_refs._TL_stopGhost        = stopGhost
-                    _TL_refs._TL_stopSitOnHead    = stopSitOnHead
-                    _TL_refs._TL_stopPiggyback    = stopPiggyback
-                    _TL_refs._TL_stopPiggyback2   = stopPiggyback2
-                    _TL_refs._TL_stopKiss         = stopKiss
-                    _TL_refs._TL_stopBackpack     = stopBackpack
-                    _TL_refs._TL_stopOrbit        = stopOrbit
-                    _TL_refs._TL_stopUpsideDown   = stopUpsideDown
-                    _TL_refs._TL_stopCrossUD      = stopCrossUD
-                    _TL_refs._TL_stopFriend       = stopFriend
-                    _TL_refs._TL_stopSpinning     = stopSpinning
-                    _TL_refs._TL_stopLicking      = stopLicking
-                    _TL_refs._TL_stopSucking      = stopSucking
-                    _TL_refs._TL_stopSuckIt       = stopSuckIt
-                    _TL_refs._TL_stopBackshots    = stopBackshots
-                    _TL_refs._TL_stopDoggy        = stopDoggy
-                    _TL_refs._TL_stopLayFuck      = stopLayFuck
-                    _TL_refs._TL_stopFacefuck     = stopFacefuck
-                    _TL_refs._TL_stopPussySpread  = stopPussySpread
-                    _TL_refs._TL_stopHug          = stopHug
-                    _TL_refs._TL_stopHug2         = stopHug2
-                    _TL_refs._TL_stopCarry        = stopCarry
-                    _TL_refs._TL_stopShoulderSit  = stopShoulderSit
+                    _SU_refs._SU_AF               = _AF
+                    _SU_refs._SU_SOH              = _SOH
+                    _SU_refs._SU_act_stopFollow   = _act_stopFollow
+                    _SU_refs._SU_stopGhost        = stopGhost
+                    _SU_refs._SU_stopSitOnHead    = stopSitOnHead
+                    _SU_refs._SU_stopPiggyback    = stopPiggyback
+                    _SU_refs._SU_stopPiggyback2   = stopPiggyback2
+                    _SU_refs._SU_stopKiss         = stopKiss
+                    _SU_refs._SU_stopBackpack     = stopBackpack
+                    _SU_refs._SU_stopOrbit        = stopOrbit
+                    _SU_refs._SU_stopUpsideDown   = stopUpsideDown
+                    _SU_refs._SU_stopCrossUD      = stopCrossUD
+                    _SU_refs._SU_stopFriend       = stopFriend
+                    _SU_refs._SU_stopSpinning     = stopSpinning
+                    _SU_refs._SU_stopLicking      = stopLicking
+                    _SU_refs._SU_stopSucking      = stopSucking
+                    _SU_refs._SU_stopSuckIt       = stopSuckIt
+                    _SU_refs._SU_stopBackshots    = stopBackshots
+                    _SU_refs._SU_stopDoggy        = stopDoggy
+                    _SU_refs._SU_stopLayFuck      = stopLayFuck
+                    _SU_refs._SU_stopFacefuck     = stopFacefuck
+                    _SU_refs._SU_stopPussySpread  = stopPussySpread
+                    _SU_refs._SU_stopHug          = stopHug
+                    _SU_refs._SU_stopHug2         = stopHug2
+                    _SU_refs._SU_stopCarry        = stopCarry
+                    _SU_refs._SU_stopShoulderSit  = stopShoulderSit
 
                     
                     
                                 
             
             
-local function _TL_showLoadingScreen()
+local function _SU_showLoadingScreen()
                         local TweenService = _tsProxy
                         local Heartbeat    = game:GetService("RunService").Heartbeat
                         local Players      = game:GetService("Players")
@@ -24094,7 +24100,7 @@ local function _TL_showLoadingScreen()
                             sparkleCount  = 15,
                         }
 
-                        local SCREEN_NAME = "TL_LoadingScreen"
+                        local SCREEN_NAME = "SU_LoadingScreen"
                         local MAX_WAIT    = 60
 
                         pcall(function()
@@ -24148,7 +24154,7 @@ local function _TL_showLoadingScreen()
 
                         task.spawn(function()
                             pcall(function()
-                                local _vloader = rawget(_genv, "_TL_assetLoader")
+                                local _vloader = rawget(_genv, "_SU_assetLoader")
                                 if _vloader then
                                     local _vwait = 0
                                     while not _vloader.ready and _vwait < 15 do
@@ -24159,8 +24165,8 @@ local function _TL_showLoadingScreen()
                                 snd.Name = "SUMenu_VoiceLine"; snd.Volume = 1.0
                                 snd.RollOffMaxDistance = 10000
                                 local cached = nil
-                                if _TL_safeIsFile(loadingScreenVoiceFileName) then
-                                    cached = _TL_safeGetCustomAsset(loadingScreenVoiceFileName)
+                                if _SU_safeIsFile(loadingScreenVoiceFileName) then
+                                    cached = _SU_safeGetCustomAsset(loadingScreenVoiceFileName)
                                 end
                                 if cached then
                                     snd.SoundId = cached; snd.Parent = gui
@@ -24704,7 +24710,7 @@ local function _TL_showLoadingScreen()
                             "Preparing asset pipeline...", "Compiling bytecode...",
                             "Warming up render thread...", "Almost ready...",
                         }
-                        local TITLE_FRAMES = {"T","TL","TLM","TLME","TLMEN","SUMENU"}
+                        local TITLE_FRAMES = {"S","SU","SU M","SU ME","SU MEN","SUMENU"}
                         local TITLE_DELAYS = {0.20, 0.20, 0.12, 0.12, 0.12, 0}
 
                         local progress    = 0
@@ -24713,7 +24719,7 @@ local function _TL_showLoadingScreen()
                         local titleTimer  = 0
                         local closing     = false
                         local GLOW_BASE   = FS + 16
-                        local loader      = rawget(_genv, "_TL_assetLoader")
+                        local loader      = rawget(_genv, "_SU_assetLoader")
 
                         local function onComplete()
                             closing = true
@@ -24757,7 +24763,7 @@ local function _TL_showLoadingScreen()
                             end
                             task.wait(FADE_DUR + 0.1)
                             pcall(function() gui:Destroy() end)
-                            _TL_loading = false
+                            _SU_loading = false
                             pcall(function()
                                 if settingsState and settingsState.autoOpen then
                                     if not isOpen then openBar() end
@@ -25061,16 +25067,16 @@ local function _TL_showLoadingScreen()
                         end)
                     end 
 
-                    pcall(_TL_showLoadingScreen)
+                    pcall(_SU_showLoadingScreen)
                 end); if not _ok_SmartBar then warn("[SU] SmartBar-IIFE crashed: " .. tostring(_err_SmartBar)) end
             end)
 
             
             do
-                local _bbMod2 = _TL_loadModule("SCRIPTS-TAB/SU-QABar")
+                local _bbMod2 = _SU_loadModule("SCRIPTS-TAB/SU-QABar")
                 if _bbMod2 then
                     _bbMod2.initQABar({
-                        _TL_refs = _TL_refs,
+                        _SU_refs = _SU_refs,
                         _genv = _genv,
                         C = C,
                         _panelColorHooks = _panelColorHooks,
@@ -25085,7 +25091,7 @@ local function _TL_showLoadingScreen()
                         LocalPlayer = LocalPlayer,
                         RunService = RunService,
                         _SvcUIS = _SvcUIS,
-                        _TL_VP = _TL_VP,
+                        _SU_VP = _SU_VP,
                         _sc = _sc,
                         _AF = _AF,
                         stopQA74 = stopQA74,
@@ -25102,7 +25108,7 @@ local function _TL_showLoadingScreen()
             
             
             ; (function()
-                local _afk = _genv._TL_afkSystem
+                local _afk = _genv._SU_afkSystem
                 if not _afk then return end
 
                 local _afkFiles = {
@@ -25112,7 +25118,7 @@ local function _TL_showLoadingScreen()
                 }
 
                 
-                rawset(_genv, "_TL_afkSetTheme", function(id)
+                rawset(_genv, "_SU_afkSetTheme", function(id)
                     _afk.themeId = id or "white"
                 end)
 
@@ -25139,7 +25145,7 @@ local function _TL_showLoadingScreen()
                     pcall(function()
                         local snd   = Instance.new("Sound")
                         snd.Name    = "SUMenu_AFK_VL"
-                        local _asset = _TL_safeGetCustomAsset(chosen)
+                        local _asset = _SU_safeGetCustomAsset(chosen)
                         snd.SoundId = _asset or chosen
                         snd.Volume  = 1.0
                         snd.Looped  = false
@@ -25193,9 +25199,9 @@ local function _TL_showLoadingScreen()
 
             
 
-            _TL_refs.SUMenuCleanup = function()
+            _SU_refs.SUMenuCleanup = function()
                 pcall(function()
-                    local _afk = _genv._TL_afkSystem
+                    local _afk = _genv._SU_afkSystem
                     if _afk then
                         if _afk.loopConn then
                             pcall(function() _afk.loopConn:Disconnect() end); _afk.loopConn = nil
@@ -25210,8 +25216,8 @@ local function _TL_showLoadingScreen()
                         _afk.active = false
                     end
                     if getgenv then
-                        _genv._TL_afkSystem   = nil
-                        _genv._TL_afkSetTheme = nil
+                        _genv._SU_afkSystem   = nil
+                        _genv._SU_afkSetTheme = nil
                     end
                 end)
 
@@ -25250,7 +25256,7 @@ local function _TL_showLoadingScreen()
                 end)
                 
                 pcall(function()
-                    local mods = rawget(_genv, "_TL_MODULES")
+                    local mods = rawget(_genv, "_SU_MODULES")
                     if mods then
                         for name, mod in pairs(mods) do
                             pcall(function()
@@ -25259,11 +25265,11 @@ local function _TL_showLoadingScreen()
                                 end
                             end)
                         end
-                        rawset(_genv, "_TL_MODULES", nil)
+                        rawset(_genv, "_SU_MODULES", nil)
                     end
                 end)
                 pcall(function()
-                    local _modRunkeys = { "__TL_AntiVCBAN_Runtime", "__TL_FlyRuntime", "__TL_InvisRuntime", "__TL_ShaderRuntime" }
+                    local _modRunkeys = { "__SU_AntiVCBAN_Runtime", "__SU_FlyRuntime", "__SU_InvisRuntime", "__SU_ShaderRuntime" }
                     for _, rk in ipairs(_modRunkeys) do
                         local r = rawget(_genv, rk)
                         if type(r) == "table" and type(r.cleanup) == "function" then
@@ -25272,55 +25278,55 @@ local function _TL_showLoadingScreen()
                         rawset(_genv, rk, nil)
                     end
                 end)
-                local _qb_ref = _TL_refs._TL_qb or {}
+                local _qb_ref = _SU_refs._SU_qb or {}
                 local _conns = {
-                    _TL_state.conns.flyConn, _TL_state.conns.noclipConn, _TL_state.conns._espRadConn,
-                    _TL_state.conns.rushConn, _TL_state.conns.rushNoclipConn, _TL_state.conns.updateConnUI,
-                    _TL_state.conns._act_followRSConn, _SOH and _SOH.conn,
+                    _SU_state.conns.flyConn, _SU_state.conns.noclipConn, _SU_state.conns._espRadConn,
+                    _SU_state.conns.rushConn, _SU_state.conns.rushNoclipConn, _SU_state.conns.updateConnUI,
+                    _SU_state.conns._act_followRSConn, _SOH and _SOH.conn,
                     _AF and _AF.udConn,
-                    _TL_state.conns.friendConn, _TL_state.conns.spinConn, _TL_state.conns.ppConn, _TL_state.conns
+                    _SU_state.conns.friendConn, _SU_state.conns.spinConn, _SU_state.conns.ppConn, _SU_state.conns
                     .pp2Conn,
-                    _TL_state.conns.kissConn, _TL_state.conns.bpConn, _TL_state.conns.lickingConn, _TL_state.conns
+                    _SU_state.conns.kissConn, _SU_state.conns.bpConn, _SU_state.conns.lickingConn, _SU_state.conns
                     .suckingConn,
-                    _TL_state.conns.facefuckConn, _TL_state.conns.backshotsConn, _TL_state.conns.psConn, _TL_state.conns
+                    _SU_state.conns.facefuckConn, _SU_state.conns.backshotsConn, _SU_state.conns.psConn, _SU_state.conns
                     .hugConn,
-                    _TL_state.conns.carryConn, _TL_state.conns.ssConn, _TL_state.conns.qa74Conn, _TL_state.conns
+                    _SU_state.conns.carryConn, _SU_state.conns.ssConn, _SU_state.conns.qa74Conn, _SU_state.conns
                     .orbitConn,
-                    _TL_state.conns.ghostConn, _TL_state.conns.bbConn, _TL_state.conns.bbRespConn, _TL_state.conns
+                    _SU_state.conns.ghostConn, _SU_state.conns.bbConn, _SU_state.conns.bbRespConn, _SU_state.conns
                     .bbRemConn,
-                    _TL_state.conns.bbAnimConn_, _TL_state.conns.bbAnimConn2_, _TL_state.conns.bbAnimConn3_,
-                    _TL_state.conns.bbAnimConn4_, _TL_state.conns.bbAnimConn5_, _TL_state.conns.bbAnimConn6_, _TL_state
+                    _SU_state.conns.bbAnimConn_, _SU_state.conns.bbAnimConn2_, _SU_state.conns.bbAnimConn3_,
+                    _SU_state.conns.bbAnimConn4_, _SU_state.conns.bbAnimConn5_, _SU_state.conns.bbAnimConn6_, _SU_state
                     .conns.bbAnimConn7_,
-                    _TL_state.conns.bbAnimConn8_, _TL_state.conns.bbAnimConn9_, _TL_state.conns.bbAnimConn10_, _TL_state
+                    _SU_state.conns.bbAnimConn8_, _SU_state.conns.bbAnimConn9_, _SU_state.conns.bbAnimConn10_, _SU_state
                     .conns.bbHealthConn_,
-                    _TL_state.conns.bbRespAnimConn_,
-                    _TL_state.conns.invisHeartConn, _TL_state.conns.invisRenderConn, _TL_state.conns.invisSteppedConn,
-                    _TL_state.conns.orbitTargetRespConn, _TL_state.conns.ghostRespConn,
-                    _TL_state.conns.ppCharConn, _TL_state.conns.pp2CharConn, _TL_state.conns.kissCharConn, _TL_state
+                    _SU_state.conns.bbRespAnimConn_,
+                    _SU_state.conns.invisHeartConn, _SU_state.conns.invisRenderConn, _SU_state.conns.invisSteppedConn,
+                    _SU_state.conns.orbitTargetRespConn, _SU_state.conns.ghostRespConn,
+                    _SU_state.conns.ppCharConn, _SU_state.conns.pp2CharConn, _SU_state.conns.kissCharConn, _SU_state
                     .conns.bpCharConn,
-                    _TL_state.conns.lickingCharConn, _TL_state.conns.suckItCharConn, _TL_state.conns.suckingCharConn,
-                    _TL_state.conns.facefuckCharConn, _TL_state.conns.backshotsCharConn, _TL_state.conns.layFuckCharConn,
-                    _TL_state.conns.psCharConn, _TL_state.conns.hugCharConn, _TL_state.conns.hug2CharConn, _TL_state
+                    _SU_state.conns.lickingCharConn, _SU_state.conns.suckItCharConn, _SU_state.conns.suckingCharConn,
+                    _SU_state.conns.facefuckCharConn, _SU_state.conns.backshotsCharConn, _SU_state.conns.layFuckCharConn,
+                    _SU_state.conns.psCharConn, _SU_state.conns.hugCharConn, _SU_state.conns.hug2CharConn, _SU_state
                     .conns.carryCharConn,
-                    _TL_state.conns.ssCharConn, _TL_state.conns.qa74CharConn, _TL_state.conns.avCharConn, _TL_state
+                    _SU_state.conns.ssCharConn, _SU_state.conns.qa74CharConn, _SU_state.conns.avCharConn, _SU_state
                     .conns._ui_charConn_,
-                    _TL_state.conns.cursorSyncConn, _TL_state.conns.fxConn, _TL_state.conns.antiRagdollConnection,
-                    _TL_state.conns.tfConn, _TL_state.conns.AimbotConnection, _TL_state.conns.TriggerBotConnection,
-                    _TL_state.conns._ctHoverConn, _qb_ref.qaNoSitConn, _qb_ref.qaNoSitSeatedConn,
-                    _qb_ref.qaRespawnConn, _qb_ref.qaTargetRespawnConn, _qb_ref.qaTargetWatchConn, _TL_state.conns
+                    _SU_state.conns.cursorSyncConn, _SU_state.conns.fxConn, _SU_state.conns.antiRagdollConnection,
+                    _SU_state.conns.tfConn, _SU_state.conns.AimbotConnection, _SU_state.conns.TriggerBotConnection,
+                    _SU_state.conns._ctHoverConn, _qb_ref.qaNoSitConn, _qb_ref.qaNoSitSeatedConn,
+                    _qb_ref.qaRespawnConn, _qb_ref.qaTargetRespawnConn, _qb_ref.qaTargetWatchConn, _SU_state.conns
                     ._dhAimConn,
-                    _TL_state.conns._dhPickConn, _TL_state.conns._dhFlyConn, _TL_state.conns._dhNoclipConn,
-                    _TL_state.conns._mm2FlyConn, _TL_state.conns._mm2NoclipConn,
+                    _SU_state.conns._dhPickConn, _SU_state.conns._dhFlyConn, _SU_state.conns._dhNoclipConn,
+                    _SU_state.conns._mm2FlyConn, _SU_state.conns._mm2NoclipConn,
                 }
                 for _, c in ipairs(_conns) do
                     if c then pcall(function() c:Disconnect() end) end
                 end
-                _TL_state.conns.bbAnimConn_     = nil; _TL_state.conns.bbAnimConn2_ = nil; _TL_state.conns.bbAnimConn3_ = nil
-                _TL_state.conns.bbAnimConn4_    = nil; _TL_state.conns.bbAnimConn5_ = nil; _TL_state.conns.bbAnimConn6_ = nil
-                _TL_state.conns.bbAnimConn7_    = nil; _TL_state.conns.bbAnimConn8_ = nil; _TL_state.conns.bbAnimConn9_ = nil
-                _TL_state.conns.bbAnimConn10_   = nil; _TL_state.conns.bbHealthConn_ = nil; _TL_state.conns.bbRespAnimConn_ = nil
+                _SU_state.conns.bbAnimConn_     = nil; _SU_state.conns.bbAnimConn2_ = nil; _SU_state.conns.bbAnimConn3_ = nil
+                _SU_state.conns.bbAnimConn4_    = nil; _SU_state.conns.bbAnimConn5_ = nil; _SU_state.conns.bbAnimConn6_ = nil
+                _SU_state.conns.bbAnimConn7_    = nil; _SU_state.conns.bbAnimConn8_ = nil; _SU_state.conns.bbAnimConn9_ = nil
+                _SU_state.conns.bbAnimConn10_   = nil; _SU_state.conns.bbHealthConn_ = nil; _SU_state.conns.bbRespAnimConn_ = nil
                 pcall(function()
-                    _TL_state.fly.active = false
+                    _SU_state.fly.active = false
                     _flyMuteSounds(false)
                     if _invisHL and _invisHL.Parent then
                         _invisHL:Destroy(); _invisHL = nil
@@ -25391,7 +25397,7 @@ local function _TL_showLoadingScreen()
                 end)
                 pcall(function()
                     if getgenv then
-                        _genv._TL_AntiVoidStop    = nil
+                        _genv._SU_AntiVoidStop    = nil
                         _genv.SUMenuCleanup       = nil
                         _genv.TLUnload            = nil
                         _genv.SmartBarLoaded      = nil
@@ -25403,10 +25409,10 @@ local function _TL_showLoadingScreen()
             end
             pcall(function()
                 local env = _genv
-                env.SUMenuCleanup = _TL_refs.SUMenuCleanup
-                env.TLUnload = _TL_refs.SUMenuCleanup
+                env.SUMenuCleanup = _SU_refs.SUMenuCleanup
+                env.TLUnload = _SU_refs.SUMenuCleanup
             end)
-            _G.SUMenuCleanup = _TL_refs.SUMenuCleanup
+            _G.SUMenuCleanup = _SU_refs.SUMenuCleanup
             end)() 
     end, _handleError)
 end)

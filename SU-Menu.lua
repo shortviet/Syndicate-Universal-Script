@@ -1145,7 +1145,7 @@ task.spawn(function()
         
         
         
-        local _TL_MODULES_BASE = "https://raw.githubusercontent.com/SUMenu/SUMenuParts/main/"
+        local _TL_MODULES_BASE = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/"
         local _TL_MODULES = {}
         rawset(_genv, "_TL_MODULES", _TL_MODULES)
 
@@ -4250,7 +4250,7 @@ sendNotif = function(title, text, dur, accentOverride)
                 }
                 task.spawn(function()
                     local ok, src = pcall(function()
-                        return (game :: any):HttpGet("https://raw.githubusercontent.com/SUMenu/SUMenuParts/refs/heads/main/SU-ROLE-DETECTOR.lua")
+                        return (game :: any):HttpGet("https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/refs/heads/main/SU-ROLE-DETECTOR.lua")
                     end)
                     if ok and src and #src > 50 then
                         src = src:gsub('ROBLOX_STAFF%s*=%s*true', 'ROBLOX_STAFF = false')

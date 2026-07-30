@@ -56,8 +56,8 @@ local nametagImageFileName = "assets/SU-ROLE-PICS/nametag-image.png"
 local ownerProfilePicUrl      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/SU-owner.png"
 local ownerProfilePicFileName = "assets/SU-ROLE-PICS/SU-owner.png"
 
-local userProfilePicUrl      = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SUUSER-ROLE.png"
-local userProfilePicFileName = "assets/ROLE-ICONS/SUUSER-ROLE.png"
+local userProfilePicUrl      = "" -- Removed: TL logo replaced by Roblox avatars + initials fallback
+local userProfilePicFileName = "" -- Removed: TL logo replaced by Roblox avatars + initials fallback
 
 local customUserAvatars = {
     ["usxirr"] = {
@@ -100,23 +100,23 @@ local theBoysBgFileName          = "assets/THEMES/THEBOYS/Theme-TheBoys2.jpg"
 local theBoysMusicUrl            = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/TL%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
 local theBoysMusicFileName       = "assets/SU-MP3-FILES/Theme-TheBoys-Music.mp3"
 
-local comTabIconUrl              = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Com-Icon.png"
-local comTabIconFileName         = "assets/TL-DEFAULT/Com-Icon.png"
+local comTabIconUrl              = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Com-Icon.png"
+local comTabIconFileName         = "assets/SU-Icons/Com-Icon.png"
 
-local homeTabIconUrl             = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/HomeTab-Icon.png"
-local homeTabIconFileName        = "assets/TL-DEFAULT/HomeTab-Icon.png"
+local homeTabIconUrl             = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/HomeTab-Icon.png"
+local homeTabIconFileName        = "assets/SU-Icons/HomeTab-Icon.png"
 
-local characterTabIconUrl        = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Character-Icon.png"
-local characterTabIconFileName   = "assets/TL-DEFAULT/Character-Icon.png"
+local characterTabIconUrl        = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Character-Icon.png"
+local characterTabIconFileName   = "assets/SU-Icons/Character-Icon.png"
 
-local scriptsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Scripts-Icon.png"
-local scriptsTabIconFileName     = "assets/TL-DEFAULT/Scripts-Icon.png"
+local scriptsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Scripts-Icon.png"
+local scriptsTabIconFileName     = "assets/SU-Icons/Scripts-Icon.png"
 
-local actionsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/ActionTab-Icon.png"
-local actionsTabIconFileName     = "assets/TL-DEFAULT/ActionTab-Icon.png"
+local actionsTabIconUrl          = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/ActionTab-Icon.png"
+local actionsTabIconFileName     = "assets/SU-Icons/ActionTab-Icon.png"
 
-local playerlistTabIconUrl       = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Playerlist-Icon.png"
-local playerlistTabIconFileName  = "assets/TL-DEFAULT/Playerlist-Icon.png"
+local playerlistTabIconUrl       = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Playerlist-Icon.png"
+local playerlistTabIconFileName  = "assets/SU-Icons/Playerlist-Icon.png"
 
 local deathNoteHomeIconUrl         = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Icon.png"
 local deathNoteHomeIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Icon.png"
@@ -158,6 +158,9 @@ local dexterPlayerlistIconFileName  = "assets/THEMES/DEXTER/Theme-Dexter-Playerl
 
 local loadingScreenVoiceUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU-MP3/SUMenuLoadingScreen.mp3"
 local loadingScreenVoiceFileName = "assets/SU-MP3-FILES/SUMenuLoadingScreen.mp3"
+
+local aubreyTagUrl      = "https://github.com/shortviet/Syndicate-Universal-Parts/raw/main/SU-MP3/hi-aubrey-omori-tag.wav"
+local aubreyTagFileName = "assets/SU-MP3-FILES/hi-aubrey-omori-tag.wav"
 
 local _SU_assetLoader = {
     started = false,
@@ -296,7 +299,7 @@ task.spawn(function()
     pcall(function()
         if not _SU_safeIsFolder("assets/SU-MP3-FILES") then _SU_safeMakeFolder("assets/SU-MP3-FILES") end
         if not _SU_safeIsFolder("assets/SU-ROLE-PICS") then _SU_safeMakeFolder("assets/SU-ROLE-PICS") end
-        if not _SU_safeIsFolder("assets/TL-DEFAULT") then _SU_safeMakeFolder("assets/TL-DEFAULT") end
+        if not _SU_safeIsFolder("assets/SU-Icons") then _SU_safeMakeFolder("assets/SU-Icons") end
         if not _SU_safeIsFolder("assets/ROLE-ICONS") then _SU_safeMakeFolder("assets/ROLE-ICONS") end
         if not _SU_safeIsFolder("assets/THEMES") then _SU_safeMakeFolder("assets/THEMES") end
         if not _SU_safeIsFolder("assets/THEMES/DRAGONBALL") then _SU_safeMakeFolder("assets/THEMES/DRAGONBALL") end
@@ -304,6 +307,7 @@ task.spawn(function()
         if not _SU_safeIsFolder("assets/THEMES/THEBOYS") then _SU_safeMakeFolder("assets/THEMES/THEBOYS") end
         if not _SU_safeIsFolder("assets/THEMES/DEATHNOTE") then _SU_safeMakeFolder("assets/THEMES/DEATHNOTE") end
         if not _SU_safeIsFolder("assets/THEMES/DEXTER") then _SU_safeMakeFolder("assets/THEMES/DEXTER") end
+        if not _SU_safeIsFolder("assets/SU-Icons") then _SU_safeMakeFolder("assets/SU-Icons") end
     end)
 
     
@@ -312,11 +316,11 @@ task.spawn(function()
     local assets = {
         
         { name = "SUMenu Loading Screen",  url = loadingScreenVoiceUrl,        file = loadingScreenVoiceFileName,        kind = "audio", priority = 1 },
+        { name = "Hi Aubrey Tag Sound",     url = aubreyTagUrl,                file = aubreyTagFileName,                kind = "audio", priority = 1 },
         { name = "SU Owner Profile Picture",   url = ownerProfilePicUrl,           file = ownerProfilePicFileName,           kind = "image", priority = 1 },
-        { name = "SU User Profile Picture",    url = userProfilePicUrl,            file = userProfilePicFileName,            kind = "image", priority = 1 },
         { name = "usxirr Custom Avatar",       url = customUserAvatars["usxirr"].url, file = customUserAvatars["usxirr"].file, kind = "image", priority = 1 },
         { name = "Abxsent0 Custom Avatar",     url = customUserAvatars["Abxsent0"].url, file = customUserAvatars["Abxsent0"].file, kind = "image", priority = 1 },
-        { name = "SU Staff Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png", kind = "image", priority = 1 },
+        { name = "SU Staff Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-STAFF.png", file = "assets/ROLE-ICONS/SU-STAFF.png", kind = "image", priority = 1 },
         { name = "SU Arda Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/SU-Arda.png", file = "assets/SU-ROLE-PICS/SU-Arda.png", kind = "image", priority = 1 },
         { name = "SU Sec Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/SU-Sec.png", file = "assets/SU-ROLE-PICS/SU-Sec.png", kind = "image", priority = 1 },
         { name = "SU Sleepy Avatar", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Script/refs/heads/main/NAMETAG-PROFILEPICTURES/SU-Sleepy.jpg", file = "assets/SU-ROLE-PICS/SU-Sleepy.jpg", kind = "image", priority = 1 },
@@ -327,41 +331,42 @@ task.spawn(function()
         { name = "Scripts Tab Icon",           url = scriptsTabIconUrl,            file = scriptsTabIconFileName,            kind = "image", priority = 1 },
         { name = "Actions Tab Icon",           url = actionsTabIconUrl,            file = actionsTabIconFileName,            kind = "image", priority = 1 },
         { name = "Playerlist Tab Icon",        url = playerlistTabIconUrl,         file = playerlistTabIconFileName,         kind = "image", priority = 1 },
-        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL-DEFAULT/TL_Unmuted.png", kind = "image", priority = 1 },
-        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL-DEFAULT/TL_Muted.png",   kind = "image", priority = 1 },
+        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/ANTIVCBAN-Unmuted-Icon.png", file = "assets/SU-Icons/TL_Unmuted.png", kind = "image", priority = 1 },
+        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/ANTIVCBAN-Mute-Icon.png",    file = "assets/SU-Icons/TL_Muted.png",   kind = "image", priority = 1 },
 
-        { name = "SU Default Emote Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Emote-Icon.png",          file = "assets/TL-DEFAULT/Emote-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Music Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Music-Icon.png",          file = "assets/TL-DEFAULT/Music-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Visual Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Visual-Icon.png",          file = "assets/TL-DEFAULT/Visual-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Visual2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Visual2-Icon.png",         file = "assets/TL-DEFAULT/Visual2-Icon.png",         kind = "image", priority = 2 },
-        { name = "SU Default Movement Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Movement-Icon.png",        file = "assets/TL-DEFAULT/Movement-Icon.png",        kind = "image", priority = 2 },
-        { name = "SU Default Misc Icon",       url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Misc-Icon.png",            file = "assets/TL-DEFAULT/Misc-Icon.png",            kind = "image", priority = 2 },
-        { name = "SU Default Colors Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Colors-Icon.png",          file = "assets/TL-DEFAULT/Colors-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Theme Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Theme-Icon.png",           file = "assets/TL-DEFAULT/Theme-Icon.png",           kind = "image", priority = 2 },
-        { name = "SU Default Themes Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Themes-Icon.png",          file = "assets/TL-DEFAULT/Themes-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Keybind Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Keybind-Icon.png",         file = "assets/TL-DEFAULT/Keybind-Icon.png",         kind = "image", priority = 2 },
-        { name = "SU Default Cursor Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Cursor-Icon.png",          file = "assets/TL-DEFAULT/Cursor-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default CustomCursor Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/CustomCursor-Icon%20(2).png", file = "assets/TL-DEFAULT/CustomCursor-Icon.png", kind = "image", priority = 2 },
-        { name = "SU Default Search Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Search-Icon.png",          file = "assets/TL-DEFAULT/Search-Icon.png",          kind = "image", priority = 2 },
-        { name = "SU Default Search2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Search2-Icon.png",         file = "assets/TL-DEFAULT/Search2-Icon.png",         kind = "image", priority = 2 },
-        { name = "SU Default Minimize Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/Minimize-Icon.png",        file = "assets/TL-DEFAULT/Minimize-Icon.png",        kind = "image", priority = 2 },
-        { name = "SU Default MusicPlay Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicPlay-Icon.png",       file = "assets/TL-DEFAULT/MusicPlay-Icon.png",       kind = "image", priority = 2 },
-        { name = "SU Default MusicPause Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicPause-Icon.png",      file = "assets/TL-DEFAULT/MusicPause-Icon.png",      kind = "image", priority = 2 },
-        { name = "SU Default MusicBack Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicBack-Icon.png",       file = "assets/TL-DEFAULT/MusicBack-Icon.png",       kind = "image", priority = 2 },
-        { name = "SU Default MusicSkip Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/MusicSkip-Icon.png",       file = "assets/TL-DEFAULT/MusicSkip-Icon.png",       kind = "image", priority = 2 },
-        { name = "SU Default PING-WLAN Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/PING-WLAN-Icon.png",       file = "assets/TL-DEFAULT/PING-WLAN-Icon.png",       kind = "image", priority = 2 },
-        { name = "SU Default PunchFling Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/PunchFling-Icon.png",      file = "assets/TL-DEFAULT/PunchFling-Icon.png",      kind = "image", priority = 2 },
-        { name = "SU Default TLMagnifier Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TLMagnifier-Tool-Icon.png", file = "assets/TL-DEFAULT/TLMagnifier-Tool-Icon.png", kind = "image", priority = 2 },
-        { name = "SU Default SU-Icon",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/SU-Icon.png",              file = "assets/TL-DEFAULT/SU-Icon.png",              kind = "image", priority = 2 },
-        { name = "SU Default SUIcon",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/SUIcon.png",               file = "assets/TL-DEFAULT/SUIcon.png",               kind = "image", priority = 2 },
-        { name = "SU Default TL-ProfileIcon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TL-ProfileIcon.png",       file = "assets/TL-DEFAULT/TL-ProfileIcon.png",       kind = "image", priority = 2 },
-        { name = "SU Default TLOpenBars",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TLOpenBars-Button.png",     file = "assets/TL-DEFAULT/TLOpenBars-Button.png",    kind = "image", priority = 2 },
-        { name = "SU Default TLOpenedBars",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/TLOpenedBars-Button.png",    file = "assets/TL-DEFAULT/TLOpenedBars-Button.png",  kind = "image", priority = 2 },
-        { name = "SU Default QA Hug",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Hug-Icon.png",       file = "assets/TL-DEFAULT/QuickAction-Hug-Icon.png",       kind = "image", priority = 2 },
-        { name = "SU Default QA Kiss",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Kiss-Icon.png",      file = "assets/TL-DEFAULT/QuickAction-Kiss-Icon.png",      kind = "image", priority = 2 },
-        { name = "SU Default QA Slap",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Slap-Icon.png",      file = "assets/TL-DEFAULT/QuickAction-Slap-Icon.png",      kind = "image", priority = 2 },
-        { name = "SU Default QA Headbutt",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Headbutt-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Headbutt-Icon.png", kind = "image", priority = 2 },
-        { name = "SU Default QA Backshots",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/TL-DEFAULT/QuickAction%20Backshots-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Backshots-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default Emote Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Emote-Icon.png",          file = "assets/SU-Icons/Emote-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Music Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Music-Icon.png",          file = "assets/SU-Icons/Music-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Visual Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Visual-Icon.png",          file = "assets/SU-Icons/Visual-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Visual2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Visual2-Icon.png",         file = "assets/SU-Icons/Visual2-Icon.png",         kind = "image", priority = 2 },
+        { name = "SU Default Movement Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Movement-Icon.png",        file = "assets/SU-Icons/Movement-Icon.png",        kind = "image", priority = 2 },
+        { name = "SU Default Misc Icon",       url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Misc-Icon.png",            file = "assets/SU-Icons/Misc-Icon.png",            kind = "image", priority = 2 },
+        { name = "SU Default Colors Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Colors-Icon.png",          file = "assets/SU-Icons/Colors-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Theme Icon",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Theme-Icon.png",           file = "assets/SU-Icons/Theme-Icon.png",           kind = "image", priority = 2 },
+        { name = "SU Default Themes Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Themes-Icon.png",          file = "assets/SU-Icons/Themes-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Keybind Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Keybind-Icon.png",         file = "assets/SU-Icons/Keybind-Icon.png",         kind = "image", priority = 2 },
+        { name = "SU Default Cursor Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Cursor-Icon.png",          file = "assets/SU-Icons/Cursor-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default CustomCursor Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/CustomCursor-Icon%20(2).png", file = "assets/SU-Icons/CustomCursor-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default Search Icon",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Search-Icon.png",          file = "assets/SU-Icons/Search-Icon.png",          kind = "image", priority = 2 },
+        { name = "SU Default Search2 Icon",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Search2-Icon.png",         file = "assets/SU-Icons/Search2-Icon.png",         kind = "image", priority = 2 },
+        { name = "SU Default Minimize Icon",   url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Minimize-Icon.png",        file = "assets/SU-Icons/Minimize-Icon.png",        kind = "image", priority = 2 },
+        { name = "SU Default MusicPlay Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicPlay-Icon.png",       file = "assets/SU-Icons/MusicPlay-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default MusicPause Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicPause-Icon.png",      file = "assets/SU-Icons/MusicPause-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default MusicBack Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicBack-Icon.png",       file = "assets/SU-Icons/MusicBack-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default MusicSkip Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/MusicSkip-Icon.png",       file = "assets/SU-Icons/MusicSkip-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default PING-WLAN Icon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/PING-WLAN-Icon.png",       file = "assets/SU-Icons/PING-WLAN-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default PunchFling Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/PunchFling-Icon.png",      file = "assets/SU-Icons/PunchFling-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default TLMagnifier Icon", url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/TLMagnifier-Tool-Icon.png", file = "assets/SU-Icons/TLMagnifier-Tool-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default SU-Icon",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SU-Icon.png",              file = "assets/SU-Icons/SU-Icon.png",              kind = "image", priority = 2 },
+        { name = "SU Default SUIcon",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/SUIcon.png",               file = "assets/SU-Icons/SUIcon.png",               kind = "image", priority = 2 },
+        { name = "SU Default TL-ProfileIcon",  url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/TL-ProfileIcon.png",       file = "assets/SU-Icons/TL-ProfileIcon.png",       kind = "image", priority = 2 },
+        { name = "SU Default TLOpenBars",      url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/TLOpenBars-Button.png",     file = "assets/SU-Icons/TLOpenBars-Button.png",    kind = "image", priority = 2 },
+        { name = "SU Default TLOpenedBars",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/TLOpenedBars-Button.png",    file = "assets/SU-Icons/TLOpenedBars-Button.png",  kind = "image", priority = 2 },
+        { name = "SU Default QA Hug",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Hug-Icon.png",       file = "assets/SU-Icons/QuickAction-Hug-Icon.png",       kind = "image", priority = 2 },
+        { name = "SU Default QA Kiss",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Kiss-Icon.png",      file = "assets/SU-Icons/QuickAction-Kiss-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default QA Slap",         url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Slap-Icon.png",      file = "assets/SU-Icons/QuickAction-Slap-Icon.png",      kind = "image", priority = 2 },
+        { name = "SU Default QA Headbutt",     url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Headbutt-Icon.png", file = "assets/SU-Icons/QuickAction-Headbutt-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Default QA Backshots",    url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/QuickAction%20Backshots-Icon.png", file = "assets/SU-Icons/QuickAction-Backshots-Icon.png", kind = "image", priority = 2 },
+        { name = "SU Syndicate Logo",          url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/SU-Icons/Syndicate-App-Logo-Main.png", file = "assets/SU-Icons/Syndicate-App-Logo-Main.png", kind = "image", priority = 1 },
         { name = "Admin Join Audio",           url = adminAudioUrl,                file = adminAudioFileName,                kind = "audio", priority = 1 },
         
         { name = "The Boys Scripts Icon",      url = theBoysScriptsIconUrl,        file = theBoysScriptsIconFileName,        kind = "image", priority = 2 },
@@ -933,8 +938,7 @@ task.spawn(function()
 
         task.spawn(function()
             local assets = {
-                "rbxassetid://139800881181209", 
-                "rbxassetid://77458828386203",  
+                "rbxassetid://139800881181209",  
                 "rbxassetid://72579312094126",  
                 "rbxassetid://86857269527024",
                 "rbxassetid://139840976938907",
@@ -2918,7 +2922,6 @@ keybinds, keybindMainConn = {}, nil
                     if gpe then return end
                     if isConfiguringKeybind then return end
                     if lastConfiguredKey and input.KeyCode == lastConfiguredKey and tick() - lastConfiguredTime < 0.5 then return end
-                    if input.KeyCode == Enum.KeyCode.K then return end
                     for actionName, data in pairs(keybinds) do
                         if data.key and input.KeyCode == data.key and data.callback then
                             data.callback()
@@ -2947,6 +2950,46 @@ keybinds, keybindMainConn = {}, nil
                 removeNametag  = false, 
                 antiVcBan      = false,
             }
+
+            -- ═══════════════════════════════════════════════════════════════
+            -- NametagSystem v2: Load and initialize the new module
+            -- This sets _G.SU_Nametag so the bridge delegates work
+            -- ═══════════════════════════════════════════════════════════════
+            pcall(function()
+                local _NT_modPath = 'Tab-Moduls/NametagSystem.lua'
+                local _NT_ok, _NT_raw = pcall(function()
+                    if type(readfile) == 'function' and type(isfile) == 'function' and isfile(_NT_modPath) then
+                        return readfile(_NT_modPath)
+                    end
+                    return nil
+                end)
+                if not _NT_ok or not _NT_raw or #_NT_raw <= 100 then
+                    warn('[SU] NametagSystem v2: File not found or empty at ' .. _NT_modPath .. ' — old code path will be used')
+                elseif _NT_ok and _NT_raw and #_NT_raw > 100 then
+                    local _NT_fn, _NT_err = loadstring(_NT_raw)
+                    if not _NT_fn then
+                        warn('[SU] NametagSystem v2: loadstring error: ' .. tostring(_NT_err))
+                    else
+                        local _NT_mod = _NT_fn()
+                        if not _NT_mod or type(_NT_mod.Init) ~= 'function' then
+                            warn('[SU] NametagSystem v2: Module returned nil or no Init function')
+                        else
+                            _NT_mod.Init({
+                                game = game,
+                                LocalPlayer = LocalPlayer,
+                                AdminNames = AdminNames,
+                                NameOverrides = NameOverrides,
+                                settingsState = settingsState,
+                            })
+                            if _G.SU_Nametag then
+                                warn('[SU] NametagSystem v2: Loaded successfully! _G.SU_Nametag is set.')
+                            else
+                                warn('[SU] NametagSystem v2: Init ran but _G.SU_Nametag is still nil!')
+                            end
+                        end
+                    end
+                end
+            end)
 
             
             
@@ -4681,7 +4724,7 @@ makePanel("Home", C.accent)
 
                 _u.verLbl = Instance.new("TextLabel", _u.verF)
                 _u.verLbl.Size = UDim2.new(1, 0, 1, 0); _u.verLbl.BackgroundTransparency = 1
-                _u.verLbl.Text = "SUMenu"; _u.verLbl.Font = Enum.Font.GothamBlack; _u.verLbl.TextSize = 12
+                _u.verLbl.Text = "SYNDICATE"; _u.verLbl.Font = Enum.Font.GothamBlack; _u.verLbl.TextSize = 12
                 _u.verLbl.TextColor3 = C.accent; _u.verLbl.TextXAlignment = Enum.TextXAlignment.Center
 
                 Y = Y + PROF_CARD_H + 12
@@ -14933,7 +14976,7 @@ local _ok_Settings, _err_Settings = pcall(function()
                     kbContainer.BorderSizePixel = 0
                     local keybindEntries = {
                         { "Toggle SmartBar", Enum.KeyCode.K, function()
-                            if isOpen then closeBar() else openBar() end
+                            if _SU_refs._SU_tabCardsHolder and _SU_refs._SU_tabCardsHolder.Visible then closeBar() else openBar() end
                         end },
                         { "Toggle Fly", Enum.KeyCode.F, function()
                             local newState = not flyActive
@@ -14947,6 +14990,8 @@ local _ok_Settings, _err_Settings = pcall(function()
                         { "Toggle Noclip", nil, function()
                             noclipActive = not noclipActive
                             setNoclip(noclipActive)
+                            sendNotif("Noclip", noclipActive and "Noclip ACTIVATED" or "Noclip DEACTIVATED", noclipActive and 3 or 2)
+                            pcall(function() if _sc._playClickSound then _sc._playClickSound() end end)
                         end },
                         { "Toggle ESP", nil, function()
                             local anyActive = espMod and espMod.isActive() or false
@@ -15513,11 +15558,21 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = "rbxassetid://110896600564086"
+                                    logo.Image = ""
+                                    do local s = _SU_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+                                        if s then logo.Image = s end end
+                                    task.spawn(function()
+                                        if not _SU_assetLoader then return end
+                                        while not _SU_assetLoader.ready do task.wait(0.5) end
+                                        task.wait(1)
+                                        local synLogo = _SU_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+                                        if synLogo then logo.Image = synLogo end
+                                    end)
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
                                     logo.Parent = container
+
 
                                     local title = Instance.new("TextLabel")
                                     title.Size = UDim2.new(1, 0, 0, 60)
@@ -15871,7 +15926,16 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = "rbxassetid://73800014230419"
+                                    logo.Image = ""
+do local s = _SU_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+    if s then logo.Image = s end end
+task.spawn(function()
+    if not _SU_assetLoader then return end
+    while not _SU_assetLoader.ready do task.wait(0.5) end
+    task.wait(1)
+    local synLogo = _SU_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+    if synLogo then logo.Image = synLogo end
+end)
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -16244,7 +16308,16 @@ local themePage = Instance.new("Frame", subArea)
                                     logo.Size = UDim2.new(0, 120, 0, 120)
                                     logo.Position = UDim2.new(0.5, -60, 0, 10)
                                     logo.BackgroundTransparency = 1
-                                    logo.Image = "rbxassetid://123326309117495"
+                                    logo.Image = ""
+do local s = _SU_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+    if s then logo.Image = s end end
+task.spawn(function()
+    if not _SU_assetLoader then return end
+    while not _SU_assetLoader.ready do task.wait(0.5) end
+    task.wait(1)
+    local synLogo = _SU_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+    if synLogo then logo.Image = synLogo end
+end)
                                     logo.ScaleType = Enum.ScaleType.Fit
                                     logo.ImageTransparency = 1
                                     logo.ZIndex = 10
@@ -18348,16 +18421,16 @@ local themePage = Instance.new("Frame", subArea)
                     },
                     profilePictures = {
                         owner = { url = ownerProfilePicUrl, file = ownerProfilePicFileName },
-                        user = { url = userProfilePicUrl, file = userProfilePicFileName },
+                        user = { url = "", file = "" },
                         admin = { url = "", file = "" },
                         developer = { url = "", file = "" },
                         moderator = { url = "", file = "" },
-                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
+                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-STAFF.png", file = "assets/ROLE-ICONS/SU-STAFF.png" },
                         advertising = { url = "", file = "" },
                     },
                     customAvatars = {},
                     tagImages = {
-                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
+                        staff = { url = "https://raw.githubusercontent.com/shortviet/Syndicate-Universal-Parts/main/ROLE-ICONS/SU-STAFF.png", file = "assets/ROLE-ICONS/SU-STAFF.png" },
                     },
                     roleLabels = {},
                     displayNames = {},
@@ -19322,8 +19395,44 @@ local themePage = Instance.new("Frame", subArea)
                     end
                 end
 
+                -- ═══════════════════════════════════════════════════════════════
+                -- Roblox Avatar Fetch (built-in API, works in ALL executors)
+                -- Uses Players:GetUserThumbnailAsync instead of HTTP
+                -- ═══════════════════════════════════════════════════════════════
+                local _NT_avatarCache = {}
+
+                local function _NT_fetchAvatarSync(userId)
+                    userId = tonumber(userId)
+                    if not userId then return nil end
+                    if _NT_avatarCache[userId] then return _NT_avatarCache[userId] end
+                    -- Use task.spawn + pcall (GetUserThumbnailAsync yields, can't be called directly in pcall)
+                    task.spawn(function()
+                        pcall(function()
+                            local thumbUrl = Players:GetUserThumbnailAsync(
+                                userId,
+                                Enum.ThumbnailType.HeadShot,
+                                Enum.ThumbnailSize.Size100x100
+                            )
+                            if thumbUrl and thumbUrl ~= "" then
+                                _NT_avatarCache[userId] = thumbUrl
+                            end
+                        end)
+                    end)
+                    -- Poll cache up to 2 seconds
+                    local waited = 0
+                    while not _NT_avatarCache[userId] and waited < 2 do
+                        pcall(task.wait, 0.1)
+                        waited = waited + 0.1
+                    end
+                    return _NT_avatarCache[userId]
+                end
+
                 local creatingNametag = {}
                 local function CreateCustomNametag(character, playerName, isAdmin)
+                    -- Bridge: delegate to new NametagSystem v2 if available
+                    if _G.SU_Nametag and _G.SU_Nametag.CreateCustomNametag then
+                        return _G.SU_Nametag.CreateCustomNametag(character, playerName, isAdmin)
+                    end
                     if not character then return end
                     if creatingNametag[playerName] then return end
                     creatingNametag[playerName] = true
@@ -19342,7 +19451,7 @@ local themePage = Instance.new("Frame", subArea)
                         or (override and override.role or nil)
 
                     
-                    local roleLower    = (roleLabel or (isAdmin and "SU Admin" or "SU User")):lower()
+                    local roleLower    = (roleLabel or (isAdmin and "SYNDICATE ADMIN" or "SYNDICATE USER")):lower()
                     local displayLower = (override and override.display or ""):lower()
                     local themeKey     = "user"
 
@@ -19396,10 +19505,10 @@ local themePage = Instance.new("Frame", subArea)
                     
                     
                     if not roleLabel then
-                        local _NT_ROLE_DEFAULTS = { user="SU User", admin="SU Admin", owner="SU Owner", developer="SU Developer", advertising="SU Advertising", moderator="SU Moderator" }
+                        local _NT_ROLE_DEFAULTS = { user="SYNDICATE USER", admin="SYNDICATE ADMIN", owner="SYNDICATE OWNER", developer="SYNDICATE DEVELOPER", advertising="SYNDICATE ADVERTISING", moderator="SYNDICATE MODERATOR" }
                         roleLabel = (_NT_CONFIG.roleDisplayNames and _NT_CONFIG.roleDisplayNames[themeKey])
                             or _NT_ROLE_DEFAULTS[themeKey]
-                            or "SU User"
+                            or "SYNDICATE USER"
                     end
 
                     local theme = _NT_CONFIG.themes[themeKey] or _NT_DEFAULTS.themes.user
@@ -19561,13 +19670,24 @@ local themePage = Instance.new("Frame", subArea)
                         imgCorner.CornerRadius           = UDim.new(0, _NT_CONFIG.layout.innerCornerRadius)
                         imgCorner.Parent                 = imgLabel
                     elseif themeKey == "user" then
+                        -- Priority: custom avatar > Roblox avatar > Syndicate logo fallback
+                        local picUrl, _ = _NT_resolveProfilePic("user")
+                        if not picUrl and playerUserId then
+                            picUrl = _NT_fetchAvatarSync(playerUserId)
+                        end
+                        -- Always have a fallback: Syndicate logo (guaranteed to exist as asset)
+                        if not picUrl or picUrl == "" then
+                            local synAsset = _SU_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+                            if synAsset and synAsset ~= "" then
+                                picUrl = synAsset
+                            end
+                        end
                         local imgLabel                   = Instance.new("ImageLabel")
                         imgLabel.Size                    = UDim2.new(1, -avInset, 1, -avInset)
                         imgLabel.Position                = UDim2.new(0, avPad, 0, avPad)
                         imgLabel.BackgroundTransparency  = 1
-                        local picUrl, _ = _NT_resolveProfilePic("user")
-                        imgLabel.Image = picUrl or userProfilePicUrl
-                        imgLabel.ScaleType               = Enum.ScaleType.Fit
+                        imgLabel.Image = picUrl or ""
+                        imgLabel.ScaleType               = Enum.ScaleType.Crop
                         imgLabel.ZIndex                  = 3
                         imgLabel.Parent                  = avatar
                         local imgCorner                  = Instance.new("UICorner")
@@ -21647,6 +21767,10 @@ local function parseFieldMessage(fullText, prefixLen)
                 if LocalPlayer.Character then CreateCustomNametag(LocalPlayer.Character, LocalPlayer.Name, IsLocalAdmin) end
 
                 local function DoesPlayerQualifyForNametag(p)
+                    -- Bridge: delegate to new NametagSystem v2 if available
+                    if _G.SU_Nametag and _G.SU_Nametag.DoesPlayerQualifyForNametag then
+                        return _G.SU_Nametag.DoesPlayerQualifyForNametag(p)
+                    end
                     if not _NT_CONFIG.enabled then return false end
                     if not p then return false end
                     
@@ -22911,6 +23035,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     tabCardsHolder.Visible                = false
                     tabCardsHolder.ZIndex                 = 7
                     corner(tabCardsHolder, 12)
+                    _SU_refs._SU_tabCardsHolder = tabCardsHolder
 
                     local isOpen, activeTab, _closeTok = false, nil, 0
 
@@ -23532,12 +23657,7 @@ local function parseFieldMessage(fullText, prefixLen)
                             end
                         end)
                     end
-                    _tlTrackConn(UserInputService.InputBegan:Connect(function(input, gpe)
-                        if gpe then return end
-                        if input.KeyCode == Enum.KeyCode.K then
-                            if isOpen then closeBar() else openBar() end
-                        end
-                    end))
+                    -- K keybind is now handled by the keybind system via rebuildKeybindListener()
                     
                     
                     
@@ -23663,6 +23783,14 @@ local function parseFieldMessage(fullText, prefixLen)
                     scIcon.BackgroundTransparency = 1
                     scIcon.Image = "rbxassetid://6031068433"
                     scIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+
+                                    task.spawn(function()
+                                        if not _SU_assetLoader then return end
+                                        while not _SU_assetLoader.ready do task.wait(0.5) end
+                                        task.wait(1)
+                                        local synLogo = _SU_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+                                        if synLogo then scIcon.Image = synLogo end
+                                    end)
                     scIcon.Visible = false
                     scIcon.ZIndex = 22
                     local scSuIcon = Instance.new("TextLabel", smartCapsule)
@@ -24064,9 +24192,6 @@ local function _SU_showLoadingScreen()
                         local Players      = game:GetService("Players")
 
                         local LC = {
-                            bg           = Color3.fromRGB(  6,   6,  11),
-                            surface      = Color3.fromRGB( 18,  18,  24),
-                            border       = Color3.fromRGB( 32,  32,  40),
                             accent       = Color3.fromRGB(130,  90, 245),
                             accentDim    = Color3.fromRGB( 80,  50, 160),
                             accentBright = Color3.fromRGB(168, 126, 248),
@@ -24075,33 +24200,13 @@ local function _SU_showLoadingScreen()
                             textMuted    = Color3.fromRGB( 75,  75,  90),
                             white        = Color3.fromRGB(245, 245, 250),
                             green        = Color3.fromRGB(100, 210, 140),
-                            greenDim     = Color3.fromRGB( 55, 140,  90),
-                            nebula1      = Color3.fromRGB( 60,  30, 110),
-                            nebula2      = Color3.fromRGB( 25,  18,  70),
-                            indigo       = Color3.fromRGB( 35,  20,  80),
-                            deepPurple   = Color3.fromRGB( 18,  10,  42),
-                        }
-
-                        local LAYOUT = {
-                            imgSize       = 130,
-                            frameSize     = 150,
-                            frameRadius   = 20,
-                            barWidth      = 360,
-                            barHeight     = 3,
-                            duration      = 3.5,
-                            stepCount     = 5,
-                            gridSpacing   = 60,
-                            gridAlpha     = 0.06,
-                            dustCount     = 80,
-                            orbCount      = 25,
-                            bokehCount    = 8,
-                            streakCount   = 4,
-                            emberCount    = 18,
-                            sparkleCount  = 15,
+                            surface      = Color3.fromRGB( 18,  18,  24),
+                            border       = Color3.fromRGB( 32,  32,  40),
                         }
 
                         local SCREEN_NAME = "SU_LoadingScreen"
                         local MAX_WAIT    = 60
+                        local DURATION    = 3.5
 
                         pcall(function()
                             local old = game:GetService("CoreGui"):FindFirstChild(SCREEN_NAME)
@@ -24118,25 +24223,11 @@ local function _SU_showLoadingScreen()
                             return obj
                         end
                         local function addCorner(r, parent) return lmake("UICorner", {CornerRadius = UDim.new(0, r)}, parent) end
-                        local function addGradient(parent, cs, rot)
-                            local g = lmake("UIGradient", {Color = cs, Rotation = rot or 0}, parent)
-                            return g
-                        end
                         local function tw(obj, dur, props, style, dir)
                             local t = TweenService:Create(obj,
                                 TweenInfo.new(dur, style or Enum.EasingStyle.Quad, dir or Enum.EasingDirection.Out), props)
                             t:Play(); return t
                         end
-                        local function lerp(a, b, t2) return a + (b - a) * t2 end
-                        local function lerpColor(c1, c2, t2)
-                            return Color3.new(lerp(c1.R, c2.R, t2), lerp(c1.G, c2.G, t2), lerp(c1.B, c2.B, t2))
-                        end
-
-                        local rand = math.random
-                        local sin  = math.sin
-                        local cos  = math.cos
-                        local abs  = math.abs
-                        local pi2  = math.pi * 2
 
                         local gui = lmake("ScreenGui", {
                             Name = SCREEN_NAME, ResetOnSpawn = false,
@@ -24149,8 +24240,128 @@ local function _SU_showLoadingScreen()
                         end
                         if not gui.Parent then return end
 
-                        local screenSize = workspace.CurrentCamera.ViewportSize
-                        local SW, SH = screenSize.X, screenSize.Y
+                        local bgFrame = lmake("Frame", {
+                            Size = UDim2.new(1, 0, 1, 0),
+                            BackgroundColor3 = Color3.new(0, 0, 0),
+                            BackgroundTransparency = 0.55,
+                            BorderSizePixel = 0, ZIndex = 1,
+                        }, gui)
+
+                        local cardW, cardH = 320, 380
+                        local card = lmake("Frame", {
+                            Size = UDim2.new(0, cardW, 0, cardH),
+                            Position = UDim2.new(0.5, -cardW / 2, 0.5, -cardH / 2),
+                            BackgroundColor3 = Color3.fromRGB(14, 14, 20),
+                            BackgroundTransparency = 0.15,
+                            BorderSizePixel = 0, ZIndex = 10,
+                        }, gui)
+                        addCorner(18, card)
+                        lmake("UIStroke", {
+                            Color = LC.accent, Thickness = 1.5,
+                            Transparency = 0.55, ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+                        }, card)
+
+                        local glowFrame = lmake("Frame", {
+                            Size = UDim2.new(0, cardW + 30, 0, cardH + 30),
+                            Position = UDim2.new(0.5, -(cardW + 30) / 2, 0.5, -(cardH + 30) / 2),
+                            BackgroundColor3 = LC.accentDim,
+                            BackgroundTransparency = 0.88,
+                            BorderSizePixel = 0, ZIndex = 9,
+                        }, gui)
+                        addCorner(24, glowFrame)
+
+                        local logoSize = 100
+                        local logoFrame = lmake("Frame", {
+                            Size = UDim2.new(0, logoSize, 0, logoSize),
+                            Position = UDim2.new(0.5, -logoSize / 2, 0, 30),
+                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 11,
+                        }, card)
+
+                        local logoImage = lmake("ImageLabel", {
+                            Size = UDim2.new(1, 0, 1, 0),
+                            Position = UDim2.new(0, 0, 0, 0),
+                            BackgroundTransparency = 1, BorderSizePixel = 0,
+                            Image = "", ScaleType = Enum.ScaleType.Fit, ZIndex = 11,
+                        }, logoFrame)
+                        do local s = _SU_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+                            if s then logoImage.Image = s end end
+                        task.spawn(function()
+                            if not _SU_assetLoader then return end
+                            while not _SU_assetLoader.ready do task.wait(0.5) end
+                            local synLogo = _SU_safeGetCustomAsset("assets/SU-Icons/Syndicate-App-Logo-Main.png")
+                            if synLogo then logoImage.Image = synLogo end
+                        end)
+                        addCorner(14, logoImage)
+
+                        local titleLabel = lmake("TextLabel", {
+                            Size = UDim2.new(1, -30, 0, 32),
+                            Position = UDim2.new(0, 15, 0, 140),
+                            Text = "", TextColor3 = LC.accent, TextSize = 20,
+                            Font = Enum.Font.GothamBlack,
+                            BackgroundTransparency = 1, BorderSizePixel = 0,
+                            TextXAlignment = Enum.TextXAlignment.Center, ZIndex = 11,
+                        }, card)
+
+                        local TITLE_TEXT  = "Syndicate Universal"
+                        local titleChars  = {}
+                        for i = 1, #TITLE_TEXT do titleChars[i] = TITLE_TEXT:sub(i, i) end
+                        local titleStep   = 1
+                        local titleDelay  = 0.04
+
+                        lmake("TextLabel", {
+                            Size = UDim2.new(1, -30, 0, 16),
+                            Position = UDim2.new(0, 15, 0, 172),
+                            Text = "v1.03 \xc2\xb7 Loading", TextColor3 = LC.textMuted,
+                            TextSize = 11, Font = Enum.Font.GothamMedium,
+                            BackgroundTransparency = 1, BorderSizePixel = 0,
+                            TextXAlignment = Enum.TextXAlignment.Center, ZIndex = 11,
+                        }, card)
+
+                        local barW, barH = cardW - 50, 4
+                        local barTrack = lmake("Frame", {
+                            Size = UDim2.new(0, barW, 0, barH),
+                            Position = UDim2.new(0.5, -barW / 2, 0, 220),
+                            BackgroundColor3 = Color3.fromRGB(32, 28, 52),
+                            BorderSizePixel = 0, ZIndex = 11,
+                        }, card)
+                        addCorner(999, barTrack)
+
+                        local barFillClip = lmake("Frame", {
+                            Size = UDim2.new(0, 0, 1, 0), BackgroundTransparency = 1,
+                            BorderSizePixel = 0, ClipsDescendants = true, ZIndex = 12,
+                        }, barTrack)
+
+                        local barFill = lmake("Frame", {
+                            Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = LC.accent,
+                            BorderSizePixel = 0, ZIndex = 12,
+                        }, barFillClip)
+                        addCorner(999, barFill)
+
+                        local barPct = lmake("TextLabel", {
+                            Size = UDim2.new(1, 0, 0, 16),
+                            Position = UDim2.new(0, 0, 0, 232),
+                            Text = "0%", TextColor3 = LC.accent, TextSize = 12,
+                            Font = Enum.Font.GothamBold,
+                            BackgroundTransparency = 1, BorderSizePixel = 0,
+                            TextXAlignment = Enum.TextXAlignment.Center, ZIndex = 11,
+                        }, card)
+
+                        local STATUS_MESSAGES = {
+                            "Initializing engine core...",
+                            "Loading shader cache...",
+                            "Preparing asset pipeline...",
+                            "Compiling bytecode...",
+                            "Warming up render thread...",
+                            "Almost ready...",
+                        }
+                        local statusLabel = lmake("TextLabel", {
+                            Size = UDim2.new(1, -30, 0, 14),
+                            Position = UDim2.new(0, 15, 0, 260),
+                            Text = STATUS_MESSAGES[1], TextColor3 = LC.textMuted,
+                            TextSize = 10, Font = Enum.Font.GothamMedium,
+                            BackgroundTransparency = 1, BorderSizePixel = 0,
+                            TextXAlignment = Enum.TextXAlignment.Center, ZIndex = 11,
+                        }, card)
 
                         task.spawn(function()
                             pcall(function()
@@ -24161,6 +24372,28 @@ local function _SU_showLoadingScreen()
                                         task.wait(0.2); _vwait = _vwait + 0.2
                                     end
                                 end
+                                local aubreySnd = Instance.new("Sound")
+                                aubreySnd.Name = "Aubrey_Tag_Sound"; aubreySnd.Volume = 1.0
+                                aubreySnd.RollOffMaxDistance = 10000
+                                local aubreyCached = nil
+                                if _SU_safeIsFile(aubreyTagFileName) then
+                                    aubreyCached = _SU_safeGetCustomAsset(aubreyTagFileName)
+                                end
+                                if aubreyCached and gui and gui.Parent then
+                                    aubreySnd.SoundId = aubreyCached; aubreySnd.Parent = gui
+                                    task.wait(0.1)
+                                    if aubreySnd and aubreySnd.Parent then aubreySnd:Play() end
+                                end
+                                if aubreySnd and aubreySnd.Parent then
+                                    local _maxAubreyWait = 10
+                                    local _aElapsed = 0
+                                    while _aElapsed < _maxAubreyWait do
+                                        task.wait(0.5)
+                                        _aElapsed = _aElapsed + 0.5
+                                        if not gui or not gui.Parent then break end
+                                        if aubreySnd and not aubreySnd.Playing then break end
+                                    end
+                                end
                                 local snd = Instance.new("Sound")
                                 snd.Name = "SUMenu_VoiceLine"; snd.Volume = 1.0
                                 snd.RollOffMaxDistance = 10000
@@ -24168,7 +24401,7 @@ local function _SU_showLoadingScreen()
                                 if _SU_safeIsFile(loadingScreenVoiceFileName) then
                                     cached = _SU_safeGetCustomAsset(loadingScreenVoiceFileName)
                                 end
-                                if cached then
+                                if cached and gui and gui.Parent then
                                     snd.SoundId = cached; snd.Parent = gui
                                     task.wait(0.1)
                                     if snd and snd.Parent then snd:Play() end
@@ -24176,569 +24409,25 @@ local function _SU_showLoadingScreen()
                             end)
                         end)
 
-                        lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundColor3 = LC.bg,
-                            BorderSizePixel = 0, ZIndex = 1,
-                        }, gui)
-
-                        local gradFrame = lmake("Frame", {
-                            Size = UDim2.new(2.4,0,2.4,0), Position = UDim2.new(-0.7,0,-0.7,0),
-                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 2,
-                        }, gui)
-                        local bgGradient = addGradient(gradFrame, ColorSequence.new({
-                            ColorSequenceKeypoint.new(0,    Color3.fromRGB(65, 35, 120)),
-                            ColorSequenceKeypoint.new(0.18, Color3.fromRGB(40, 20,  85)),
-                            ColorSequenceKeypoint.new(0.38, Color3.fromRGB(20, 12,  50)),
-                            ColorSequenceKeypoint.new(0.58, LC.bg),
-                            ColorSequenceKeypoint.new(0.78, Color3.fromRGB(12,  8,  30)),
-                            ColorSequenceKeypoint.new(1,    LC.bg),
-                        }), -35)
-
-                        local fogHolder = lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
-                            BorderSizePixel = 0, ClipsDescendants = true, ZIndex = 3,
-                        }, gui)
-                        local fogBlobs = {}
-                        local fogConfigs = {
-                            { size = 700, color = Color3.fromRGB(70, 35, 130), alpha = 0.90, x = 0.15, y = 0.20, vx =  14, vy =  9  },
-                            { size = 550, color = Color3.fromRGB(30, 20,  80), alpha = 0.86, x = 0.80, y = 0.65, vx = -11, vy = -7  },
-                            { size = 400, color = Color3.fromRGB(90, 50, 160), alpha = 0.93, x = 0.50, y = 0.80, vx =   8, vy = -12 },
-                        }
-                        for i, cfg in ipairs(fogConfigs) do
-                            local blob = lmake("ImageLabel", {
-                                Size = UDim2.new(0, cfg.size, 0, cfg.size),
-                                Position = UDim2.new(cfg.x, -cfg.size/2, cfg.y, -cfg.size/2),
-                                BackgroundTransparency = 1, ImageColor3 = cfg.color,
-                                ImageTransparency = cfg.alpha, Image = "rbxasset://textures/whiteCircle512.png",
-                                BorderSizePixel = 0, ZIndex = 3,
-                            }, fogHolder)
-                            fogBlobs[i] = {
-                                obj = blob, x = cfg.x * SW, y = cfg.y * SH,
-                                vx = cfg.vx, vy = cfg.vy, size = cfg.size, baseAlpha = cfg.alpha,
-                            }
-                        end
-
-                        local gridHolder = lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
-                            BorderSizePixel = 0, ZIndex = 4,
-                        }, gui)
-                        local gridColor = Color3.fromRGB(100, 70, 180)
-                        local gridTrans = 1 - LAYOUT.gridAlpha
-                        for x = 0, SW, LAYOUT.gridSpacing do
-                            lmake("Frame", {
-                                Size = UDim2.new(0,1,1,0), Position = UDim2.new(0,x,0,0),
-                                BackgroundColor3 = gridColor, BackgroundTransparency = gridTrans,
-                                BorderSizePixel = 0,
-                            }, gridHolder)
-                        end
-                        for y = 0, SH, LAYOUT.gridSpacing do
-                            lmake("Frame", {
-                                Size = UDim2.new(1,0,0,1), Position = UDim2.new(0,0,0,y),
-                                BackgroundColor3 = gridColor, BackgroundTransparency = gridTrans,
-                                BorderSizePixel = 0,
-                            }, gridHolder)
-                        end
-
-                        local vignetteFrame = lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
-                            BorderSizePixel = 0, ZIndex = 4,
-                        }, gui)
-                        local vigTop = lmake("Frame", {
-                            Size = UDim2.new(1,0,0.22,0), BackgroundColor3 = Color3.new(0,0,0),
-                            BackgroundTransparency = 0.35, BorderSizePixel = 0, ZIndex = 4,
-                        }, vignetteFrame)
-                        addGradient(vigTop, NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 1),
-                        }), 90)
-                        local vigBot = lmake("Frame", {
-                            Size = UDim2.new(1,0,0.22,0), Position = UDim2.new(0,0,0.78,0),
-                            BackgroundColor3 = Color3.new(0,0,0), BackgroundTransparency = 0.35,
-                            BorderSizePixel = 0, ZIndex = 4,
-                        }, vignetteFrame)
-                        addGradient(vigBot, NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(1, 0),
-                        }), 90)
-                        local vigLeft = lmake("Frame", {
-                            Size = UDim2.new(0.15,0,1,0), BackgroundColor3 = Color3.new(0,0,0),
-                            BackgroundTransparency = 0.45, BorderSizePixel = 0, ZIndex = 4,
-                        }, vignetteFrame)
-                        addGradient(vigLeft, NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 1),
-                        }), 0)
-                        local vigRight = lmake("Frame", {
-                            Size = UDim2.new(0.15,0,1,0), Position = UDim2.new(0.85,0,0,0),
-                            BackgroundColor3 = Color3.new(0,0,0), BackgroundTransparency = 0.45,
-                            BorderSizePixel = 0, ZIndex = 4,
-                        }, vignetteFrame)
-                        addGradient(vigRight, NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(1, 0),
-                        }), 0)
-
-                        local scanFrame = lmake("Frame", {
-                            Size = UDim2.new(1,0,2,0), BackgroundColor3 = Color3.new(0,0,0),
-                            BackgroundTransparency = 0.94, BorderSizePixel = 0, ZIndex = 5,
-                        }, gui)
-                        local scanOffset = 0
-
-                        local particleHolder = lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1,
-                            BorderSizePixel = 0, ClipsDescendants = true, ZIndex = 6,
-                        }, gui)
-
-                        local PARTICLE_COLORS = {
-                            Color3.fromRGB(130,  90, 245), Color3.fromRGB(168, 126, 248),
-                            Color3.fromRGB(100,  70, 200), Color3.fromRGB(180, 160, 255),
-                            Color3.fromRGB( 80, 120, 255), Color3.fromRGB(200, 180, 255),
-                            Color3.fromRGB(255, 255, 255),
-                        }
-                        local function pickColor() return PARTICLE_COLORS[rand(1, #PARTICLE_COLORS)] end
-
-                        local dustParticles = {}
-                        for i = 1, LAYOUT.dustCount do
-                            local sz = rand(1, 3)
-                            local alpha = rand(5, 20) / 100
-                            local px = rand() * SW
-                            local py = rand() * SH
-                            local col = lerpColor(LC.accent, LC.white, rand() * 0.3)
-                            local dot = lmake("Frame", {
-                                Size = UDim2.new(0,sz,0,sz), Position = UDim2.new(0,px,0,py),
-                                BackgroundColor3 = col, BackgroundTransparency = 1 - alpha,
-                                BorderSizePixel = 0, ZIndex = 6,
-                            }, particleHolder)
-                            addCorner(sz, dot)
-                            dustParticles[i] = {
-                                obj = dot, x = px, y = py,
-                                vx = (rand() - 0.5) * 0.3, vy = (rand() - 0.5) * 0.2 - 0.1,
-                                baseAlpha = alpha, phase = rand() * pi2, freq = 1.5 + rand() * 2, sz = sz,
-                            }
-                        end
-
-                        local orbParticles = {}
-                        for i = 1, LAYOUT.orbCount do
-                            local sz = rand(4, 12)
-                            local alpha = rand(10, 35) / 100
-                            local px = rand() * SW
-                            local py = rand() * SH
-                            local col = pickColor()
-                            local haloSz = sz * 4
-                            local halo = lmake("ImageLabel", {
-                                Size = UDim2.new(0,haloSz,0,haloSz),
-                                Position = UDim2.new(0,px-haloSz/2,0,py-haloSz/2),
-                                BackgroundTransparency = 1, ImageColor3 = col,
-                                ImageTransparency = 1 - (alpha * 0.3),
-                                Image = "rbxasset://textures/whiteCircle512.png",
-                                BorderSizePixel = 0, ZIndex = 6,
-                            }, particleHolder)
-                            local dot = lmake("Frame", {
-                                Size = UDim2.new(0,sz,0,sz),
-                                Position = UDim2.new(0,px-sz/2,0,py-sz/2),
-                                BackgroundColor3 = col, BackgroundTransparency = 1 - alpha,
-                                BorderSizePixel = 0, ZIndex = 7,
-                            }, particleHolder)
-                            addCorner(sz, dot)
-                            orbParticles[i] = {
-                                dot = dot, halo = halo, x = px, y = py,
-                                baseX = px, baseY = py,
-                                vx = (rand()-0.5)*0.6, vy = (rand()-0.5)*0.4-0.15,
-                                baseAlpha = alpha, phase = rand()*pi2, freq = 0.8+rand()*1.5,
-                                sz = sz, haloSz = haloSz, col = col,
-                                orbitR = rand(20,80), orbitSpeed = (rand()-0.5)*1.2,
-                                orbitAngle = rand()*pi2, driftX = 0, driftY = 0,
-                            }
-                        end
-
-                        local bokehParticles = {}
-                        for i = 1, LAYOUT.bokehCount do
-                            local sz = rand(40, 120)
-                            local alpha = rand(3, 8) / 100
-                            local px = rand() * SW
-                            local py = rand() * SH
-                            local col = lerpColor(LC.accent, Color3.fromRGB(60, 40, 140), rand())
-                            local circle = lmake("ImageLabel", {
-                                Size = UDim2.new(0,sz,0,sz),
-                                Position = UDim2.new(0,px-sz/2,0,py-sz/2),
-                                BackgroundTransparency = 1, ImageColor3 = col,
-                                ImageTransparency = 1 - alpha,
-                                Image = "rbxasset://textures/whiteCircle512.png",
-                                BorderSizePixel = 0, ZIndex = 5,
-                            }, particleHolder)
-                            local ring = lmake("Frame", {
-                                Size = UDim2.new(0,sz,0,sz),
-                                Position = UDim2.new(0,px-sz/2,0,py-sz/2),
-                                BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 5,
-                            }, particleHolder)
-                            addCorner(sz, ring)
-                            lmake("UIStroke", {Color = col, Thickness = 1, Transparency = 1 - (alpha*1.5)}, ring)
-                            bokehParticles[i] = {
-                                circle = circle, ring = ring, x = px, y = py,
-                                vx = (rand()-0.5)*0.15, vy = (rand()-0.5)*0.1,
-                                baseAlpha = alpha, phase = rand()*pi2, sz = sz, col = col,
-                                pulseFreq = 0.3+rand()*0.5,
-                            }
-                        end
-
-                        local streakParticles = {}
-                        for i = 1, LAYOUT.streakCount do
-                            local len = rand(60, 180)
-                            local thick = rand(1, 2)
-                            local streak = lmake("Frame", {
-                                Size = UDim2.new(0,len,0,thick),
-                                Position = UDim2.new(0,-len,0,rand()*SH),
-                                BackgroundColor3 = LC.accentBright, BackgroundTransparency = 0.5,
-                                BorderSizePixel = 0, Rotation = -25+rand(-10,10), ZIndex = 8,
-                            }, particleHolder)
-                            addCorner(thick, streak)
-                            lmake("UIGradient", {
-                                Transparency = NumberSequence.new({
-                                    NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.3, 0.4),
-                                    NumberSequenceKeypoint.new(0.7, 0.1), NumberSequenceKeypoint.new(1, 0.6),
-                                }),
-                            }, streak)
-                            streakParticles[i] = {
-                                obj = streak, x = -len-rand(0,SW), y = rand(50,SH-50),
-                                speed = rand(300,700), len = len, thick = thick,
-                                cooldown = rand(2,6), timer = rand()*4, active = false,
-                                rotation = -25+rand(-10,10),
-                            }
-                        end
-
-                        local emberParticles = {}
-                        for i = 1, LAYOUT.emberCount do
-                            local sz = rand(2, 5)
-                            local alpha = rand(15, 45) / 100
-                            local px = rand() * SW
-                            local py = SH + rand(20, 200)
-                            local ember = lmake("Frame", {
-                                Size = UDim2.new(0,sz,0,sz), Position = UDim2.new(0,px,0,py),
-                                BackgroundColor3 = lerpColor(Color3.fromRGB(200,140,255), Color3.fromRGB(255,200,100), rand()*0.4),
-                                BackgroundTransparency = 1 - alpha, BorderSizePixel = 0, ZIndex = 7,
-                            }, particleHolder)
-                            addCorner(sz, ember)
-                            local glowSz = sz * 3
-                            local glow = lmake("ImageLabel", {
-                                Size = UDim2.new(0,glowSz,0,glowSz),
-                                Position = UDim2.new(0,px-glowSz/2,0,py-glowSz/2),
-                                BackgroundTransparency = 1, ImageColor3 = Color3.fromRGB(180,130,255),
-                                ImageTransparency = 1 - (alpha*0.25),
-                                Image = "rbxasset://textures/whiteCircle512.png",
-                                BorderSizePixel = 0, ZIndex = 6,
-                            }, particleHolder)
-                            emberParticles[i] = {
-                                dot = ember, glow = glow, x = px, y = py,
-                                vx = (rand()-0.5)*0.8, vy = -(rand()*1.2+0.5),
-                                baseAlpha = alpha, phase = rand()*pi2, sz = sz, glowSz = glowSz,
-                                wobbleAmp = rand(15,40), wobbleFreq = 1+rand()*2, startX = px,
-                            }
-                        end
-
-                        local sparkleParticles = {}
-                        for i = 1, LAYOUT.sparkleCount do
-                            local container = lmake("Frame", {
-                                Size = UDim2.new(0,16,0,16),
-                                Position = UDim2.new(0,rand()*SW,0,rand()*SH),
-                                BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 9,
-                            }, particleHolder)
-                            local h = lmake("Frame", {
-                                Size = UDim2.new(1,0,0,2), Position = UDim2.new(0,0,0.5,-1),
-                                BackgroundColor3 = Color3.fromRGB(220,200,255),
-                                BackgroundTransparency = 0.2, BorderSizePixel = 0,
-                            }, container)
-                            addCorner(1, h)
-                            lmake("UIGradient", {
-                                Transparency = NumberSequence.new({
-                                    NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.4, 0),
-                                    NumberSequenceKeypoint.new(0.6, 0), NumberSequenceKeypoint.new(1, 1),
-                                }),
-                            }, h)
-                            local v = lmake("Frame", {
-                                Size = UDim2.new(0,2,1,0), Position = UDim2.new(0.5,-1,0,0),
-                                BackgroundColor3 = Color3.fromRGB(220,200,255),
-                                BackgroundTransparency = 0.2, BorderSizePixel = 0,
-                            }, container)
-                            addCorner(1, v)
-                            lmake("UIGradient", {
-                                Transparency = NumberSequence.new({
-                                    NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.4, 0),
-                                    NumberSequenceKeypoint.new(0.6, 0), NumberSequenceKeypoint.new(1, 1),
-                                }), Rotation = 90,
-                            }, v)
-                            lmake("ImageLabel", {
-                                Size = UDim2.new(0,20,0,20), Position = UDim2.new(0.5,-10,0.5,-10),
-                                BackgroundTransparency = 1, ImageColor3 = Color3.fromRGB(200,180,255),
-                                ImageTransparency = 0.7, Image = "rbxasset://textures/whiteCircle512.png",
-                                BorderSizePixel = 0,
-                            }, container)
-                            sparkleParticles[i] = {
-                                obj = container, x = rand()*SW, y = rand()*SH,
-                                timer = rand()*5, interval = 1.5+rand()*4, flashDur = 0.3+rand()*0.4,
-                                state = "hidden", stateTimer = 0, scale = 0,
-                                maxScale = 0.6+rand()*0.8, rotation = 0, rotSpeed = (rand()-0.5)*60,
-                            }
-                            container.Size = UDim2.new(0,0,0,0)
-                        end
-
-                        local FS = LAYOUT.frameSize
-                        local IS = LAYOUT.imgSize
-                        local FR = LAYOUT.frameRadius
-
-                        local logoGroup = lmake("Frame", {
-                            Size = UDim2.new(0,FS+40,0,FS+80),
-                            Position = UDim2.new(0.5,-(FS+40)/2, 0.30,-(FS+80)/2),
-                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 10,
-                        }, gui)
-
-                        local frameGlow = lmake("Frame", {
-                            Size = UDim2.new(0,FS+16,0,FS+16),
-                            Position = UDim2.new(0.5,-(FS+16)/2, 0,10),
-                            BackgroundColor3 = LC.accentDim, BackgroundTransparency = 0.82,
-                            BorderSizePixel = 0,
-                        }, logoGroup)
-                        addCorner(FR+6, frameGlow)
-
-                        local logoFrame = lmake("Frame", {
-                            Size = UDim2.new(0,FS,0,FS),
-                            Position = UDim2.new(0.5,-FS/2, 0,18),
-                            BackgroundColor3 = LC.surface, BackgroundTransparency = 0.3,
-                            BorderSizePixel = 0,
-                        }, logoGroup)
-                        addCorner(FR, logoFrame)
-
-                        local frameStroke = lmake("UIStroke", {
-                            Color = LC.accent, Thickness = 2, Transparency = 0.35,
-                            ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-                        }, logoFrame)
-
-                        local logoImage = lmake("ImageLabel", {
-                            Size = UDim2.new(0,IS,0,IS),
-                            Position = UDim2.new(0.5,-IS/2, 0.5,-IS/2),
-                            BackgroundTransparency = 1, BorderSizePixel = 0,
-                            Image = "rbxassetid://89872178631966",
-                            ScaleType = Enum.ScaleType.Fit,
-                        }, logoFrame)
-                        addCorner(FR-4, logoImage)
-
-                        local titleLabel = lmake("TextLabel", {
-                            Size = UDim2.new(1,0,0,28),
-                            Position = UDim2.new(0,0, 0,FS+26),
-                            Text = "", TextColor3 = LC.accent, TextSize = 22,
-                            Font = Enum.Font.GothamBlack,
-                            BackgroundTransparency = 1, BorderSizePixel = 0,
-                        }, logoGroup)
-
-                        lmake("TextLabel", {
-                            Size = UDim2.new(1,0,0,14),
-                            Position = UDim2.new(0,0, 0,FS+56),
-                            Text = "v1.03 \xc2\xb7 Enjoy it",
-                            TextColor3 = LC.textMuted, TextSize = 11,
-                            Font = Enum.Font.GothamMedium,
-                            BackgroundTransparency = 1, BorderSizePixel = 0,
-                        }, logoGroup)
-
-                        local TIPS = {
-                            "[PC] You can open the SUMenu quicker when u set up a keybind.",
-                            "U can select a color of your choice, based how you want the SUMenu to look!",
-                            "Ur using right now the best script, did you know that?",
-                        }
-
-                        local tipsBg = lmake("Frame", {
-                            Size = UDim2.new(0,LAYOUT.barWidth,0,34),
-                            Position = UDim2.new(0.5,-(LAYOUT.barWidth/2), 0.52,-17),
-                            BackgroundColor3 = LC.surface, BackgroundTransparency = 0.55,
-                            BorderSizePixel = 0, ZIndex = 10,
-                        }, gui)
-                        addCorner(8, tipsBg)
-                        lmake("UIStroke", {Color = LC.border, Thickness = 1, Transparency = 0.55}, tipsBg)
-
-                        lmake("TextLabel", {
-                            Size = UDim2.new(0,44,1,0), Position = UDim2.new(0,10,0,0),
-                            Text = "TIPP", TextColor3 = LC.accent, TextSize = 9,
-                            Font = Enum.Font.GothamBlack, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
-                            ZIndex = 11,
-                        }, tipsBg)
-
-                        lmake("Frame", {
-                            Size = UDim2.new(0,1,0,16), Position = UDim2.new(0,56,0.5,-8),
-                            BackgroundColor3 = LC.accent, BackgroundTransparency = 0.6,
-                            BorderSizePixel = 0, ZIndex = 11,
-                        }, tipsBg)
-
-                        local tipsClip = lmake("Frame", {
-                            Size = UDim2.new(1,-70,1,0), Position = UDim2.new(0,64,0,0),
-                            BackgroundTransparency = 1, BorderSizePixel = 0,
-                            ClipsDescendants = true, ZIndex = 11,
-                        }, tipsBg)
-                        lmake("UIGradient", {
-                            Transparency = NumberSequence.new({
-                                NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(0.80, 0),
-                                NumberSequenceKeypoint.new(1, 1),
-                            }),
-                        }, tipsClip)
-
-                        local tipsLabel = lmake("TextLabel", {
-                            Size = UDim2.new(0,900,1,0), Position = UDim2.new(0,0,0,0),
-                            Text = TIPS[1], TextColor3 = LC.textDim, TextSize = 10,
-                            Font = Enum.Font.GothamMedium, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
-                            TextTruncate = Enum.TextTruncate.None, ZIndex = 12,
-                        }, tipsClip)
-
-                        local MARQUEE_SPEED = 40
-                        local MARQUEE_PAUSE = 2.1
-                        local MARQUEE_GAP   = 55
-                        local tipIndex      = 1
-                        local marqueeX      = 0
-                        local marqueePause  = MARQUEE_PAUSE
-                        local tipsClipW     = LAYOUT.barWidth - 70
-
-                        local BW = LAYOUT.barWidth
-                        local BH = LAYOUT.barHeight
-
-                        local barGroup = lmake("Frame", {
-                            Size = UDim2.new(0,BW,0,56),
-                            Position = UDim2.new(0.5,-BW/2, 0.67,0),
-                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 10,
-                        }, gui)
-
-                        lmake("TextLabel", {
-                            Size = UDim2.new(0.65,0,0,13), Position = UDim2.new(0,0,0,0),
-                            Text = "LOADING ASSETS", TextColor3 = LC.textMuted, TextSize = 10,
-                            Font = Enum.Font.GothamBold, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
-                        }, barGroup)
-
-                        local barPct = lmake("TextLabel", {
-                            Size = UDim2.new(0.35,0,0,13), Position = UDim2.new(0.65,0,0,0),
-                            Text = "0%", TextColor3 = LC.accent, TextSize = 11,
-                            Font = Enum.Font.GothamBold, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Right,
-                        }, barGroup)
-
-                        local barTrack = lmake("Frame", {
-                            Size = UDim2.new(1,0,0,BH), Position = UDim2.new(0,0,0,18),
-                            BackgroundColor3 = Color3.fromRGB(32,28,52), BorderSizePixel = 0,
-                            ClipsDescendants = false, ZIndex = 10,
-                        }, barGroup)
-                        addCorner(999, barTrack)
-                        lmake("UIStroke", {Color = Color3.fromRGB(55,45,85), Thickness = 1, Transparency = 0.6}, barTrack)
-
-                        for _, frac in ipairs({0.25, 0.50, 0.75}) do
-                            lmake("Frame", {
-                                Size = UDim2.new(0,1,0,BH+4),
-                                Position = UDim2.new(frac,0,0.5,-(BH+4)/2),
-                                BackgroundColor3 = Color3.fromRGB(60,50,88), BackgroundTransparency = 0.4,
-                                BorderSizePixel = 0, ZIndex = 12,
-                            }, barTrack)
-                        end
-
-                        local barFillClip = lmake("Frame", {
-                            Size = UDim2.new(0,0,1,0), BackgroundTransparency = 1,
-                            BorderSizePixel = 0, ClipsDescendants = true, ZIndex = 11,
-                        }, barTrack)
-
-                        local barFill = lmake("Frame", {
-                            Size = UDim2.new(1,0,1,0), BackgroundColor3 = LC.accent,
-                            BorderSizePixel = 0, ZIndex = 11,
-                        }, barFillClip)
-                        addCorner(999, barFill)
-                        addGradient(barFill, ColorSequence.new({
-                            ColorSequenceKeypoint.new(0,   LC.accentDim),
-                            ColorSequenceKeypoint.new(0.6, LC.accent),
-                            ColorSequenceKeypoint.new(1,   LC.accentBright),
-                        }), 0)
-
-                        local tipDot = lmake("Frame", {
-                            Size = UDim2.new(0,8,0,8), Position = UDim2.new(0,-4,0.5,-4),
-                            BackgroundColor3 = LC.accentBright, BorderSizePixel = 0, ZIndex = 14,
-                        }, barTrack)
-                        addCorner(999, tipDot)
-
-                        local tipHalo = lmake("Frame", {
-                            Size = UDim2.new(0,18,0,18), Position = UDim2.new(0,-9,0.5,-9),
-                            BackgroundColor3 = LC.accent, BackgroundTransparency = 0.72,
-                            BorderSizePixel = 0, ZIndex = 13,
-                        }, barTrack)
-                        addCorner(999, tipHalo)
-
-                        local STEP_N   = LAYOUT.stepCount
-                        local stepDots = {}
-                        local dotsHolder = lmake("Frame", {
-                            Size = UDim2.new(0,(STEP_N*8)+((STEP_N-1)*5),0,8),
-                            Position = UDim2.new(1,-((STEP_N*8)+((STEP_N-1)*5)),0,27),
-                            BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 10,
-                        }, barGroup)
-                        for i = 1, STEP_N do
-                            local dot = lmake("Frame", {
-                                Size = UDim2.new(0,6,0,6), Position = UDim2.new(0,(i-1)*13,0,1),
-                                BackgroundColor3 = Color3.fromRGB(55,46,80), BorderSizePixel = 0, ZIndex = 10,
-                            }, dotsHolder)
-                            addCorner(999, dot)
-                            stepDots[i] = dot
-                        end
-
-                        local bottomBar = lmake("Frame", {
-                            Size = UDim2.new(1,0,0,28), Position = UDim2.new(0,0,1,-28),
-                            BackgroundColor3 = LC.bg, BackgroundTransparency = 0.15,
-                            BorderSizePixel = 0, ZIndex = 10,
-                        }, gui)
-                        lmake("Frame", {
-                            Size = UDim2.new(1,0,0,1), BackgroundColor3 = LC.accent,
-                            BackgroundTransparency = 0.82, BorderSizePixel = 0, ZIndex = 11,
-                        }, bottomBar)
-                        lmake("TextLabel", {
-                            Size = UDim2.new(0,260,1,0), Position = UDim2.new(0,16,0,0),
-                            Text = "SUMENU LOADING SYSTEM", TextColor3 = Color3.fromRGB(62,55,88),
-                            TextSize = 10, Font = Enum.Font.GothamBold, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left,
-                        }, bottomBar)
-                        lmake("TextLabel", {
-                            Size = UDim2.new(0,180,1,0), Position = UDim2.new(1,-196,0,0),
-                            Text = "\xc2\xa9 TL\xc2\xb7Productions", TextColor3 = Color3.fromRGB(58,52,80),
-                            TextSize = 10, Font = Enum.Font.GothamMedium, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Right,
-                        }, bottomBar)
-
-                        local statusLabel = lmake("TextLabel", {
-                            Size = UDim2.new(1,0,0,13), Position = UDim2.new(0,0,0,29),
-                            Text = "Initializing engine core...", TextColor3 = LC.textMuted,
-                            TextSize = 10, Font = Enum.Font.GothamMedium, BackgroundTransparency = 1,
-                            BorderSizePixel = 0, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 10,
-                        }, barGroup)
-
-                        local STATUS_MESSAGES = {
-                            "Initializing engine core...", "Loading shader cache...",
-                            "Preparing asset pipeline...", "Compiling bytecode...",
-                            "Warming up render thread...", "Almost ready...",
-                        }
-                        local TITLE_FRAMES = {"S","SU","SU M","SU ME","SU MEN","SUMENU"}
-                        local TITLE_DELAYS = {0.20, 0.20, 0.12, 0.12, 0.12, 0}
-
-                        local progress    = 0
-                        local startTime   = tick()
-                        local titleStep   = 1
-                        local titleTimer  = 0
-                        local closing     = false
-                        local GLOW_BASE   = FS + 16
-                        local loader      = rawget(_genv, "_SU_assetLoader")
+                        local progress  = 0
+                        local startTime = tick()
+                        local closing   = false
+                        local statusIdx = 1
+                        local statusTmr = 0
+                        local titleTimer = 0
+                        local loader    = rawget(_genv, "_SU_assetLoader")
+                        local loopConn
 
                         local function onComplete()
+                            if not gui or not gui.Parent then return end
                             closing = true
-                            loopConn:Disconnect()
+                            if loopConn then loopConn:Disconnect() end
                             progress = 100
-                            barFillClip.Size = UDim2.new(1,0,1,0)
+                            barFillClip.Size = UDim2.new(1, 0, 1, 0)
                             barPct.Text = "100%"
                             tw(barPct, 0.35, {TextColor3 = LC.green})
                             tw(barFill, 0.35, {BackgroundColor3 = LC.green})
-                            tw(tipDot, 0.35, {BackgroundColor3 = LC.green})
-                            tw(tipHalo, 0.35, {BackgroundColor3 = LC.green})
-                            tipDot.Position = UDim2.new(1,-4,0.5,-4)
-                            tipHalo.Position = UDim2.new(1,-9,0.5,-9)
-                            task.wait(0.2)
                             statusLabel.Text = "All systems operational."
-                            for _, d in ipairs(stepDots) do
-                                tw(d, 0.15, {BackgroundColor3 = LC.green})
-                                task.wait(0.06)
-                            end
                             task.wait(0.5)
                             local snd = gui:FindFirstChild("SUMenu_VoiceLine", true)
                             if snd and snd.IsPlaying then
@@ -24746,7 +24435,7 @@ local function _SU_showLoadingScreen()
                                 task.wait(0.3)
                                 pcall(function() snd:Stop() end)
                             end
-                            local FADE_DUR = 0.55
+                            local FADE_DUR = 0.45
                             for _, v in ipairs(gui:GetDescendants()) do
                                 pcall(function()
                                     local cn = v.ClassName
@@ -24768,284 +24457,43 @@ local function _SU_showLoadingScreen()
                                 if settingsState and settingsState.autoOpen then
                                     if not isOpen then openBar() end
                                 else
-                                    sendNotif("SUMenu", "System loaded. Press [K] to toggle.", 4)
+                                    local _kbEntry = keybinds and keybinds["Toggle SmartBar"]
+                                    local _kbStr = (_kbEntry and _kbEntry.key) and _kbEntry.key.Name or "K"
+                                    sendNotif("SYNDICATE", "System loaded. Press [" .. _kbStr .. "] to toggle.", 4)
                                 end
                             end)
                         end
 
                         loopConn = Heartbeat:Connect(function(dt)
-                            if not gui or not gui.Parent then loopConn:Disconnect(); return end
-                            local now = tick()
-                            local elapsed = now - startTime
-
-                            local loaderReady = (not loader) or loader.ready == true
+                            if not gui or not gui.Parent then
+                                loopConn:Disconnect(); return
+                            end
+                            local elapsed = tick() - startTime
                             local loaderProgress = 0
-                            if loader and (loader.total or 0) > 0 then
+                            if loader and loader.total and loader.total > 0 then
                                 loaderProgress = math.clamp((loader.done or 0) / loader.total, 0, 1)
-                            elseif loaderReady then
-                                loaderProgress = 1
                             end
-                            local timeFloor = math.min((elapsed / LAYOUT.duration) * 65, 65)
-                            local target = math.max(timeFloor, loaderProgress * 99)
-                            if loaderReady and elapsed >= LAYOUT.duration then
-                                target = 100
-                            else
-                                target = math.min(target, 99)
+                            local timeTarget = math.clamp(elapsed / DURATION, 0, 1)
+                            local loaderReady = loader and loader.ready
+                            local target = loaderReady and timeTarget or math.min(timeTarget, loaderProgress * 0.9)
+                            progress = progress + (target - progress) * math.min(dt * 4, 1)
+                            barFillClip.Size = UDim2.new(math.clamp(progress, 0, 1), 0, 1, 0)
+                            barPct.Text = tostring(math.floor(math.clamp(progress * 100, 0, 100))) .. "%"
+                            statusTmr = statusTmr + dt
+                            if statusTmr > 0.6 and statusIdx < #STATUS_MESSAGES then
+                                statusTmr = 0
+                                statusIdx = statusIdx + 1
+                                statusLabel.Text = STATUS_MESSAGES[statusIdx]
                             end
-                            progress = progress + (target - progress) * math.min(dt * 4, 0.12)
-                            local frac = math.clamp(progress / 100, 0, 1)
-                            barFillClip.Size = UDim2.new(frac, 0, 1, 0)
-                            barPct.Text = math.floor(progress) .. "%"
-
-                            local tipX = frac * BW
-                            tipDot.Position = UDim2.new(0, tipX - 4, 0.5, -4)
-                            tipHalo.Position = UDim2.new(0, tipX - 9, 0.5, -9)
-                            local tipPulse = (sin(now * 5) + 1) * 0.5
-                            tipHalo.BackgroundTransparency = 0.65 + tipPulse * 0.2
-
-                            if loader and not loaderReady and loader.current then
-                                statusLabel.Text = loader.current
-                            else
-                                local msgIdx = math.clamp(math.floor(progress / (100 / #STATUS_MESSAGES)) + 1, 1, #STATUS_MESSAGES)
-                                statusLabel.Text = STATUS_MESSAGES[msgIdx]
+                            titleTimer = titleTimer + dt
+                            if titleStep <= #titleChars and titleTimer >= titleDelay then
+                                titleTimer = 0
+                                titleLabel.Text = table.concat(titleChars, "", 1, titleStep)
+                                titleStep = titleStep + 1
                             end
-
-                            local activeDot = math.floor(frac * STEP_N)
-                            for i, d in ipairs(stepDots) do
-                                if i <= activeDot then
-                                    d.BackgroundColor3 = LC.accent
-                                    d.BackgroundTransparency = 0
-                                elseif i == activeDot + 1 then
-                                    local dp = (sin(now * 3) + 1) * 0.5
-                                    d.BackgroundColor3 = LC.accent
-                                    d.BackgroundTransparency = 0.4 + dp * 0.35
-                                else
-                                    d.BackgroundColor3 = Color3.fromRGB(55, 46, 80)
-                                    d.BackgroundTransparency = 0
-                                end
-                            end
-
-                            if bgGradient and bgGradient.Parent then
-                                bgGradient.Rotation = (bgGradient.Rotation + dt * 3) % 360
-                            end
-
-                            for _, fb in ipairs(fogBlobs) do
-                                fb.x = fb.x + fb.vx * dt
-                                fb.y = fb.y + fb.vy * dt
-                                if fb.x < -fb.size*0.3 or fb.x > SW+fb.size*0.3 then fb.vx = -fb.vx end
-                                if fb.y < -fb.size*0.3 or fb.y > SH+fb.size*0.3 then fb.vy = -fb.vy end
-                                local breathe = sin(now*0.4+fb.x*0.01)*0.04
-                                fb.obj.ImageTransparency = fb.baseAlpha + breathe
-                                fb.obj.Position = UDim2.new(0, fb.x-fb.size/2, 0, fb.y-fb.size/2)
-                            end
-
-                            scanOffset = (scanOffset + dt*25) % SH
-                            scanFrame.Position = UDim2.new(0, 0, 0, -scanOffset)
-
-                            local pulse = (sin(now*1.2)+1)*0.5
-                            local glowSize = GLOW_BASE + pulse*16
-                            local glowOff = pulse*8
-                            if frameGlow and frameGlow.Parent then
-                                frameGlow.BackgroundTransparency = 0.78+pulse*0.14
-                                frameGlow.Size = UDim2.new(0,glowSize,0,glowSize)
-                                frameGlow.Position = UDim2.new(0.5,-glowSize/2, 0,10-glowOff)
-                            end
-
-                            if frameStroke and frameStroke.Parent then
-                                frameStroke.Transparency = 0.25+(sin(now*1.5)+1)*0.2
-                            end
-
-                            if logoImage and logoImage.Parent then
-                                local s = IS + sin(now*0.6)*3
-                                logoImage.Size = UDim2.new(0,s,0,s)
-                                logoImage.Position = UDim2.new(0.5,-s/2, 0.5,-s/2)
-                            end
-
-                            for _, p in ipairs(dustParticles) do
-                                p.x = p.x + p.vx*(dt*60)
-                                p.y = p.y + p.vy*(dt*60)
-                                if p.x < -20 then p.x = SW+20 elseif p.x > SW+20 then p.x = -20 end
-                                if p.y < -20 then p.y = SH+20 elseif p.y > SH+20 then p.y = -20 end
-                                p.obj.Position = UDim2.new(0,p.x,0,p.y)
-                                local shimmer = (sin(now*p.freq+p.phase)+1)*0.5
-                                p.obj.BackgroundTransparency = 1-(p.baseAlpha*(0.3+shimmer*0.7))
-                            end
-
-                            for _, p in ipairs(orbParticles) do
-                                p.driftX = p.driftX+p.vx*dt*30
-                                p.driftY = p.driftY+p.vy*dt*30
-                                if p.baseX+p.driftX < -100 then p.driftX = p.driftX+SW+200 end
-                                if p.baseX+p.driftX > SW+100 then p.driftX = p.driftX-SW-200 end
-                                if p.baseY+p.driftY < -100 then p.driftY = p.driftY+SH+200 end
-                                if p.baseY+p.driftY > SH+100 then p.driftY = p.driftY-SH-200 end
-                                p.orbitAngle = p.orbitAngle+p.orbitSpeed*dt
-                                local ox = cos(p.orbitAngle)*p.orbitR
-                                local oy = sin(p.orbitAngle)*p.orbitR*0.6
-                                p.x = p.baseX+p.driftX+ox
-                                p.y = p.baseY+p.driftY+oy
-                                local pulse2 = (sin(now*p.freq+p.phase)+1)*0.5
-                                local alpha = p.baseAlpha*(0.4+pulse2*0.6)
-                                local szMult = 1+pulse2*0.3
-                                local curSz = p.sz*szMult
-                                local curHalo = p.haloSz*szMult
-                                p.dot.Size = UDim2.new(0,curSz,0,curSz)
-                                p.dot.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
-                                p.dot.BackgroundTransparency = 1-alpha
-                                p.halo.Size = UDim2.new(0,curHalo,0,curHalo)
-                                p.halo.Position = UDim2.new(0,p.x-curHalo/2,0,p.y-curHalo/2)
-                                p.halo.ImageTransparency = 1-(alpha*0.35)
-                            end
-
-                            for _, p in ipairs(bokehParticles) do
-                                p.x = p.x+p.vx*(dt*60)
-                                p.y = p.y+p.vy*(dt*60)
-                                if p.x < -p.sz then p.x = SW+p.sz elseif p.x > SW+p.sz then p.x = -p.sz end
-                                if p.y < -p.sz then p.y = SH+p.sz elseif p.y > SH+p.sz then p.y = -p.sz end
-                                local breathe = (sin(now*p.pulseFreq+p.phase)+1)*0.5
-                                local alpha = p.baseAlpha*(0.5+breathe*0.5)
-                                local curSz = p.sz*(0.9+breathe*0.2)
-                                p.circle.Size = UDim2.new(0,curSz,0,curSz)
-                                p.circle.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
-                                p.circle.ImageTransparency = 1-alpha
-                                p.ring.Size = UDim2.new(0,curSz,0,curSz)
-                                p.ring.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
-                            end
-
-                            for _, p in ipairs(streakParticles) do
-                                if p.active then
-                                    p.x = p.x+p.speed*dt
-                                    local sinY = sin(now*2)*15
-                                    p.obj.Position = UDim2.new(0,p.x,0,p.y+sinY)
-                                    local screenFrac = p.x/SW
-                                    local fade2 = 1-abs(screenFrac-0.5)*2
-                                    fade2 = math.clamp(fade2,0,1)
-                                    p.obj.BackgroundTransparency = 1-(fade2*0.6)
-                                    if p.x > SW+p.len+50 then
-                                        p.active = false
-                                        p.timer = 0
-                                        p.cooldown = 2+rand()*5
-                                        p.obj.Position = UDim2.new(0,-p.len-100,0,0)
-                                    end
-                                else
-                                    p.timer = p.timer+dt
-                                    if p.timer >= p.cooldown then
-                                        p.active = true
-                                        p.x = -p.len-rand(0,100)
-                                        p.y = rand(30,SH-30)
-                                        p.speed = rand(350,800)
-                                        p.rotation = -25+rand(-15,15)
-                                        p.obj.Rotation = p.rotation
-                                        p.obj.Size = UDim2.new(0,p.len,0,p.thick)
-                                    end
-                                end
-                            end
-
-                            for _, p in ipairs(emberParticles) do
-                                p.y = p.y+p.vy*(dt*60)
-                                local wobble = sin(now*p.wobbleFreq+p.phase)*p.wobbleAmp
-                                p.x = p.startX+wobble
-                                if p.y < -30 then
-                                    p.y = SH+rand(20,100)
-                                    p.startX = rand()*SW
-                                    p.x = p.startX
-                                end
-                                local yFrac = p.y/SH
-                                local fadeAlpha = p.baseAlpha
-                                if yFrac < 0.3 then fadeAlpha = fadeAlpha*(yFrac/0.3) end
-                                local emberPulse = (sin(now*3+p.phase)+1)*0.5
-                                fadeAlpha = fadeAlpha*(0.6+emberPulse*0.4)
-                                local curSz = p.sz*(0.8+emberPulse*0.4)
-                                p.dot.Size = UDim2.new(0,curSz,0,curSz)
-                                p.dot.Position = UDim2.new(0,p.x-curSz/2,0,p.y-curSz/2)
-                                p.dot.BackgroundTransparency = 1-fadeAlpha
-                                local curGlow = p.glowSz*(0.8+emberPulse*0.4)
-                                p.glow.Size = UDim2.new(0,curGlow,0,curGlow)
-                                p.glow.Position = UDim2.new(0,p.x-curGlow/2,0,p.y-curGlow/2)
-                                p.glow.ImageTransparency = 1-(fadeAlpha*0.3)
-                            end
-
-                            for _, p in ipairs(sparkleParticles) do
-                                p.rotation = p.rotation+p.rotSpeed*dt
-                                if p.state == "hidden" then
-                                    p.timer = p.timer+dt
-                                    if p.timer >= p.interval then
-                                        p.x = rand(40,SW-40)
-                                        p.y = rand(40,SH-40)
-                                        p.state = "appearing"
-                                        p.stateTimer = 0
-                                        p.scale = 0
-                                        p.timer = 0
-                                    end
-                                elseif p.state == "appearing" then
-                                    p.stateTimer = p.stateTimer+dt
-                                    local t2 = math.clamp(p.stateTimer/0.15,0,1)
-                                    t2 = 1-(1-t2)*(1-t2)
-                                    p.scale = p.maxScale*t2
-                                    if p.stateTimer >= 0.15 then
-                                        p.state = "visible"
-                                        p.stateTimer = 0
-                                        p.scale = p.maxScale
-                                    end
-                                elseif p.state == "visible" then
-                                    p.stateTimer = p.stateTimer+dt
-                                    local vp = sin(p.stateTimer*8)*0.15
-                                    p.scale = p.maxScale*(1+vp)
-                                    if p.stateTimer >= p.flashDur then
-                                        p.state = "fading"
-                                        p.stateTimer = 0
-                                    end
-                                elseif p.state == "fading" then
-                                    p.stateTimer = p.stateTimer+dt
-                                    local t2 = math.clamp(p.stateTimer/0.2,0,1)
-                                    p.scale = p.maxScale*(1-t2)
-                                    if p.stateTimer >= 0.2 then
-                                        p.state = "hidden"
-                                        p.stateTimer = 0
-                                        p.timer = 0
-                                        p.interval = 1+rand()*4
-                                        p.scale = 0
-                                    end
-                                end
-                                local sz = 16*p.scale
-                                if sz < 0.5 then sz = 0 end
-                                p.obj.Size = UDim2.new(0,sz,0,sz)
-                                p.obj.Position = UDim2.new(0,p.x-sz/2,0,p.y-sz/2)
-                                p.obj.Rotation = p.rotation
-                            end
-
-                            if tipsLabel and tipsLabel.Parent then
-                                local textW = tipsLabel.TextBounds.X
-                                if textW <= tipsClipW then
-                                    marqueeX = 0
-                                    marqueePause = MARQUEE_PAUSE
-                                    tipsLabel.Position = UDim2.new(0,0,0,0)
-                                else
-                                    if marqueePause > 0 then
-                                        marqueePause = marqueePause-dt
-                                    else
-                                        marqueeX = marqueeX-MARQUEE_SPEED*dt
-                                        local maxScroll = -(textW+MARQUEE_GAP-tipsClipW)
-                                        if marqueeX <= maxScroll then
-                                            tipIndex = (tipIndex%#TIPS)+1
-                                            tipsLabel.Text = TIPS[tipIndex]
-                                            marqueeX = 0
-                                            marqueePause = MARQUEE_PAUSE
-                                        end
-                                        tipsLabel.Position = UDim2.new(0,math.floor(marqueeX),0,0)
-                                    end
-                                end
-                            end
-
-                            if titleStep <= #TITLE_FRAMES then
-                                titleTimer = titleTimer+dt
-                                if titleTimer >= (TITLE_DELAYS[titleStep] or 0) then
-                                    titleLabel.Text = TITLE_FRAMES[titleStep]
-                                    titleStep = titleStep+1
-                                    titleTimer = 0
-                                end
-                            end
-
-                            if not closing and loaderReady and elapsed >= LAYOUT.duration then
+                            local pulse = 0.88 + math.sin(elapsed * 2) * 0.04
+                            glowFrame.BackgroundTransparency = pulse
+                            if not closing and loaderReady and elapsed >= DURATION then
                                 task.spawn(onComplete)
                             end
                         end)
@@ -25054,7 +24502,7 @@ local function _SU_showLoadingScreen()
                             local waited = 0
                             while waited < MAX_WAIT do
                                 task.wait(1)
-                                waited = waited+1
+                                waited = waited + 1
                                 if closing then return end
                             end
                             pcall(function()
@@ -25098,6 +24546,8 @@ local function _SU_showLoadingScreen()
                         stopBB = function() pcall(function() stopBB() end) end,
                         startBB = function(tgt, mode) pcall(function() startBB(tgt, mode) end) end,
                         registerResetFn = function(fn) _G.TLQA_ResetUI = fn end,
+                        _SU_assetLoader = _SU_assetLoader,
+                        _SU_safeGetCustomAsset = _SU_safeGetCustomAsset,
                     })
                     _bbMod2.startQABar()
                 end
